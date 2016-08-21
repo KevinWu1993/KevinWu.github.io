@@ -46,11 +46,11 @@
 <nav id="main-nav" class="alignright">
   <ul>
     
-      <li><a href="/">Home</a></li>
+      <li><a href="/">主页</a></li>
     
-      <li><a href="/archives">Archives</a></li>
+      <li><a href="/archives">归档</a></li>
     
-      <li><a href="/about">About</a></li>
+      <li><a href="/about">关于</a></li>
     
   </ul>
   <div class="clearfix"></div>
@@ -73,7 +73,7 @@
     </header>
     <div class="entry">
       
-        <p>这是一篇我之前在ImportNew公众号看到的文章，觉得写得很好，虽然我现在也不确定是否会每次都如作者所说会Stop-the-world（抱着疑问），但看完后还会时不时想起它了，如今又一次看到它，毅然收到自己博客，如果原作者看到不服请联系我，我马上把它删了谢谢。<br>再次说明，这是一篇转载文章，原文地址为： <a href="http://blog.csdn.net/wsl211511/article/details/51099051" target="_blank" rel="external">http://blog.csdn.net/wsl211511/article/details/51099051</a><br><a id="more"></a></p>
+        <p>这是一篇我之前在ImportNew公众号看到的文章，觉得写得很好，虽然我现在也不确定是否会每次都如作者所说会Stop-the-world（抱着疑问），但看完后还会时不时想起它了，如今又一次看到它，毅然收到自己博客，如果原作者看到不服请联系我，我马上把它删了谢谢。<br><a id="more"></a><br>再次说明，这是一篇转载文章，原文地址为： <a href="http://blog.csdn.net/wsl211511/article/details/51099051" target="_blank" rel="external">http://blog.csdn.net/wsl211511/article/details/51099051</a></p>
 <h1 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h1><p>在C++中，对象所占的内存在程序结束运行之前一直被占用，在明确释放之前不能分配给其它对象；而在Java中，当没有对象引用指向原先分配给某个对象的内存时，该内存便成为垃圾。JVM的一个系统级线程会自动释放该内存块。垃圾收集意味着程序不再需要的对象是”无用信息”，这些信息将被丢弃。当一个对象不再被引用的时候，内存回收它占领的空间，以便空间被后来的新对象使用。事实上，除了释放没用的对象，垃圾收集也可以清除内存记录碎片。由于创建对象和垃圾收集器释放丢弃对象所占的内存空间，内存会出现碎片。碎片是分配给对象的内存块之间的空闲内存洞。碎片整理将所占用的堆内存移到堆的一端，JVM将整理出的内存分配给新的对象。</p>
 <p>垃圾收集能自动释放内存空间，减轻编程的负担。这使Java 虚拟机具有一些优点。首先，它能使编程效率提高。在没有垃圾收集机制的时候，可能要花许多时间来解决一个难懂的存储器问题。在用Java语言编程的时候，靠垃圾收集机制可大大缩短时间。其次是它保护程序的完整性，垃圾收集是Java语言安全性策略的一个重要部份。</p>
 <p>垃圾收集的一个潜在的缺点是它的开销影响程序性能。Java虚拟机必须追踪运行程序中有用的对象，而且最终释放没用的对象。这一个过程需要花费处理器的时间。其次垃圾收集算法的不完备性，早先采用的某些垃圾收集算法就不能保证100%收集到所有的废弃内存。当然随着垃圾收集算法的不断改进以及软硬件运行效率的不断提升，这些问题都可以迎刃而解。</p>
@@ -192,7 +192,7 @@
       
 
       
-        <a href="/2016/07/15/Java/201607/基本排序：从忘记到捡起（二）——简单选择排序/" class="alignright next">Next</a>
+        <a href="/2016/07/15/Java/201607/基本排序：从忘记到捡起（二）——简单选择排序/" class="alignright next">下一篇</a>
       
 
 </nav>
@@ -208,14 +208,14 @@
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="search" name="q" results="0" placeholder="谷歌搜索本站">
     <input type="hidden" name="q" value="site:kevinwu.cn">
   </form>
 </div>
 
   
 <div class="widget tag">
-  <h3 class="title">Categories</h3>
+  <h3 class="title">分类</h3>
   <ul class="entry">
   
     <li><a href="/categories/Android/">Android</a><small>4</small></li>
@@ -240,7 +240,7 @@
 
   
 <div class="widget tagcloud">
-  <h3 class="title">Tag Cloud</h3>
+  <h3 class="title">标签云</h3>
   <div class="entry">
     <a href="/tags/2048/" style="font-size: 10px;">2048</a> <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/DIY/" style="font-size: 10px;">DIY</a> <a href="/tags/GC/" style="font-size: 10px;">GC</a> <a href="/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/JVM/" style="font-size: 12px;">JVM</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Json/" style="font-size: 10px;">Json</a> <a href="/tags/Jsoup/" style="font-size: 12px;">Jsoup</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SharedPreferences/" style="font-size: 12px;">SharedPreferences</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/二维数组/" style="font-size: 10px;">二维数组</a> <a href="/tags/冒泡/" style="font-size: 10px;">冒泡</a> <a href="/tags/加载模式/" style="font-size: 10px;">加载模式</a> <a href="/tags/单片机/" style="font-size: 10px;">单片机</a> <a href="/tags/启动模式/" style="font-size: 10px;">启动模式</a> <a href="/tags/基础/" style="font-size: 10px;">基础</a> <a href="/tags/基础知识/" style="font-size: 12px;">基础知识</a> <a href="/tags/天气/" style="font-size: 10px;">天气</a> <a href="/tags/学籍管理/" style="font-size: 10px;">学籍管理</a> <a href="/tags/实战/" style="font-size: 10px;">实战</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/师大/" style="font-size: 10px;">师大+</a> <a href="/tags/引用/" style="font-size: 10px;">引用</a> <a href="/tags/快排/" style="font-size: 10px;">快排</a> <a href="/tags/总结/" style="font-size: 14px;">总结</a> <a href="/tags/手工/" style="font-size: 10px;">手工</a> <a href="/tags/排序/" style="font-size: 12px;">排序</a> <a href="/tags/插座/" style="font-size: 10px;">插座</a> <a href="/tags/智能/" style="font-size: 10px;">智能</a> <a href="/tags/查找/" style="font-size: 10px;">查找</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/模拟登录/" style="font-size: 10px;">模拟登录</a> <a href="/tags/源码解析/" style="font-size: 10px;">源码解析</a> <a href="/tags/硬件/" style="font-size: 10px;">硬件</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/解析/" style="font-size: 12px;">解析</a> <a href="/tags/计算机网络/" style="font-size: 12px;">计算机网络</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a> <a href="/tags/选择/" style="font-size: 10px;">选择</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/集合/" style="font-size: 10px;">集合</a>
   </div>
@@ -249,7 +249,7 @@
 
   
 <div class="widget tag">
-  <h3 class="title">Recent Posts</h3>
+  <h3 class="title">最新文章</h3>
   <ul class="entry">
     
       <li>
@@ -275,12 +275,26 @@
   </ul>
 </div>
 
+
+  <div class="widget tag">
+<h3 class="title">友情链接</h3>
+<ul class="entry">
+<li><a href="http://www.fengbee.com/"  target="_blank" title="蜂背科技">蜂背科技</a></li>
+<li><a href="http://www.jxnu.edu.cn/" target="_blank" title="江西师范大学">江西师范大学</a></li>
+<li><a href="http://blog.csdn.net/mummyding/" target="_blank" title="MummyDing">MummyDing</a></li>
+<li><a href="http://ddragonever.com/" target="_blank" title="Ddragon">Ddragon</a></li>
+<li><a href="http://blog.csdn.net/lyf_somethink" target="_blank" title="lyf_Somethink">lyf_Somethink</a></li>
+</ul>
+</div>
+
+  <div class="widget tag">
+<h3 class="title">动态</h3>
+<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=5162758478&verifier=58037745&colors=ffffff,ffffff,666666,000000,ffffff&dpc=1"></iframe>
+</div>
 </aside>
     <div class="clearfix"></div>
   </div>
   <footer id="footer" class="inner"><div class="alignleft">
-  Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
-  Theme by <a href="https://github.com/qwong/hexo-theme-green-light" target="_blank">GreenLight</a> 
   
   &copy; 2016 Kevin Wu
   
@@ -304,6 +318,17 @@
 <div id="totop" style="position:fixed;bottom:50px;right:50px;cursor: pointer;">
 <a><img src="/imgs/scrollup.png"/></a>
 </div>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?undefined";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
 
 <script src="/js/totop.js"></script>
 </body>

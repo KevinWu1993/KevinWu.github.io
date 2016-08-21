@@ -9,11 +9,11 @@
   padding: 0;
 }
 body {
-  background: #fff url("images/bg-pattern.png") top left;
+  background: #dab275 url("images/bg-pattern.png") top left;
   color: #444;
+  text-shadow: 0 0 1px transparent;
   font-family: "微软雅黑", "Microsoft Yahei", "Helvetica Neue", "Helvetica", Arial, sans-serif;
   font-size: 14px;
-  text-shadow: 0 0 1px transparent;
 }
 @media screen and (max-width: 1260px) {
   body {
@@ -44,7 +44,7 @@ h3 {
 }
 a {
   text-decoration: none;
-  color: #1d9531;
+  color: #111;
 }
 a:hover {
   text-decoration: underline;
@@ -105,7 +105,7 @@ a:hover {
   margin: 50px auto;
 }
 #header a:hover {
-  color: #1d9531;
+  color: #111;
   text-decoration: none;
 }
 #header h1 {
@@ -153,7 +153,7 @@ article.link .icon:before {
 }
 article.link .title a:after {
   content: '\f08e';
-  color: #999;
+  color: #333;
   font: 12px FontAwesome;
   padding-left: 10px;
   vertical-align: super;
@@ -238,7 +238,7 @@ article header .icon {
   position: absolute;
   top: 20px;
   left: 20px;
-  color: #1d9531;
+  color: #111;
 }
 @media screen and (max-width: 600px) {
   article header .icon {
@@ -254,7 +254,7 @@ article header .icon:before {
   text-align: center;
 }
 article header time {
-  color: #999;
+  color: #333;
   font: 0.9em "微软雅黑", "Microsoft Yahei", "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
   margin-bottom: 5px;
   display: block;
@@ -267,7 +267,7 @@ article header .title a {
   color: #444;
 }
 article header .title a:hover {
-  color: #1d9531;
+  color: #111;
   text-decoration: none;
 }
 article .entry {
@@ -289,7 +289,7 @@ article .entry .video-container {
   margin-top: 15px;
 }
 article .entry blockquote {
-  border-left: 5px solid #1d9531;
+  border-left: 5px solid #111;
   background: #eee;
   font-family: "微软雅黑", "Microsoft Yahei", "Georgia", serif;
   font-size: 13px;
@@ -380,7 +380,7 @@ article .entry iframe {
 article .entry .caption {
   display: block;
   margin-top: 5px;
-  color: #999;
+  color: #333;
   position: relative;
   font-size: 0.9em;
   padding-left: 25px;
@@ -423,14 +423,14 @@ article footer {
   margin-top: 15px;
   padding-top: 10px;
   border-top: 1px solid #ddd;
-  color: #999;
+  color: #333;
   font-size: 0.9em;
   line-height: 16px;
   position: relative;
   min-height: 16px;
 }
 article footer a:hover {
-  color: #1d9531;
+  color: #111;
   text-decoration: none;
 }
 article footer a:before {
@@ -454,7 +454,7 @@ article footer .categories:before,
 article footer .tags:before {
   position: absolute;
   font: 1.1em FontAwesome;
-  color: #1d9531;
+  color: #111;
 }
 article footer .categories:before {
   content: '\f07b';
@@ -491,7 +491,7 @@ article footer .addthis iframe {
   margin-bottom: 50px;
 }
 #pagination a:hover {
-  background: #1d9531;
+  background: #111;
   color: #fff;
   text-decoration: none;
   text-shadow: none;
@@ -507,7 +507,7 @@ article footer .addthis iframe {
   font-family: FontAwesome;
 }
 .archive-title {
-  color: #999;
+  color: #333;
   font-weight: normal;
   margin-bottom: 30px;
   text-shadow: 0 0 1px #fff;
@@ -593,14 +593,14 @@ article footer .addthis iframe {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  color: #999;
+  color: #333;
 }
 #sidebar .search input:focus {
   color: #444;
 }
 #sidebar .tag small {
   margin-left: 15px;
-  color: #999;
+  color: #333;
 }
 #sidebar .tag small:before {
   content: '(';
@@ -619,7 +619,7 @@ article footer .addthis iframe {
 #sidebar .twitter small {
   display: block;
   margin-top: 10px;
-  color: #999;
+  color: #333;
   line-height: 1;
 }
 #sidebar .tagcloud .entry {
@@ -630,7 +630,7 @@ article footer .addthis iframe {
   display: inline-block;
 }
 #footer {
-  color: #999;
+  color: #333;
   margin-bottom: 50px;
   font: 0.9em/1.6 "微软雅黑", "Microsoft Yahei", "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
   text-shadow: 0 0 1px #fff;
@@ -662,17 +662,17 @@ article footer .addthis iframe {
 }
 .entry .gist .gist-file .gist-meta {
   background: none;
-  color: #999;
+  color: #333;
   margin-top: 5px;
   padding: 0;
   text-shadow: 0 0 1px #fff;
   font-size: 100%;
 }
 .entry .gist .gist-file .gist-meta a {
-  color: #1d9531;
+  color: #111;
 }
 .entry .gist .gist-file .gist-meta a:visited {
-  color: #1d9531;
+  color: #111;
 }
 figure.highlight {
   background: #2d2d2d;
@@ -686,7 +686,7 @@ figure.highlight {
   font-size: 0.9em;
 }
 figure.highlight figcaption {
-  color: #999;
+  color: #333;
   margin-bottom: 5px;
   text-shadow: 0 0 1px #fff;
 }
@@ -704,7 +704,7 @@ figure.highlight table {
   border-spacing: 0;
 }
 figure.highlight .gutter {
-  color: #999;
+  color: #333;
   padding-right: 15px;
   border-right: 1px solid #ddd;
   text-align: right;
