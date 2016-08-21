@@ -1,0 +1,219 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java常见IO流的使用 | KevinWu.CN</title>
+  <meta name="author" content="Kevin Wu">
+  
+  <meta name="description" content="KevinWu的个人博客">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Java常见IO流的使用"/>
+  <meta property="og:site_name" content="KevinWu.CN"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="KevinWu.CN" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'undefined', 'auto');
+	ga('send', 'pageview');
+
+</script>
+
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">KevinWu.CN</a></h1>
+  <h2><a href="/">慢几步，深几度</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-01-13T16:00:00.000Z"><a href="/2016/01/14/Java/201601/Java常见IO流的使用/">2016-01-14</a></time>
+      
+      
+  
+    <h1 class="title">Java常见IO流的使用</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>都在复习Java期末考试，貌似大家最害怕的就是这个（估计期末考试难度也就考到这个了），所以就总结一下写出来了供参考：<br>直接上代码：<br><a id="more"></a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.io.*;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * </div><div class="line"> * <span class="doctag">@author</span> KevinWu 文件操作示例</div><div class="line"> *</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileHandle</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">		FileHandle myFileHandle = <span class="keyword">new</span> FileHandle();</div><div class="line">		myFileHandle.readTxtFile(<span class="string">"a.txt"</span>);</div><div class="line">		myFileHandle.copyTxtFile(<span class="string">"a.txt"</span>, <span class="string">"b.txt"</span>);</div><div class="line">		myFileHandle.copyNonTxtFile(<span class="string">"111.pdf"</span>, <span class="string">"222.pdf"</span>);</div><div class="line">		myFileHandle.outPut(<span class="string">"测试输出字符串"</span>, <span class="string">"test.txt"</span>);</div><div class="line">		myFileHandle.creatFolder(<span class="string">"."</span>, <span class="string">"我是新建的文件夹"</span>);<span class="comment">// 路径给点，表示当前目录</span></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 方法作用：读取文本文件的方法 参数：待读取文件的路径</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">readTxtFile</span><span class="params">(String file_dir)</span> </span>&#123;</div><div class="line">		<span class="comment">// 创建并实例化文件对象</span></div><div class="line">		File myFile = <span class="keyword">new</span> File(file_dir);</div><div class="line">		<span class="comment">// 判断该对象对应的路径下是不是存在这个文件和是不是文件类型</span></div><div class="line">		<span class="keyword">if</span> (!myFile.exists() || !myFile.isFile()) &#123;</div><div class="line">			System.out.println(<span class="string">"文件不存在或不是文件类型"</span>);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="comment">// 新建FileReader对象</span></div><div class="line">			FileReader myFileReader = <span class="keyword">null</span>;</div><div class="line">			<span class="comment">// 新建BufferedReader对象</span></div><div class="line">			BufferedReader myBufferedReader = <span class="keyword">null</span>;</div><div class="line">			<span class="keyword">try</span> &#123;</div><div class="line">				<span class="comment">// 实例化FileReader对象</span></div><div class="line">				myFileReader = <span class="keyword">new</span> FileReader(myFile);</div><div class="line">				<span class="comment">// 实例化BufferedReader对象</span></div><div class="line">				myBufferedReader = <span class="keyword">new</span> BufferedReader(myFileReader);</div><div class="line">				<span class="comment">// 定义一个字符串来接收文件的一行内容</span></div><div class="line">				String str = <span class="string">""</span>;</div><div class="line">				<span class="keyword">while</span> ((str = myBufferedReader.readLine()) != <span class="keyword">null</span>) &#123;</div><div class="line">					<span class="comment">// 把读取到的内容输出</span></div><div class="line">					System.out.println(str);</div><div class="line">				&#125;</div><div class="line">			&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125; <span class="keyword">finally</span> &#123;</div><div class="line">				<span class="comment">// 在这里关闭缓冲流和输入流，注意要一层一层关</span></div><div class="line">				<span class="keyword">if</span> (myBufferedReader != <span class="keyword">null</span>) &#123;</div><div class="line">					<span class="keyword">try</span> &#123;</div><div class="line">						myBufferedReader.close();</div><div class="line">					&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">if</span> (myFileReader != <span class="keyword">null</span>) &#123;</div><div class="line">					<span class="keyword">try</span> &#123;</div><div class="line">						myFileReader.close();</div><div class="line">					&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 方法作用：复制文本文件方法 参数1：待复制的文件的路径 参数2：复制目标的文件的路径</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">copyTxtFile</span><span class="params">(String f_dir, String t_dir)</span> </span>&#123;</div><div class="line">		<span class="comment">// 创建并实例化文件对象</span></div><div class="line">		File fFile = <span class="keyword">new</span> File(f_dir);</div><div class="line">		File tFile = <span class="keyword">new</span> File(t_dir);</div><div class="line">		<span class="comment">// 先判断源文件存不存在和是不是文件类型，就不考虑文件是否可读的问题了</span></div><div class="line">		<span class="keyword">if</span> (!fFile.exists() || !fFile.isFile()) &#123;</div><div class="line">			System.out.println(<span class="string">"文件不存在或者不是文件类型"</span>);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="comment">// 创建FileReader对象</span></div><div class="line">			FileReader myFileReader = <span class="keyword">null</span>;</div><div class="line">			<span class="comment">// 创建FileWriter对象</span></div><div class="line">			FileWriter myFileWriter = <span class="keyword">null</span>;</div><div class="line">			<span class="comment">// 创建BufferedReader和BufferedWriter对象</span></div><div class="line">			BufferedReader myBufferedReader = <span class="keyword">null</span>;</div><div class="line">			BufferedWriter myBufferedWriter = <span class="keyword">null</span>;</div><div class="line">			<span class="keyword">try</span> &#123;</div><div class="line">				<span class="comment">// 实例化FileReader和BufferedReader对象</span></div><div class="line">				myFileReader = <span class="keyword">new</span> FileReader(fFile);</div><div class="line">				myBufferedReader = <span class="keyword">new</span> BufferedReader(myFileReader);</div><div class="line">				<span class="comment">// 实例化FileWriter和BufferedWriter对象</span></div><div class="line">				myFileWriter = <span class="keyword">new</span> FileWriter(tFile);</div><div class="line">				myBufferedWriter = <span class="keyword">new</span> BufferedWriter(myFileWriter);</div><div class="line">				<span class="comment">// 用一个字符串接受数据</span></div><div class="line">				String str = <span class="string">""</span>;</div><div class="line">				<span class="keyword">while</span> ((str = myBufferedReader.readLine()) != <span class="keyword">null</span>) &#123;</div><div class="line">					myBufferedWriter.write(str);</div><div class="line">					<span class="comment">// 换行</span></div><div class="line">					myBufferedWriter.newLine();</div><div class="line">					<span class="comment">// 刷新缓冲流</span></div><div class="line">					myBufferedWriter.flush();</div><div class="line">				&#125;</div><div class="line">			&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125; <span class="keyword">finally</span> &#123;</div><div class="line">				<span class="keyword">if</span> (myBufferedWriter != <span class="keyword">null</span>) &#123;</div><div class="line">					<span class="keyword">try</span> &#123;</div><div class="line">						myBufferedWriter.close();</div><div class="line">					&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">if</span> (myFileWriter != <span class="keyword">null</span>) &#123;</div><div class="line">					<span class="keyword">try</span> &#123;</div><div class="line">						myFileWriter.close();</div><div class="line">					&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">if</span> (myBufferedReader != <span class="keyword">null</span>) &#123;</div><div class="line">					<span class="keyword">try</span> &#123;</div><div class="line">						myBufferedReader.close();</div><div class="line">					&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">if</span> (myFileReader != <span class="keyword">null</span>) &#123;</div><div class="line">					<span class="keyword">try</span> &#123;</div><div class="line">						myFileReader.close();</div><div class="line">					&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 方法作用：复制非文本文件方法 参数1：待复制文件的路径 参数2：复制目标文件的路径</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">copyNonTxtFile</span><span class="params">(String f_dir, String t_dir)</span> </span>&#123;</div><div class="line">		File fFile = <span class="keyword">new</span> File(f_dir);</div><div class="line">		File dFile = <span class="keyword">new</span> File(t_dir);</div><div class="line">		<span class="keyword">if</span> (!fFile.exists() || !fFile.isFile()) &#123;</div><div class="line">			System.out.println(<span class="string">"文件....."</span>);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			FileInputStream fis = <span class="keyword">null</span>;</div><div class="line">			FileOutputStream fos = <span class="keyword">null</span>;</div><div class="line">			BufferedInputStream bis = <span class="keyword">null</span>;</div><div class="line">			BufferedOutputStream bos = <span class="keyword">null</span>;</div><div class="line">			<span class="keyword">try</span> &#123;</div><div class="line">				fis = <span class="keyword">new</span> FileInputStream(fFile);</div><div class="line">				fos = <span class="keyword">new</span> FileOutputStream(dFile);</div><div class="line">				bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">				bos = <span class="keyword">new</span> BufferedOutputStream(fos);</div><div class="line">				<span class="keyword">byte</span> b[] = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</div><div class="line">				<span class="keyword">int</span> length;</div><div class="line">				<span class="keyword">while</span> ((length = bis.read(b)) != -<span class="number">1</span>) &#123;</div><div class="line">					bos.write(b, <span class="number">0</span>, length);</div><div class="line">					bos.flush();</div><div class="line">				&#125;</div><div class="line">			&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">				<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">				e.printStackTrace();</div><div class="line">			&#125; <span class="keyword">finally</span> &#123;</div><div class="line">				<span class="keyword">if</span> (bos != <span class="keyword">null</span>) &#123;</div><div class="line">					<span class="keyword">try</span> &#123;</div><div class="line">						bos.close();</div><div class="line">					&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">						<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">if</span> (fos != <span class="keyword">null</span>) &#123;</div><div class="line">					<span class="keyword">try</span> &#123;</div><div class="line">						fos.close();</div><div class="line">					&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">						<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">if</span> (bis != <span class="keyword">null</span>) &#123;</div><div class="line">					<span class="keyword">try</span> &#123;</div><div class="line">						bis.close();</div><div class="line">					&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">						<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">if</span> (fis != <span class="keyword">null</span>) &#123;</div><div class="line">					<span class="keyword">try</span> &#123;</div><div class="line">						fis.close();</div><div class="line">					&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">						<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">						e.printStackTrace();</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line"></div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 方法作用：把字符串内容输出到文本文件 参数1：待输出的字符串 参数2：目标文件路径</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">outPut</span><span class="params">(String dstStr, String f_dir)</span> </span>&#123;</div><div class="line">		File fFile = <span class="keyword">new</span> File(f_dir);</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			FileWriter myFileWriter = <span class="keyword">new</span> FileWriter(fFile, <span class="keyword">true</span>);<span class="comment">// 设置为追加</span></div><div class="line">			PrintWriter pw = <span class="keyword">new</span> PrintWriter(myFileWriter);</div><div class="line">			pw.println(dstStr);</div><div class="line">			<span class="comment">// 方便起见直接在这里关闭了</span></div><div class="line">			pw.close();</div><div class="line">			myFileWriter.close();</div><div class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">			<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 创建文件夹 参数1：待创建的文件夹的路径 参数2：待创建的文件夹的名称</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">creatFolder</span><span class="params">(String f_dir, String f_name)</span> </span>&#123;</div><div class="line">		File fDir = <span class="keyword">new</span> File(f_dir + <span class="string">"/"</span> + f_name);</div><div class="line">		<span class="keyword">if</span> (fDir.exists()) &#123;</div><div class="line">			System.out.println(<span class="string">"文件夹已经存在"</span>);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			fDir.mkdirs();<span class="comment">// 创建文件夹，如果父目录不存在一并创建</span></div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Java/">Java</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/Java/">Java</a>, <a href="/tags/IO/">IO</a>
+  </div>
+
+        
+        <nav id="pagination">
+
+
+      
+        <a href="/2016/01/30/Android/201601/Gson学习笔记/" class="alignleft prev">Prev</a>
+      
+
+      
+        <a href="/2015/11/28/Android/201511/新浪免费天气Api简单使用说明/" class="alignright next">Next</a>
+      
+
+</nav>
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:kevinwu.cn">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Android/">Android</a><small>4</small></li>
+  
+    <li><a href="/categories/Java/">Java</a><small>10</small></li>
+  
+    <li><a href="/categories/一本正经胡说八道/">一本正经胡说八道</a><small>1</small></li>
+  
+    <li><a href="/categories/在线刷题/">在线刷题</a><small>1</small></li>
+  
+    <li><a href="/categories/师大-技术说明书/">师大+ 技术说明书</a><small>5</small></li>
+  
+    <li><a href="/categories/师大-辅助文档/">师大+ 辅助文档</a><small>1</small></li>
+  
+    <li><a href="/categories/计算机基础/">计算机基础</a><small>2</small></li>
+  
+    <li><a href="/categories/酷玩/">酷玩</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">Tag Cloud</h3>
+  <div class="entry">
+    <a href="/tags/2048/" style="font-size: 10px;">2048</a> <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/DIY/" style="font-size: 10px;">DIY</a> <a href="/tags/GC/" style="font-size: 10px;">GC</a> <a href="/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/JVM/" style="font-size: 12px;">JVM</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Json/" style="font-size: 10px;">Json</a> <a href="/tags/Jsoup/" style="font-size: 12px;">Jsoup</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SharedPreferences/" style="font-size: 12px;">SharedPreferences</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/二维数组/" style="font-size: 10px;">二维数组</a> <a href="/tags/冒泡/" style="font-size: 10px;">冒泡</a> <a href="/tags/加载模式/" style="font-size: 10px;">加载模式</a> <a href="/tags/单片机/" style="font-size: 10px;">单片机</a> <a href="/tags/启动模式/" style="font-size: 10px;">启动模式</a> <a href="/tags/基础/" style="font-size: 10px;">基础</a> <a href="/tags/基础知识/" style="font-size: 12px;">基础知识</a> <a href="/tags/天气/" style="font-size: 10px;">天气</a> <a href="/tags/学籍管理/" style="font-size: 10px;">学籍管理</a> <a href="/tags/实战/" style="font-size: 10px;">实战</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/师大/" style="font-size: 10px;">师大+</a> <a href="/tags/引用/" style="font-size: 10px;">引用</a> <a href="/tags/快排/" style="font-size: 10px;">快排</a> <a href="/tags/总结/" style="font-size: 14px;">总结</a> <a href="/tags/手工/" style="font-size: 10px;">手工</a> <a href="/tags/排序/" style="font-size: 12px;">排序</a> <a href="/tags/插座/" style="font-size: 10px;">插座</a> <a href="/tags/智能/" style="font-size: 10px;">智能</a> <a href="/tags/查找/" style="font-size: 10px;">查找</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/模拟登录/" style="font-size: 10px;">模拟登录</a> <a href="/tags/源码解析/" style="font-size: 10px;">源码解析</a> <a href="/tags/硬件/" style="font-size: 10px;">硬件</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/解析/" style="font-size: 12px;">解析</a> <a href="/tags/计算机网络/" style="font-size: 12px;">计算机网络</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a> <a href="/tags/选择/" style="font-size: 10px;">选择</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/集合/" style="font-size: 10px;">集合</a>
+  </div>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2016/07/19/Java/201607/GC-垃圾回收机制/">GC-垃圾回收机制</a>
+      </li>
+    
+      <li>
+        <a href="/2016/07/15/Java/201607/基本排序：从忘记到捡起（二）——简单选择排序/">基本排序：从忘记到捡起（二）——简单选择排序</a>
+      </li>
+    
+      <li>
+        <a href="/2016/07/13/Java/201607/基本排序：从忘记到捡起（一）——冒泡与快排/">基本排序：从忘记到捡起（一）——冒泡与快排</a>
+      </li>
+    
+      <li>
+        <a href="/2016/07/08/Java/201607/英文文章词频统计/">英文文章词频统计</a>
+      </li>
+    
+      <li>
+        <a href="/2016/06/24/酷玩/DIY一个智能插座/">DIY一个智能插座</a>
+      </li>
+    
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+  Theme by <a href="https://github.com/qwong/hexo-theme-green-light" target="_blank">GreenLight</a> 
+  
+  &copy; 2016 Kevin Wu
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+<div id="totop" style="position:fixed;bottom:50px;right:50px;cursor: pointer;">
+<a><img src="/imgs/scrollup.png"/></a>
+</div>
+
+<script src="/js/totop.js"></script>
+</body>
+</html>

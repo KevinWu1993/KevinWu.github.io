@@ -1,0 +1,281 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>师大+ 技术说明书 第三期：与Jsoup不期而遇 | KevinWu.CN</title>
+  <meta name="author" content="Kevin Wu">
+  
+  <meta name="description" content="KevinWu的个人博客">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="师大+ 技术说明书 第三期：与Jsoup不期而遇"/>
+  <meta property="og:site_name" content="KevinWu.CN"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="KevinWu.CN" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'undefined', 'auto');
+	ga('send', 'pageview');
+
+</script>
+
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">KevinWu.CN</a></h1>
+  <h2><a href="/">慢几步，深几度</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-05-06T16:00:00.000Z"><a href="/2016/05/07/师大+ 技术说明书/师大+技术说明书 第三期：与Jsoup不期而遇/">2016-05-07</a></time>
+      
+      
+  
+    <h1 class="title">师大+ 技术说明书 第三期：与Jsoup不期而遇</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>说到HTML解析，最先想到的是能不能拓展下DOM来解析一个特定HTML文档，后来无意上网中发现了Jsoup这个工具，真是有种相见恨晚的感觉。</p>
+<p>这篇文章作为初期引导知识，将不详细介绍如何用Jsoup去解析一个HTML文档，具体操作下一期将会仔细介绍。<br><a id="more"></a></p>
+<h2 id="工欲善其事，必先利其器"><a href="#工欲善其事，必先利其器" class="headerlink" title="工欲善其事，必先利其器"></a>工欲善其事，必先利其器</h2><p>要了解jsoup怎么解析HTML的，有必要先了解一下要解析的对象的结构，才能更高效去完成它的解析代码的编写，而知识也是一连串的东西，所以先来了解一下HTML的编程接口DOM。</p>
+<h3 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h3><p>根据W3C DOM规范，DOM是HTML与XML的应用编程接口（API）。</p>
+<h3 id="HTML-DOM"><a href="#HTML-DOM" class="headerlink" title="HTML DOM"></a>HTML DOM</h3><p>HTML DOM是符合W3C标准的HTML的标准对象模型和标准编程接口，它定义了所有HTML元素的对象和属性，以及访问它们的方法（接口），说白了就是如何获取、修改、添加或删除HTML元素的标准。</p>
+<p>引用一下w3cschool上面的HTML DOM树的示意图：</p>
+<p><img src="http://www.w3school.com.cn/i/ct_htmltree.gif" alt="HTML DOM"></p>
+<p>整个树形图下来，可以看出来包含关系，简单点说就是，在使用Jsoup解析一个body元素时，那么会连带把body里面的元素一并解析出来。</p>
+<h3 id="DOM节点"><a href="#DOM节点" class="headerlink" title="DOM节点"></a>DOM节点</h3><p>DOM节点这里直接用一个例子介绍下：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>DOM 节点<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM 节点网页标题<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>Hello world!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>在上面的HTML文档中，节点分别有</p>
+<ul>
+<li><code>&lt;html&gt;</code></li>
+<li><code>&lt;head&gt;</code></li>
+<li><code>&lt;title&gt;</code></li>
+<li><code>&lt;body&gt;</code></li>
+<li><code>&lt;h1&gt;</code></li>
+<li><code>&lt;p&gt;</code></li>
+</ul>
+<p>其中<code>&lt;html&gt;</code>节点没有父节点，它就是根节点，<code>&lt;head&gt;</code>和<code>&lt;body&gt;</code>节点的父节点是<code>&lt;html&gt;</code>节点。</p>
+<p>像<code>&lt;h1&gt;</code>和<code>&lt;p&gt;</code>这两个节点就称为同胞节点。</p>
+<p>到这里，基本了解了DOM是什么，如果你想了解更多知识可以参考w3cschool的教程（虽然是Javascript的教程，不过还是很有参考意义的）：<br><a href="http://www.w3school.com.cn/htmldom/index.asp" target="_blank" rel="external">http://www.w3school.com.cn/htmldom/index.asp</a></p>
+<h2 id="磨刀霍霍向猪羊"><a href="#磨刀霍霍向猪羊" class="headerlink" title="磨刀霍霍向猪羊"></a>磨刀霍霍向猪羊</h2><p>上面了解了铺垫知识，下面可以对Jsoup开刀了。</p>
+<p>Jsoup不仅可以解析本地文档，还可以直接给一个url让它去解析，但这里主要说的是解析，所以以本地文档为准。</p>
+<p>下面先简略看看解析用到的几个类。</p>
+<h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p>这个类是一个抽象类，定义为一个抽象的节点模型Elements和Documents都是它的子类，这两个类后面会介绍。</p>
+<p>Node类有几个成员变量：</p>
+<ul>
+<li><p>Node parentNode;<br>这个节点对象指向的是父类节点，如果你了解二叉树的结构，对于这个应该比较容易理解。</p>
+</li>
+<li><p>List<node> childNodes;<br>用于记录子节点的集合。</node></p>
+</li>
+<li><p>Attributes attributes;<br>记录属性值的变量。</p>
+</li>
+<li><p>String baseUri;<br>记录该节点的基础uri。</p>
+</li>
+<li><p>int siblingIndex;<br>记录在兄弟节点列表中该节点的下标，下标重0开始。</p>
+</li>
+<li><p>private static final List<node> EMPTY_NODES = Collections.emptyList();<br>利用enptyList()方法给产生一个空的子节点（因为不确定是一个子节点还是后面跟着一系列子节点，所以是一个List）。</node></p>
+</li>
+</ul>
+<p>了解了这几个成员变量后，来看一下它的构造方法，Node类有三个构造方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     创建一个新的节点</div><div class="line">     <span class="doctag">@param</span> baseUri base URI</div><div class="line">     <span class="doctag">@param</span> attributes attributes (不排除是一个null值)</div><div class="line"> */</div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">Node</span><span class="params">(String baseUri, Attributes attributes)</span> </span>&#123;</div><div class="line">        Validate.notNull(baseUri);</div><div class="line">        Validate.notNull(attributes);</div><div class="line">        </div><div class="line">        childNodes = EMPTY_NODES;</div><div class="line">        <span class="keyword">this</span>.baseUri = baseUri.trim();</div><div class="line">        <span class="keyword">this</span>.attributes = attributes;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">     创建一个新的节点，实际上也是调用前面一个方法来创建的</div><div class="line"> */</div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">Node</span><span class="params">(String baseUri)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>(baseUri, <span class="keyword">new</span> Attributes());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 这个是默认的构造方法，不会初始化base uri，子节点和属性，所以使用这个构造方法时要格外小心</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">Node</span><span class="params">()</span> </span>&#123;</div><div class="line">        childNodes = EMPTY_NODES;</div><div class="line">        attributes = <span class="keyword">null</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>粗略看一下Node类部分方法，这个不了解关系也不大，不想了解的可以略过这里，当然如果想深究原理的话可以仔细阅读下源码。这里我就直接把说明放在代码的注释里面了，代码给个方法头说明一下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//取得当前节点的名字</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">nodeName</span><span class="params">()</span></span>;</div><div class="line"><span class="comment">//通过key取得对应的属性</span></div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">attr</span><span class="params">(String attributeKey)</span></span>;</div><div class="line"><span class="comment">//取得所有元素的属性</span></div><div class="line"><span class="function"><span class="keyword">public</span> Attributes <span class="title">attributes</span><span class="params">()</span></span>;</div><div class="line"><span class="comment">//设置节点的属性，如果对应的属性已存在，则会被替代</span></div><div class="line"><span class="function"><span class="keyword">public</span> Node <span class="title">attr</span><span class="params">(String attributeKey, String attributeValue)</span></span>;</div><div class="line"><span class="comment">//检测该元素是否含有该属性，有则返回true，没有则返回false</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasAttr</span><span class="params">(String attributeKey)</span></span>;</div><div class="line"><span class="comment">//移除一个属性</span></div><div class="line"><span class="function"><span class="keyword">public</span> Node <span class="title">removeAttr</span><span class="params">(String attributeKey)</span></span>;</div><div class="line"><span class="comment">//从关联的URL属性里取得一个绝对地址</span></div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">absUrl</span><span class="params">(String attributeKey)</span></span>;</div><div class="line"><span class="comment">//取得Document对象与当前Node结合</span></div><div class="line"><span class="function"><span class="keyword">public</span> Document <span class="title">ownerDocument</span><span class="params">()</span></span>;</div><div class="line"><span class="comment">//对节点填充支持的html对象</span></div><div class="line"><span class="function"><span class="keyword">public</span> Node <span class="title">wrap</span><span class="params">(String html)</span></span>;</div><div class="line"><span class="comment">//把该节点从DOM树里面移除，同时把子节点上移</span></div><div class="line"><span class="function"><span class="keyword">public</span> Node <span class="title">unwrap</span><span class="params">()</span></span>;</div><div class="line"><span class="comment">//检测该节点的同胞节点，并以list形式返回</span></div><div class="line"><span class="function"><span class="keyword">public</span> List&lt;Node&gt; <span class="title">siblingNodes</span><span class="params">()</span></span>;</div><div class="line"><span class="comment">//深度优先遍历该节点及子节点</span></div><div class="line"><span class="function"><span class="keyword">public</span> Node <span class="title">traverse</span><span class="params">(NodeVisitor nodeVisitor)</span></span>;</div></pre></td></tr></table></figure></p>
+<h3 id="Element"><a href="#Element" class="headerlink" title="Element"></a>Element</h3><p>Element继承自Node，解析的方法都在这个类里面，废话少说，先看看构造方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    * Create a new, standalone Element. (Standalone in that is has no parent.)</div><div class="line">    * </div><div class="line">    * <span class="doctag">@param</span> tag tag of this element</div><div class="line">    * <span class="doctag">@param</span> baseUri the base URI</div><div class="line">    * <span class="doctag">@param</span> attributes initial attributes</div><div class="line">    * <span class="doctag">@see</span> #appendChild(Node)</div><div class="line">    * <span class="doctag">@see</span> #appendElement(String)</div><div class="line">    */</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="title">Element</span><span class="params">(Tag tag, String baseUri, Attributes attributes)</span> </span>&#123;</div><div class="line">       <span class="keyword">super</span>(baseUri, attributes);</div><div class="line">       </div><div class="line">       Validate.notNull(tag);    </div><div class="line">       <span class="keyword">this</span>.tag = tag;</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   <span class="comment">/**</span></div><div class="line">    * Create a new Element from a tag and a base URI.</div><div class="line">    * </div><div class="line">    * <span class="doctag">@param</span> tag element tag</div><div class="line">    * <span class="doctag">@param</span> baseUri the base URI of this element. It is acceptable for the base URI to be an empty</div><div class="line">    *            string, but not null.</div><div class="line">    * <span class="doctag">@see</span> Tag#valueOf(String)</div><div class="line">    */</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="title">Element</span><span class="params">(Tag tag, String baseUri)</span> </span>&#123;</div><div class="line">       <span class="keyword">this</span>(tag, baseUri, <span class="keyword">new</span> Attributes());</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>先来了解一下Element类中常用的几个方法：</p>
+<ul>
+<li><p>getAllElements()<br>返回所有的元素，包括元素的子元素，以及子元素的子元素</p>
+</li>
+<li><p>getElementById(String id)<br>根据元素的ID查找元素</p>
+</li>
+<li><p>getElementsByAttribute(String key)<br>根据属性名查找元素</p>
+</li>
+<li><p>getElementsByAttributeValue(String key, String value)<br>根据属性键值对查代元素</p>
+</li>
+<li><p>getElementsByClass(String className)<br>根据css的class查找元素</p>
+</li>
+<li><p>getElementsByTag(String tagName)<br>根据标签名称查找元素</p>
+</li>
+</ul>
+<p>然后来看一个Element类在解析中比较重要的方法：</p>
+<h4 id="select"><a href="#select" class="headerlink" title="select"></a>select</h4><p>原注释讲的太详细，我就给直接放出来了，这个方法通过css样式把对应的Element 选择出来，其内部是通过调用Selector类的select方法来实现的，返回的是Elements对象，有兴趣的童鞋可以去看看Elements的源码，这里不展开，Elements实际上就是一个拓展的ArrayList，泛型就是Element：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * Find elements that match the &#123;<span class="doctag">@link</span> Selector&#125; CSS query, with this element as the starting context. Matched elements</div><div class="line">     * may include this element, or any of its children.</div><div class="line">     * &lt;p&gt;</div><div class="line">     * This method is generally more powerful to use than the DOM-type &#123;<span class="doctag">@code</span> getElementBy*&#125; methods, because</div><div class="line">     * multiple filters can be combined, e.g.:</div><div class="line">     * &lt;/p&gt;</div><div class="line">     * &lt;ul&gt;</div><div class="line">     * &lt;li&gt;&#123;<span class="doctag">@code</span> el.select("a[href]")&#125; - finds links (&#123;<span class="doctag">@code</span> a&#125; tags with &#123;<span class="doctag">@code</span> href&#125; attributes)</div><div class="line">     * &lt;li&gt;&#123;<span class="doctag">@code</span> el.select("a[href*=example.com]")&#125; - finds links pointing to example.com (loosely)</div><div class="line">     * &lt;/ul&gt;</div><div class="line">     * &lt;p&gt;</div><div class="line">     * See the query syntax documentation in &#123;<span class="doctag">@link</span> org.jsoup.select.Selector&#125;.</div><div class="line">     * &lt;/p&gt;</div><div class="line">     * </div><div class="line">     * <span class="doctag">@param</span> cssQuery a &#123;<span class="doctag">@link</span> Selector&#125; CSS-like query</div><div class="line">     * <span class="doctag">@return</span> elements that match the query (empty if none match)</div><div class="line">     * <span class="doctag">@see</span> org.jsoup.select.Selector</div><div class="line">     * <span class="doctag">@throws</span> Selector.SelectorParseException (unchecked) on an invalid CSS query.</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> Elements <span class="title">select</span><span class="params">(String cssQuery)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> Selector.select(cssQuery, <span class="keyword">this</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>了解了这个select，我们就可以通过传入特定的css来解析我们要的html网页了，一般调用这个用的是Document实例，Document是继承自Element的子类，用来表示一个HTML文档，这里不深究，通过这个方法返回了Elements实例后，我们可以运用ArrayList遍历的方式，逐个元素遍历，就可以取得每一个符合类型的元素了。</p>
+<p>上面讲的都是如何选择的过程，但是注意到我们用的是Document实例去调用select方法，那么这个表示HTML文档的Document实例是怎么来的呢？</p>
+<p>这个就简单了，它是通过Jsoup类的parse方法返回的，Jsoup的parse方法内部又是通过调用Parser类中的parse方法来解析的，而Parser类中parse方法又是调用TreeBuilder类中的parse方法解析，追踪下去会发现实际上是在TreeBuilder类中的runParser()方法中完成解析工作的，这里就不详细介绍这些过程了，如果想了解这些详细过程，建议先找DOM解析xml文档的相关文章看一下，原理是类似的。</p>
+<p>这一期基本就讲完了，主要先了解一下Jsoup，下一期将针对一个网页返回数据来实战，进行解析。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/师大-技术说明书/">师大+ 技术说明书</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/Java/">Java</a>, <a href="/tags/Android/">Android</a>, <a href="/tags/工具/">工具</a>, <a href="/tags/Jsoup/">Jsoup</a>
+  </div>
+
+        
+        <nav id="pagination">
+
+
+      
+        <a href="/2016/05/08/师大+ 辅助文档/【师大+】反馈10问10答/" class="alignleft prev">Prev</a>
+      
+
+      
+        <a href="/2016/05/06/师大+ 技术说明书/师大+技术说明书 第二期：让SPUtil变得更优雅/" class="alignright next">Next</a>
+      
+
+</nav>
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:kevinwu.cn">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Android/">Android</a><small>4</small></li>
+  
+    <li><a href="/categories/Java/">Java</a><small>10</small></li>
+  
+    <li><a href="/categories/一本正经胡说八道/">一本正经胡说八道</a><small>1</small></li>
+  
+    <li><a href="/categories/在线刷题/">在线刷题</a><small>1</small></li>
+  
+    <li><a href="/categories/师大-技术说明书/">师大+ 技术说明书</a><small>5</small></li>
+  
+    <li><a href="/categories/师大-辅助文档/">师大+ 辅助文档</a><small>1</small></li>
+  
+    <li><a href="/categories/计算机基础/">计算机基础</a><small>2</small></li>
+  
+    <li><a href="/categories/酷玩/">酷玩</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">Tag Cloud</h3>
+  <div class="entry">
+    <a href="/tags/2048/" style="font-size: 10px;">2048</a> <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/DIY/" style="font-size: 10px;">DIY</a> <a href="/tags/GC/" style="font-size: 10px;">GC</a> <a href="/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/JVM/" style="font-size: 12px;">JVM</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Json/" style="font-size: 10px;">Json</a> <a href="/tags/Jsoup/" style="font-size: 12px;">Jsoup</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SharedPreferences/" style="font-size: 12px;">SharedPreferences</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/二维数组/" style="font-size: 10px;">二维数组</a> <a href="/tags/冒泡/" style="font-size: 10px;">冒泡</a> <a href="/tags/加载模式/" style="font-size: 10px;">加载模式</a> <a href="/tags/单片机/" style="font-size: 10px;">单片机</a> <a href="/tags/启动模式/" style="font-size: 10px;">启动模式</a> <a href="/tags/基础/" style="font-size: 10px;">基础</a> <a href="/tags/基础知识/" style="font-size: 12px;">基础知识</a> <a href="/tags/天气/" style="font-size: 10px;">天气</a> <a href="/tags/学籍管理/" style="font-size: 10px;">学籍管理</a> <a href="/tags/实战/" style="font-size: 10px;">实战</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/师大/" style="font-size: 10px;">师大+</a> <a href="/tags/引用/" style="font-size: 10px;">引用</a> <a href="/tags/快排/" style="font-size: 10px;">快排</a> <a href="/tags/总结/" style="font-size: 14px;">总结</a> <a href="/tags/手工/" style="font-size: 10px;">手工</a> <a href="/tags/排序/" style="font-size: 12px;">排序</a> <a href="/tags/插座/" style="font-size: 10px;">插座</a> <a href="/tags/智能/" style="font-size: 10px;">智能</a> <a href="/tags/查找/" style="font-size: 10px;">查找</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/模拟登录/" style="font-size: 10px;">模拟登录</a> <a href="/tags/源码解析/" style="font-size: 10px;">源码解析</a> <a href="/tags/硬件/" style="font-size: 10px;">硬件</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/解析/" style="font-size: 12px;">解析</a> <a href="/tags/计算机网络/" style="font-size: 12px;">计算机网络</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a> <a href="/tags/选择/" style="font-size: 10px;">选择</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/集合/" style="font-size: 10px;">集合</a>
+  </div>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2016/07/19/Java/201607/GC-垃圾回收机制/">GC-垃圾回收机制</a>
+      </li>
+    
+      <li>
+        <a href="/2016/07/15/Java/201607/基本排序：从忘记到捡起（二）——简单选择排序/">基本排序：从忘记到捡起（二）——简单选择排序</a>
+      </li>
+    
+      <li>
+        <a href="/2016/07/13/Java/201607/基本排序：从忘记到捡起（一）——冒泡与快排/">基本排序：从忘记到捡起（一）——冒泡与快排</a>
+      </li>
+    
+      <li>
+        <a href="/2016/07/08/Java/201607/英文文章词频统计/">英文文章词频统计</a>
+      </li>
+    
+      <li>
+        <a href="/2016/06/24/酷玩/DIY一个智能插座/">DIY一个智能插座</a>
+      </li>
+    
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+  Theme by <a href="https://github.com/qwong/hexo-theme-green-light" target="_blank">GreenLight</a> 
+  
+  &copy; 2016 Kevin Wu
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+<div id="totop" style="position:fixed;bottom:50px;right:50px;cursor: pointer;">
+<a><img src="/imgs/scrollup.png"/></a>
+</div>
+
+<script src="/js/totop.js"></script>
+</body>
+</html>
