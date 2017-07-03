@@ -73,7 +73,7 @@
     </header>
     <div class="entry">
       
-        <p>工作中需要开发内置PDF阅读器的功能，底层研发短时间内不可能完成，也不是应该考虑的实现方案，所以前期就去找第三方开源库，我第一个找到的是Android PdfViewer（<a href="https://github.com/barteksc/AndroidPdfViewer），是一个基于PdfiumAndroid扩展的开源库，怎奈集成进去包的话安装包会增大16M……这个太可怕，我们自己的apk才3M。所以，砍掉。" target="_blank" rel="external">https://github.com/barteksc/AndroidPdfViewer），是一个基于PdfiumAndroid扩展的开源库，怎奈集成进去包的话安装包会增大16M……这个太可怕，我们自己的apk才3M。所以，砍掉。</a><br><a id="more"></a><br>再继续找就找到了MuPdf，这是一个C++写的库，也提供了Android平台的可以直接使用的View封装源码，通过源码可以直接编译出so运行库来，有了so，包大小就好处理了，因为就算大，我们可以使用动态加载，这个后面再说。</p>
+        <p>工作中需要开发内置PDF阅读器的功能，底层研发短时间内不可能完成，也不是应该考虑的实现方案，所以前期就去找第三方开源库，我第一个找到的是<a href="https://github.com/barteksc/AndroidPdfViewer" target="_blank" rel="external">Android PdfViewer</a>，是一个基于PdfiumAndroid扩展的开源库，怎奈集成进去包的话安装包会增大16M……这个太可怕，我们自己的apk才3M。所以，砍掉。<br><a id="more"></a><br>再继续找就找到了MuPdf，这是一个C++写的库，也提供了Android平台的可以直接使用的View封装源码，通过源码可以直接编译出so运行库来，有了so，包大小就好处理了，因为就算大，我们可以使用动态加载，这个后面再说。</p>
 <h3 id="大体步骤"><a href="#大体步骤" class="headerlink" title="大体步骤"></a>大体步骤</h3><ol>
 <li>下载MuPdf源码：<a href="https://mupdf.com/downloads/" target="_blank" rel="external">https://mupdf.com/downloads/</a></li>
 <li>安装Cygwin：<a href="https://www.cygwin.com/" target="_blank" rel="external">https://www.cygwin.com/</a><br> （这一步需要注意选择好插件，不然make命令可能都找不到）</li>
@@ -101,7 +101,7 @@
 <p><em>另：如果修改过封装好的java源码包名，记得进去mupdf.c里面修改对应的常量名称，不然so库无法运行别打我</em></p>
 <p>完成上面工作后，可以在Cygwin中跑起ndk-build.cmd了，如果编译全平台就要稍微久一点，冲杯咖啡刷刷知乎就好。</p>
 <p>编译完成后，就可以在platform\android\libs目录下找到对应平台的so文件了，如下图（感觉一篇文章都不上个图不厚道，其实只是我觉得markdown里插图还要先扔到图床嫌麻烦而已哈哈哈哈哈）：</p>
-<p><img src="./1499093732543.png" alt="Alt text"></p>
+<p><img src="http://7xvo7h.com1.z0.glb.clouddn.com/mupdf1%E5%9B%BE.png" alt="Mupdf编译后"></p>
 <p>嗯，第二篇讲怎么使用这编译出来的so运行库。</p>
 
       
