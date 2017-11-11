@@ -73,11 +73,11 @@
     </header>
     <div class="entry">
       
-        <h2 id="一、起因"><a href="#一、起因" class="headerlink" title="一、起因"></a>一、起因</h2><p>公司项目要求加个夜间模式。<br>我以为是终于可以开搞夜间皮肤，毕竟在架构阶段就预架好了皮肤快速接入的框架。<br>蓝鹅看到需求时<br>我大吃一鲸<br><img src="kevinwu.cn/image/android_201711_01_1.jpg" width="30%"><br><a id="more"></a><br>加一个遮罩。<br><img src="kevinwu.cn/image/android_201711_01_2.jpg" alt=""></p>
+        <h2 id="一、起因"><a href="#一、起因" class="headerlink" title="一、起因"></a>一、起因</h2><p>公司项目要求加个夜间模式。<br>我以为是终于可以开搞夜间皮肤，毕竟在架构阶段就预架好了皮肤快速接入的框架。<br>蓝鹅看到需求时<br>我大吃一鲸<br><img src="http://kevinwu.cn/image/android_201711_01_1.jpg" width="30%"><br><a id="more"></a><br>加一个遮罩。<br><img src="http://kevinwu.cn/image/android_201711_01_2.jpg" alt=""></p>
 <h2 id="二、现状"><a href="#二、现状" class="headerlink" title="二、现状"></a>二、现状</h2><p>目前很多APP都有了夜间模式，普遍有两种实现方式：</p>
 <h4 id="1、已有UI加遮罩，达到降低亮度的效果，例如：喜马拉雅FM："><a href="#1、已有UI加遮罩，达到降低亮度的效果，例如：喜马拉雅FM：" class="headerlink" title="1、已有UI加遮罩，达到降低亮度的效果，例如：喜马拉雅FM："></a>1、已有UI加遮罩，达到降低亮度的效果，例如：喜马拉雅FM：</h4><p>最早我看到这么处理的是为知笔记，不过现在已经改成了换皮肤方式。但主流APP中也不乏还有这么实现的。</p>
-<p>日间：<br><img src="kevinwu.cn/image/android_201711_01_3.png" width="40%"><br>夜间：<br><img src="kevinwu.cn/image/android_201711_01_4.png" width="40%"></p>
-<h4 id="2、深色调皮肤，符合夜间特性，例如：知乎："><a href="#2、深色调皮肤，符合夜间特性，例如：知乎：" class="headerlink" title="2、深色调皮肤，符合夜间特性，例如：知乎："></a>2、深色调皮肤，符合夜间特性，例如：知乎：</h4><p>日间：<br><img src="kevinwu.cn/image/android_201711_01_5.png" width="40%"><br>夜间：<br><img src="kevinwu.cn/image/android_201711_01_6.png" width="40%"></p>
+<p>日间：<br><img src="http://kevinwu.cn/image/android_201711_01_3.png" width="40%"><br>夜间：<br><img src="http://kevinwu.cn/image/android_201711_01_4.png" width="40%"></p>
+<h4 id="2、深色调皮肤，符合夜间特性，例如：知乎："><a href="#2、深色调皮肤，符合夜间特性，例如：知乎：" class="headerlink" title="2、深色调皮肤，符合夜间特性，例如：知乎："></a>2、深色调皮肤，符合夜间特性，例如：知乎：</h4><p>日间：<br><img src="http://kevinwu.cn/image/android_201711_01_5.png" width="40%"><br>夜间：<br><img src="http://kevinwu.cn/image/android_201711_01_6.png" width="40%"></p>
 <h2 id="三、实现"><a href="#三、实现" class="headerlink" title="三、实现"></a>三、实现</h2><p>实现之前肯定会先Google一下，看下大家对于遮罩这种东西的实现方案，网络上得出的结论基本有两种：</p>
 <ol>
 <li>调APP独立屏幕亮度</li>
@@ -101,7 +101,7 @@
 <p>于是，你动态改动的方式，当设置夜间模式前先检测用户屏幕亮度，再在亮度基础上减个0.1这样不久行了咩。</p>
 <p>然后用户就会抱怨：<strong><em>为毛我最低亮度开夜间模式跟没开一样</em></strong></p>
 <p>事实上这个时候就是没开，你是在侮辱用户的智商，本来屏幕亮度都最低了要怎么减！！</p>
-<p><img src="kevinwu.cn/image/android_201711_01_7.jpg" width="30%"></p>
+<p><img src="http://kevinwu.cn/image/android_201711_01_7.jpg" width="30%"></p>
 <h3 id="2、利用WindowManager通过addview来实现一层遮罩效果"><a href="#2、利用WindowManager通过addview来实现一层遮罩效果" class="headerlink" title="2、利用WindowManager通过addview来实现一层遮罩效果"></a>2、利用WindowManager通过addview来实现一层遮罩效果</h3><p>Android中每个组件基本都包含在Window中，Activity也不例外，于是</p>
 <p>就可以搞点事情了！</p>
 <p>思路是这样的：<br>在Activity上增加一层有一定透明度的暗色调View，然后就是看着没那么刺眼了。</p>
@@ -112,12 +112,12 @@
 <p>需要注意的是设置前一定要判断一下是否已经add过那个view了，我简单粗暴就直接判断一下成员变量是否为空了。</p>
 <p>这个时候，还原为白天模式时，只需要把对应view remove掉就可以了：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setWM1</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (wmNightView != <span class="keyword">null</span>) &#123;</div><div class="line">        windowManager.removeViewImmediate(wmNightView);</div><div class="line">        windowManager = <span class="keyword">null</span>;</div><div class="line">        wmNightView = <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>下面是两种模式对比图：</p>
-<p>夜间模式：<br><img src="kevinwu.cn/image/android_201711_01_8.png" width="40%"></p>
-<p>白天模式：<br><img src="kevinwu.cn/image/android_201711_01_9.png" width="40%"></p>
+<p>夜间模式：<br><img src="http://kevinwu.cn/image/android_201711_01_8.png" width="40%"></p>
+<p>白天模式：<br><img src="http://kevinwu.cn/image/android_201711_01_9.png" width="40%"></p>
 <p>看起来还挺像样的，但细心的会发现，其实状态栏。。。</p>
 <p>并没有改变。</p>
 <p>因为activity的Window不包括状态栏！</p>
-<p><img src="kevinwu.cn/image/android_201711_01_7.jpg" width="30%"></p>
+<p><img src="http://kevinwu.cn/image/android_201711_01_7.jpg" width="30%"></p>
 <p>这就有点尴尬了。</p>
 <p>辣么，当然不是没办法，曲线救国还是很多道路的。</p>
 <h3 id="2、利用预设View来实现夜间模式"><a href="#2、利用预设View来实现夜间模式" class="headerlink" title="2、利用预设View来实现夜间模式"></a>2、利用预设View来实现夜间模式</h3><p>这个其实跟第二个原理差不多，但是这个是直接把它预设进布局文件里面。</p>
@@ -126,8 +126,8 @@
 <p>其实道理很简单，就是有一个浮层，只是白天时显示，夜间时隐藏。</p>
 <p>无非一句代码的事：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">viewNight.setVisibility(View.VISIBLE);</div></pre></td></tr></table></figure></p>
 <p>那么先来看看效果。</p>
-<p>夜间模式：<br><img src="kevinwu.cn/image/android_201711_01_8.png" width="40%"></p>
-<p>白天模式：<br><img src="kevinwu.cn/image/android_201711_01_9.png" width="40%"></p>
+<p>夜间模式：<br><img src="http://kevinwu.cn/image/android_201711_01_8.png" width="40%"></p>
+<p>白天模式：<br><img src="http://kevinwu.cn/image/android_201711_01_9.png" width="40%"></p>
 <p>然后估计看到着就要开喷了：</p>
 <p><strong>“卧槽这不跟上面一样么？坑爹啊”</strong></p>
 <p>没错，是一样，状态栏一样没影响。</p>
@@ -136,14 +136,14 @@
 <p>还是那个demo,我们来在OnCreate中设置一下沉浸式状态栏：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setUpStatusBar</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;</div><div class="line">            <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</div><div class="line">                Window window = <span class="keyword">this</span>.getWindow();</div><div class="line">                View decorView = window.getDecorView();</div><div class="line">                <span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN</div><div class="line">                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;</div><div class="line">                decorView.setSystemUiVisibility(option);</div><div class="line">                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);</div><div class="line">                window.setStatusBarColor(Color.TRANSPARENT);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                Window window = <span class="keyword">this</span>.getWindow();</div><div class="line">                WindowManager.LayoutParams attributes = window.getAttributes();</div><div class="line">                <span class="keyword">int</span> flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;</div><div class="line">                attributes.flags |= flagTranslucentStatus;</div><div class="line">                window.setAttributes(attributes);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
 <p>同时为了方便展示就不去取系统状态高度了，直接在布局里面添加一个50dp的占位view，底色就随便一个亮一点的黄色，便于观察。</p>
 <p>搞完之后，这个Demo它是这样的：</p>
-<p><img src="kevinwu.cn/image/android_201711_01_10.png" width="40%"></p>
+<p><img src="http://kevinwu.cn/image/android_201711_01_10.png" width="40%"></p>
 <p>这个时候，第二种方式中设置的夜间模式，它是这样的：</p>
-<p><img src="kevinwu.cn/image/android_201711_01_11.png" width="40%"></p>
+<p><img src="http://kevinwu.cn/image/android_201711_01_11.png" width="40%"></p>
 <p>可以明显看到状态栏还是没有影响，这样看起来就很坑爹了，蓝后第三种预设view的方式曲线救国是这样的：</p>
-<p><img src="kevinwu.cn/image/android_201711_01_12.png" width="40%"></p>
+<p><img src="http://kevinwu.cn/image/android_201711_01_12.png" width="40%"></p>
 <p>这不就~</p>
 <p>完美？？</p>
-<p><img src="kevinwu.cn/image/android_201711_01_7.jpg" width="30%"></p>
+<p><img src="http://kevinwu.cn/image/android_201711_01_7.jpg" width="30%"></p>
 <h2 id="四、优化"><a href="#四、优化" class="headerlink" title="四、优化"></a>四、优化</h2><p>虽然相对来说，曲线救国的方案基本可以做到全覆盖，而且在实际项目中，只要在BaseActivity中写上这个方法就OK，如果需要实时改动可以考虑加个广播接收器或者回调之类的，实现方式很多这里就不赘述。</p>
 <p>而且Dialog之类的也可以这么做，定义一个BaseDialog，一切都好解决。</p>
 <p>下面说说优化：</p>
