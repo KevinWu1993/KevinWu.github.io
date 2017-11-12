@@ -1,79 +1,88 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  <title>GC-垃圾回收机制 | KevinWu.CN</title>
-  <meta name="author" content="Kevin Wu">
-  
-  <meta name="description" content="KevinWu的个人博客">
-  
-  
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <meta property="og:title" content="GC-垃圾回收机制"/>
-  <meta property="og:site_name" content="KevinWu.CN"/>
-
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
   
-    <meta property="og:image" content="undefined"/>
+    <link rel="icon" href="">
   
-
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="KevinWu.CN" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-	ga('create', 'undefined', 'auto');
-	ga('send', 'pageview');
-
-</script>
-
-
+    
+  <title>GC-垃圾回收机制 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
 </head>
 
-
 <body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">KevinWu.CN</a></h1>
-  <h2><a href="/">慢几步，深几度</a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">主页</a></li>
-    
-      <li><a href="/archives">归档</a></li>
-    
-      <li><a href="/about">关于</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div></header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
-  
-  <div class="post-content">
-    <header>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
       
-        <div class="icon"></div>
-        <time datetime="2016-07-18T16:00:00.000Z"><a href="/2016/07/19/Java/201607/GC-垃圾回收机制/">2016-07-19</a></time>
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
       
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
       
-  
-    <h1 class="title">GC-垃圾回收机制</h1>
-  
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
 
-    </header>
-    <div class="entry">
-      
-        <p>这是一篇我之前在ImportNew公众号看到的文章，觉得写得很好，虽然我现在也不确定是否会每次都如作者所说会Stop-the-world（抱着疑问），但看完后还会时不时想起它了，如今又一次看到它，毅然收到自己博客，如果原作者看到不服请联系我，我马上把它删了谢谢。<br><a id="more"></a><br>再次说明，这是一篇转载文章，原文地址为： <a href="http://blog.csdn.net/wsl211511/article/details/51099051" target="_blank" rel="external">http://blog.csdn.net/wsl211511/article/details/51099051</a></p>
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>GC-垃圾回收机制</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2016年07月19日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#Java" class='tag'>Java</a>
+
+  <a href="/tags/#JVM" class='tag'>JVM</a>
+
+  <a href="/tags/#GC" class='tag'>GC</a>
+
+
+            
+          </div>
+          <p>这是一篇我之前在ImportNew公众号看到的文章，觉得写得很好，虽然我现在也不确定是否会每次都如作者所说会Stop-the-world（抱着疑问），但看完后还会时不时想起它了，如今又一次看到它，毅然收到自己博客，如果原作者看到不服请联系我，我马上把它删了谢谢。<br><a id="more"></a><br>再次说明，这是一篇转载文章，原文地址为： <a href="http://blog.csdn.net/wsl211511/article/details/51099051" target="_blank" rel="external">http://blog.csdn.net/wsl211511/article/details/51099051</a></p>
 <h1 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h1><p>在C++中，对象所占的内存在程序结束运行之前一直被占用，在明确释放之前不能分配给其它对象；而在Java中，当没有对象引用指向原先分配给某个对象的内存时，该内存便成为垃圾。JVM的一个系统级线程会自动释放该内存块。垃圾收集意味着程序不再需要的对象是”无用信息”，这些信息将被丢弃。当一个对象不再被引用的时候，内存回收它占领的空间，以便空间被后来的新对象使用。事实上，除了释放没用的对象，垃圾收集也可以清除内存记录碎片。由于创建对象和垃圾收集器释放丢弃对象所占的内存空间，内存会出现碎片。碎片是分配给对象的内存块之间的空闲内存洞。碎片整理将所占用的堆内存移到堆的一端，JVM将整理出的内存分配给新的对象。</p>
 <p>垃圾收集能自动释放内存空间，减轻编程的负担。这使Java 虚拟机具有一些优点。首先，它能使编程效率提高。在没有垃圾收集机制的时候，可能要花许多时间来解决一个难懂的存储器问题。在用Java语言编程的时候，靠垃圾收集机制可大大缩短时间。其次是它保护程序的完整性，垃圾收集是Java语言安全性策略的一个重要部份。</p>
 <p>垃圾收集的一个潜在的缺点是它的开销影响程序性能。Java虚拟机必须追踪运行程序中有用的对象，而且最终释放没用的对象。这一个过程需要花费处理器的时间。其次垃圾收集算法的不完备性，早先采用的某些垃圾收集算法就不能保证100%收集到所有的废弃内存。当然随着垃圾收集算法的不断改进以及软硬件运行效率的不断提升，这些问题都可以迎刃而解。</p>
@@ -130,10 +139,10 @@
 <h2 id="建议1：预测收集能力"><a href="#建议1：预测收集能力" class="headerlink" title="建议1：预测收集能力"></a>建议1：预测收集能力</h2><p>所有的Java标准集合和大多数自定义的扩展实现（如Trove 和谷歌的Guava），都会使用底层数组（无论基于原始或基于对象）。数据的长度一旦分配后，数组就不可变了，所以在许多情况下，为集合增加项目可能会导致老的底层数组被删除，然后需要重新分配一个更大的数组来替代。</p>
 <p>大多数的集合实现都尝试在集合没有被设置为预期大小时，还能对重分配过程进行优化，并降低其开销。但是，最好的结果还是在构造集合时就设置成预期大小。</p>
 <p>让我们看一下下面这个简单的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List <span class="title">reverse</span><span class="params">(List&lt;?extends T&gt; list)</span> </span>&#123;</div><div class="line"> </div><div class="line">   List result = <span class="keyword">new</span> ArrayList();</div><div class="line"></div><div class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = list.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</div><div class="line">       result.add(list.get(i));</div><div class="line">    &#125;</div><div class="line">   <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List <span class="title">reverse</span><span class="params">(List&lt;?extends T&gt; list)</span> </span>&#123;</div><div class="line"> </div><div class="line">   List result = <span class="keyword">new</span> ArrayList();</div><div class="line"></div><div class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = list.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</div><div class="line">       result.add(list.get(i));</div><div class="line">    &#125;</div><div class="line">   <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>以上方法分配了一个新的数组，再将另一个列表的项目填充其中，但只能按倒序填充。</p>
 <p>但是，难就难在如何优化增加项目到新列表这一步骤。每次添加后，该列表还需确保其底层数组有足够的空槽能装下新项目。如果能装下，它就会直接在下一个空槽中存储新项目；但如果空间不够，它就会重新分配一个底层数组，将旧数组的内容复制到新数组中，然后再添加新项目。这一过程会导致分配的多个数组都会占据内存，直到GC最后来回收。</p>
-<p>所以，我们可以在构建时告知数组需容纳多少个项目，重构后的代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List <span class="title">reverse</span><span class="params">(List&lt;?extends T&gt; list)</span> </span>&#123;  </div><div class="line">   </div><div class="line">   List result = <span class="keyword">new</span> ArrayList(list.size());  </div><div class="line">   </div><div class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = list.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;  </div><div class="line">       result.add(list.get(i));  </div><div class="line">    &#125;  </div><div class="line">   <span class="keyword">return</span> result;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>所以，我们可以在构建时告知数组需容纳多少个项目，重构后的代码如下：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List <span class="title">reverse</span><span class="params">(List&lt;?extends T&gt; list)</span> </span>&#123;  </div><div class="line">   </div><div class="line">   List result = <span class="keyword">new</span> ArrayList(list.size());  </div><div class="line">   </div><div class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = list.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;  </div><div class="line">       result.add(list.get(i));  </div><div class="line">    &#125;  </div><div class="line">   <span class="keyword">return</span> result;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>这样一来，可以保证ArrayList构造函数在最初配置时就能容纳下list.size()个项目，这意味着它不需要再在迭代中重新分配内存。</p>
 <p>Guava的集合类则更加先进，允许我们用一个确切数量或估计值来初始化集合。</p>
 <p>List result =Lists.newArrayListWithCapacity(list.size());</p>
@@ -144,24 +153,24 @@
 <p>由此产生的字节数组可以被解析为XML文档、JSON对象或协议缓冲消息，来命名一些常用选项。</p>
 <p>当处理大型或未知大小的文件时，这个想法则不适用了，因为当JVM无法分配文件大小的缓冲区时，则会出现OutOfMemoryErrors错误。</p>
 <p>但是，即使数据大小看似能管理，当涉及到垃圾回收时，上述模式仍会造成大量开销，因为它在堆上分配了相当大的blob来容纳文件数据。</p>
-<p>更好的处理方式是使用合适的InputStream（本例中是FileInputStream），并直接将其送到分析器，而不是提前将整个文件读到字节数组中。所有主要库会将API直接暴露给解析流，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FileInputStream fis = newFileInputStream(fileName);  </div><div class="line">MyProtoBufMessage msg = MyProtoBufMessage.parseFrom(fis);</div></pre></td></tr></table></figure></p>
+<p>更好的处理方式是使用合适的InputStream（本例中是FileInputStream），并直接将其送到分析器，而不是提前将整个文件读到字节数组中。所有主要库会将API直接暴露给解析流，例如：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">FileInputStream fis = newFileInputStream(fileName);  </div><div class="line">MyProtoBufMessage msg = MyProtoBufMessage.parseFrom(fis);</div></pre></td></tr></table></figure></p>
 <h2 id="建议3：使用不可变对象"><a href="#建议3：使用不可变对象" class="headerlink" title="建议3：使用不可变对象"></a>建议3：使用不可变对象</h2><p>不变性有诸多优势，但有一个优势却极少被重视，那就是不变性对垃圾回收的影响。</p>
-<p>不可变对象是指对象一旦创建后，其字段（本例中指非原始字段）将无法被修改。例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectPair</span> </span>&#123;  </div><div class="line">   </div><div class="line">   <span class="keyword">private</span> <span class="keyword">final</span> Object first;  </div><div class="line">   <span class="keyword">private</span> <span class="keyword">final</span> Object second;  </div><div class="line">   </div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="title">ObjectPair</span><span class="params">(Object first, Object second)</span> </span>&#123;  </div><div class="line">       <span class="keyword">this</span>.first = first;  </div><div class="line">       <span class="keyword">this</span>.second = second;  </div><div class="line">    &#125;  </div><div class="line">   </div><div class="line">    <span class="function">publicObject <span class="title">getFirst</span><span class="params">()</span> </span>&#123;  </div><div class="line">       <span class="keyword">return</span> first;  </div><div class="line">    &#125;  </div><div class="line">   </div><div class="line">   <span class="function"><span class="keyword">public</span> Object <span class="title">getSecond</span><span class="params">()</span> </span>&#123;  </div><div class="line">       <span class="keyword">return</span> second;  </div><div class="line">    &#125;  </div><div class="line">   </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>不可变对象是指对象一旦创建后，其字段（本例中指非原始字段）将无法被修改。例如：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectPair</span> </span>&#123;  </div><div class="line">   </div><div class="line">   <span class="keyword">private</span> <span class="keyword">final</span> Object first;  </div><div class="line">   <span class="keyword">private</span> <span class="keyword">final</span> Object second;  </div><div class="line">   </div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="title">ObjectPair</span><span class="params">(Object first, Object second)</span> </span>&#123;  </div><div class="line">       <span class="keyword">this</span>.first = first;  </div><div class="line">       <span class="keyword">this</span>.second = second;  </div><div class="line">    &#125;  </div><div class="line">   </div><div class="line">    <span class="function">publicObject <span class="title">getFirst</span><span class="params">()</span> </span>&#123;  </div><div class="line">       <span class="keyword">return</span> first;  </div><div class="line">    &#125;  </div><div class="line">   </div><div class="line">   <span class="function"><span class="keyword">public</span> Object <span class="title">getSecond</span><span class="params">()</span> </span>&#123;  </div><div class="line">       <span class="keyword">return</span> second;  </div><div class="line">    &#125;  </div><div class="line">   </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>实例化上面类的结果为不可变对象——所有的字段一旦标记后则不能再被修改。</p>
 <p>不变性意味着在构造容器完成之前，由不可变容器引用的所有对象都已经创建。在GC看来：容器会和其最新的新生代保持一致。这意味着当对新生代（young generations）执行垃圾回收周期时，GC可以跳过老年代（older generations）中的不可变对象，因为它知道不可变对象不能引用新生代的任何内容。</p>
 <p>越少对象扫描意味着需扫描的内存页越少，而越少的内存页扫描意味着GC周期越短，同时也预示着更短的GC停顿和更好的整体吞吐量。</p>
 <h2 id="建议4：慎用字符串连接"><a href="#建议4：慎用字符串连接" class="headerlink" title="建议4：慎用字符串连接"></a>建议4：慎用字符串连接</h2><p>字符串可能是任何基于JVM的应用中最普遍的非原始数据结构。但是，其隐含重量和使用便利性使得它们成为应用内存变大的罪魁祸首。</p>
-<p>很明显，问题不在于被内联和拘留的文字字符串，而在于字符串在运行时被分配和构建。接下来看看构建动态字符串的简单示例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(T[] array)</span> </span>&#123;  </div><div class="line">   </div><div class="line">   String result = <span class="string">"["</span>;  </div><div class="line">   </div><div class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++) &#123;  </div><div class="line">       result += (array[i] == array ? <span class="string">"this"</span> : array[i]);  </div><div class="line">       <span class="keyword">if</span> (i &lt; array.length - <span class="number">1</span>) &#123;  </div><div class="line">           result += <span class="string">", "</span>;  </div><div class="line">       &#125;  </div><div class="line">    &#125;  </div><div class="line">   </div><div class="line">   result += <span class="string">"]"</span>;  </div><div class="line">   </div><div class="line">   <span class="keyword">return</span> result;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>很明显，问题不在于被内联和拘留的文字字符串，而在于字符串在运行时被分配和构建。接下来看看构建动态字符串的简单示例：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(T[] array)</span> </span>&#123;  </div><div class="line">   </div><div class="line">   String result = <span class="string">"["</span>;  </div><div class="line">   </div><div class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++) &#123;  </div><div class="line">       result += (array[i] == array ? <span class="string">"this"</span> : array[i]);  </div><div class="line">       <span class="keyword">if</span> (i &lt; array.length - <span class="number">1</span>) &#123;  </div><div class="line">           result += <span class="string">", "</span>;  </div><div class="line">       &#125;  </div><div class="line">    &#125;  </div><div class="line">   </div><div class="line">   result += <span class="string">"]"</span>;  </div><div class="line">   </div><div class="line">   <span class="keyword">return</span> result;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>获取数组并返回它的字符串表示是一个很不错的方法，但这也正是对象分配的问题所在。</p>
-<p>要看到其背后所有的语法糖并不容易，但真正的幕后场景应该是这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(T[] array)</span> </span>&#123;  </div><div class="line">   </div><div class="line">   String result = <span class="string">"["</span>;  </div><div class="line">   </div><div class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++) &#123;  </div><div class="line">   </div><div class="line">       StringBuilder sb1 = <span class="keyword">new</span> StringBuilder(result);  </div><div class="line">       sb1.append(array[i] == array ? <span class="string">"this"</span> : array[i]);  </div><div class="line">       result = sb1.toString();  </div><div class="line">   </div><div class="line">       <span class="keyword">if</span> (i &lt; array.length - <span class="number">1</span>) &#123;  </div><div class="line">           StringBuilder sb2 = <span class="keyword">new</span> StringBuilder(result);  </div><div class="line">           sb2.append(<span class="string">", "</span>);  </div><div class="line">           result = sb2.toString();  </div><div class="line">       &#125;  </div><div class="line">    &#125;  </div><div class="line">   </div><div class="line">   StringBuilder sb3 = <span class="keyword">new</span> StringBuilder(result);  </div><div class="line">   sb3.append(<span class="string">"]"</span>);  </div><div class="line">   result = sb3.toString();  </div><div class="line">   </div><div class="line">   <span class="keyword">return</span> result;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>要看到其背后所有的语法糖并不容易，但真正的幕后场景应该是这样：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(T[] array)</span> </span>&#123;  </div><div class="line">   </div><div class="line">   String result = <span class="string">"["</span>;  </div><div class="line">   </div><div class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++) &#123;  </div><div class="line">   </div><div class="line">       StringBuilder sb1 = <span class="keyword">new</span> StringBuilder(result);  </div><div class="line">       sb1.append(array[i] == array ? <span class="string">"this"</span> : array[i]);  </div><div class="line">       result = sb1.toString();  </div><div class="line">   </div><div class="line">       <span class="keyword">if</span> (i &lt; array.length - <span class="number">1</span>) &#123;  </div><div class="line">           StringBuilder sb2 = <span class="keyword">new</span> StringBuilder(result);  </div><div class="line">           sb2.append(<span class="string">", "</span>);  </div><div class="line">           result = sb2.toString();  </div><div class="line">       &#125;  </div><div class="line">    &#125;  </div><div class="line">   </div><div class="line">   StringBuilder sb3 = <span class="keyword">new</span> StringBuilder(result);  </div><div class="line">   sb3.append(<span class="string">"]"</span>);  </div><div class="line">   result = sb3.toString();  </div><div class="line">   </div><div class="line">   <span class="keyword">return</span> result;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>字符串是不可变的，所以在其连接时并没有被修改，而是依次分配新的字符串。此外，编译器利用标准StringBuilder类来执行的这些链接。这就导致了双重麻烦，在每次循环迭代时，我们得到（1）隐式分配临时字符串，（2）隐式分配临时的StringBuilder对象来帮助我们构建最终结果。</p>
 <p>避免上述问题的最佳方法是明确使用StringBuilder并直接附加给它，而不是使用略幼稚的串联运算符（“+”）。所以应该是这样：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(T[] array)</span> </span>&#123;  </div><div class="line">   </div><div class="line">   StringBuilder sb = <span class="keyword">new</span> StringBuilder(<span class="string">"["</span>);  </div><div class="line">   </div><div class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++) &#123;  </div><div class="line">       sb.append(array[i] == array ? <span class="string">"this"</span> : array[i]);  </div><div class="line">       <span class="keyword">if</span> (i &lt; array.length - <span class="number">1</span>) &#123;  </div><div class="line">           sb.append(<span class="string">", "</span>);  </div><div class="line">       &#125;  </div><div class="line">    &#125;  </div><div class="line">   </div><div class="line">   sb.append(<span class="string">"]"</span>);  </div><div class="line">   <span class="keyword">return</span> sb.toString();  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(T[] array)</span> </span>&#123;  </div><div class="line">   </div><div class="line">   StringBuilder sb = <span class="keyword">new</span> StringBuilder(<span class="string">"["</span>);  </div><div class="line">   </div><div class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++) &#123;  </div><div class="line">       sb.append(array[i] == array ? <span class="string">"this"</span> : array[i]);  </div><div class="line">       <span class="keyword">if</span> (i &lt; array.length - <span class="number">1</span>) &#123;  </div><div class="line">           sb.append(<span class="string">", "</span>);  </div><div class="line">       &#125;  </div><div class="line">    &#125;  </div><div class="line">   </div><div class="line">   sb.append(<span class="string">"]"</span>);  </div><div class="line">   <span class="keyword">return</span> sb.toString();  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>此时，在方法开始时我们只分配了StringBuilder。从这一点来看，所有的字符串和列表项都会被添加到唯一的StringBuilder中，最终只调用一次toString方法转换成字符串，然后返回结果。</p>
 <h2 id="建议5：使用专门的原始集合"><a href="#建议5：使用专门的原始集合" class="headerlink" title="建议5：使用专门的原始集合"></a>建议5：使用专门的原始集合</h2><p>Java的标准库非常方便且通用，支持使用集合绑定半静态类型。例如，如果要用一组字符串（Set<string>），或一对字符串映射到字符串列表（Map<pair, list<string="">&gt;），直接利用标准库会非常方便。</pair,></string></p>
 <p>事实上，问题之所以出现是因为我们想把double类型的值放在 int 类型的list集合或map映射中。由于泛型不能调用原始集合，则可以用包装类型代替，所以放弃List<int>而使用List<integer>更好。</integer></int></p>
 <p>但其实这非常浪费，Integer本身就是一个完备对象，由12字节的对象头和内部4字节的整数字段组合而成，加起来每个Integer对象占16个字节，这是同样大小的基类int类型长度的4倍！然而，更大的问题是所有这些Integer实际上都是垃圾回收过程中的对象实例。</p>
-<p>为了解决这个问题，我们在Takipi 中使用优秀Trove 集合库。Trove放弃了一些（但不是全部）支持专业高效内存的原始集合的泛型。例如，不用浪费的Map<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">TIntDoubleMap map = newTIntDoubleHashMap();  </div><div class="line">map.put(<span class="number">5</span>, <span class="number">7.0</span>);  </div><div class="line">map.put(-<span class="number">1</span>, <span class="number">9.999</span>);  </div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>为了解决这个问题，我们在Takipi 中使用优秀Trove 集合库。Trove放弃了一些（但不是全部）支持专业高效内存的原始集合的泛型。例如，不用浪费的Map<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">TIntDoubleMap map = newTIntDoubleHashMap();  </div><div class="line">map.put(<span class="number">5</span>, <span class="number">7.0</span>);  </div><div class="line">map.put(-<span class="number">1</span>, <span class="number">9.999</span>);  </div><div class="line">...</div></pre></td></tr></table></figure></p>
 <p>Trove底层实现了原始数组的使用，所以在操作集合时没有装箱（int -&gt; Integer）或拆箱（Integer -&gt; int）发生，因此也不会将对象存储在基类中。</p>
 <h1 id="业务思想"><a href="#业务思想" class="headerlink" title="业务思想"></a>业务思想</h1><p>随着垃圾收集器不断进步，以及实时优化和JIT编译器变得更加智能，作为开发者的我们，可以越来越少地操心代码的GC友好性。尽管如此，无论G1有多先进，在提高JVM方面，我们还有许多问题需要不断探索和实践，百尺竿头仍需更进一步。</p>
 <p>参考资料：</p>
@@ -169,169 +178,93 @@
 <p>伯乐在线·网站学习整理</p>
 <p>OneAPM官方技术学习整理</p>
 
-      
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#意义"><span class="toc-number">1.</span> <span class="toc-text">意义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#原理"><span class="toc-number">2.</span> <span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#分代垃圾收集"><span class="toc-number">2.1.</span> <span class="toc-text">分代垃圾收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#年轻代组成部分"><span class="toc-number">2.2.</span> <span class="toc-text">年轻代组成部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#老年代GC"><span class="toc-number">2.3.</span> <span class="toc-text">老年代GC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Serial收集器"><span class="toc-number">2.4.</span> <span class="toc-text">Serial收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Parallel收集器"><span class="toc-number">2.5.</span> <span class="toc-text">Parallel收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ParallelOld-垃圾收集器"><span class="toc-number">2.6.</span> <span class="toc-text">ParallelOld 垃圾收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMSGC"><span class="toc-number">2.7.</span> <span class="toc-text">CMSGC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMS垃圾收集器"><span class="toc-number">2.8.</span> <span class="toc-text">CMS垃圾收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#G1GC"><span class="toc-number">2.9.</span> <span class="toc-text">G1GC</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#建议"><span class="toc-number">3.</span> <span class="toc-text">建议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议1：预测收集能力"><span class="toc-number">3.1.</span> <span class="toc-text">建议1：预测收集能力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议2：直接用处理流"><span class="toc-number">3.2.</span> <span class="toc-text">建议2：直接用处理流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议3：使用不可变对象"><span class="toc-number">3.3.</span> <span class="toc-text">建议3：使用不可变对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议4：慎用字符串连接"><span class="toc-number">3.4.</span> <span class="toc-text">建议4：慎用字符串连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建议5：使用专门的原始集合"><span class="toc-number">3.5.</span> <span class="toc-text">建议5：使用专门的原始集合</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#业务思想"><span class="toc-number">4.</span> <span class="toc-text">业务思想</span></a></li></ol>
+        </div>
     </div>
-    <footer>
-      
-        
-  
-  <div class="categories">
-    <a href="/categories/Java/">Java</a>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2017 | Powered by KevinWu&nbsp
+    </div>
   </div>
-
-        
-  
-  <div class="tags">
-    <a href="/tags/Java/">Java</a>, <a href="/tags/JVM/">JVM</a>, <a href="/tags/GC/">GC</a>
-  </div>
-
-        
-        <nav id="pagination">
+</footer>
 
 
-      
-        <a href="/2016/08/22/一本正经胡说八道/201608/七月洪流/" class="alignleft prev">上一篇</a>
-      
-
-      
-        <a href="/2016/07/15/Java/201607/基本排序：从忘记到捡起（二）——简单选择排序/" class="alignright next">下一篇</a>
-      
-
-</nav>
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="谷歌搜索本站">
-    <input type="hidden" name="q" value="site:kevinwu.cn">
-  </form>
-</div>
-
-  
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/Android/">Android</a><small>7</small></li>
-  
-    <li><a href="/categories/Java/">Java</a><small>10</small></li>
-  
-    <li><a href="/categories/一本正经胡说八道/">一本正经胡说八道</a><small>3</small></li>
-  
-    <li><a href="/categories/在线刷题/">在线刷题</a><small>1</small></li>
-  
-    <li><a href="/categories/师大-技术说明书/">师大+ 技术说明书</a><small>5</small></li>
-  
-    <li><a href="/categories/师大-辅助文档/">师大+ 辅助文档</a><small>1</small></li>
-  
-    <li><a href="/categories/计算机基础/">计算机基础</a><small>2</small></li>
-  
-    <li><a href="/categories/酷玩/">酷玩</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
-  <div class="entry">
-    <a href="/tags/2048/" style="font-size: 10px;">2048</a> <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 18.33px;">Android</a> <a href="/tags/DIY/" style="font-size: 10px;">DIY</a> <a href="/tags/GC/" style="font-size: 10px;">GC</a> <a href="/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/JVM/" style="font-size: 11.67px;">JVM</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Json/" style="font-size: 10px;">Json</a> <a href="/tags/Jsoup/" style="font-size: 11.67px;">Jsoup</a> <a href="/tags/Mupdf/" style="font-size: 10px;">Mupdf</a> <a href="/tags/PDF阅读/" style="font-size: 10px;">PDF阅读</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SO库编译/" style="font-size: 10px;">SO库编译</a> <a href="/tags/SharedPreferences/" style="font-size: 11.67px;">SharedPreferences</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/二维数组/" style="font-size: 10px;">二维数组</a> <a href="/tags/冒泡/" style="font-size: 10px;">冒泡</a> <a href="/tags/加载模式/" style="font-size: 10px;">加载模式</a> <a href="/tags/单片机/" style="font-size: 10px;">单片机</a> <a href="/tags/启动模式/" style="font-size: 10px;">启动模式</a> <a href="/tags/基础/" style="font-size: 10px;">基础</a> <a href="/tags/基础知识/" style="font-size: 11.67px;">基础知识</a> <a href="/tags/夜间模式/" style="font-size: 10px;">夜间模式</a> <a href="/tags/天气/" style="font-size: 10px;">天气</a> <a href="/tags/学籍管理/" style="font-size: 10px;">学籍管理</a> <a href="/tags/实战/" style="font-size: 10px;">实战</a> <a href="/tags/工具/" style="font-size: 15px;">工具</a> <a href="/tags/师大/" style="font-size: 10px;">师大+</a> <a href="/tags/引用/" style="font-size: 10px;">引用</a> <a href="/tags/快排/" style="font-size: 10px;">快排</a> <a href="/tags/总结/" style="font-size: 16.67px;">总结</a> <a href="/tags/手工/" style="font-size: 10px;">手工</a> <a href="/tags/排序/" style="font-size: 11.67px;">排序</a> <a href="/tags/插座/" style="font-size: 10px;">插座</a> <a href="/tags/播放器/" style="font-size: 10px;">播放器</a> <a href="/tags/智能/" style="font-size: 10px;">智能</a> <a href="/tags/查找/" style="font-size: 10px;">查找</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/模拟登录/" style="font-size: 10px;">模拟登录</a> <a href="/tags/游戏/" style="font-size: 10px;">游戏</a> <a href="/tags/源码解析/" style="font-size: 10px;">源码解析</a> <a href="/tags/硬件/" style="font-size: 10px;">硬件</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/解析/" style="font-size: 11.67px;">解析</a> <a href="/tags/计算机网络/" style="font-size: 11.67px;">计算机网络</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a> <a href="/tags/选择/" style="font-size: 10px;">选择</a> <a href="/tags/遮罩/" style="font-size: 10px;">遮罩</a> <a href="/tags/随笔/" style="font-size: 13.33px;">随笔</a> <a href="/tags/集合/" style="font-size: 10px;">集合</a>
-  </div>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">最新文章</h3>
-  <ul class="entry">
-    
-      <li>
-        <a href="/2017/11/12/Android/201711/01_Android使用遮罩实现夜间模式/">Android使用遮罩实现夜间模式及优化</a>
-      </li>
-    
-      <li>
-        <a href="/2017/08/15/一本正经胡说八道/201708/重新认识游戏/">重新认识游戏</a>
-      </li>
-    
-      <li>
-        <a href="/2017/06/25/Android/201706/MuPdf的编译/">MuPdf的编译</a>
-      </li>
-    
-      <li>
-        <a href="/2016/09/04/Android/201609/Android播放器拔耳机暂停音乐播放/">Android播放器拔耳机暂停音乐播放</a>
-      </li>
-    
-      <li>
-        <a href="/2016/08/22/一本正经胡说八道/201608/七月洪流/">七月洪流</a>
-      </li>
-    
-  </ul>
-</div>
-
-
-  <div class="widget tag">
-<h3 class="title">友情链接</h3>
-<ul class="entry">
-<li><a href="http://www.fengbee.com/"  target="_blank" title="蜂背科技">蜂背科技</a></li>
-<li><a href="http://www.jxnu.edu.cn/" target="_blank" title="江西师范大学">江西师范大学</a></li>
-<li><a href="http://blog.csdn.net/mummyding/" target="_blank" title="MummyDing">MummyDing</a></li>
-<li><a href="http://ddragonever.com/" target="_blank" title="Ddragon">Ddragon</a></li>
-<li><a href="http://blog.csdn.net/lyf_somethink" target="_blank" title="lyf_Somethink">lyf_Somethink</a></li>
-</ul>
-</div>
-
-  <div class="widget tag">
-<h3 class="title">动态</h3>
-<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=5162758478&verifier=58037745&colors=ffffff,ffffff,666666,000000,ffffff&dpc=1"></iframe>
-</div>
-</aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"><div class="alignleft">
-  
-  &copy; 2017 Kevin Wu
-  
-</div>
-<div class="clearfix"></div></footer>
-  <script src="/js/jquery.min.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
-
-
-
-
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
-
-<div id="totop" style="position:fixed;bottom:50px;right:50px;cursor: pointer;">
-<a><img src="/imgs/scrollup.png"/></a>
-</div>
-
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
 <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?undefined";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
 
 
-<script src="/js/totop.js"></script>
 </body>
 </html>

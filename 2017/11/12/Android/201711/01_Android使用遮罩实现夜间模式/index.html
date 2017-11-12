@@ -1,79 +1,86 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  <title>Android使用遮罩实现夜间模式及优化 | KevinWu.CN</title>
-  <meta name="author" content="Kevin Wu">
-  
-  <meta name="description" content="KevinWu的个人博客">
-  
-  
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <meta property="og:title" content="Android使用遮罩实现夜间模式及优化"/>
-  <meta property="og:site_name" content="KevinWu.CN"/>
-
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
   
-    <meta property="og:image" content="undefined"/>
+    <link rel="icon" href="">
   
-
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="KevinWu.CN" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-	ga('create', 'undefined', 'auto');
-	ga('send', 'pageview');
-
-</script>
-
-
+    
+  <title>Android使用遮罩实现夜间模式及优化 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
 </head>
 
-
 <body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">KevinWu.CN</a></h1>
-  <h2><a href="/">慢几步，深几度</a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">主页</a></li>
-    
-      <li><a href="/archives">归档</a></li>
-    
-      <li><a href="/about">关于</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div></header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
-  
-  <div class="post-content">
-    <header>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
       
-        <div class="icon"></div>
-        <time datetime="2017-11-11T16:00:00.000Z"><a href="/2017/11/12/Android/201711/01_Android使用遮罩实现夜间模式/">2017-11-12</a></time>
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
       
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
       
-  
-    <h1 class="title">Android使用遮罩实现夜间模式及优化</h1>
-  
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
 
-    </header>
-    <div class="entry">
-      
-        <h2 id="一、起因"><a href="#一、起因" class="headerlink" title="一、起因"></a>一、起因</h2><p>公司项目要求加个夜间模式。<br>我以为是终于可以开搞夜间皮肤，毕竟在架构阶段就预架好了皮肤快速接入的框架。<br>蓝鹅看到需求时<br>我大吃一鲸<br><img src="http://kevinwu.cn/image/android_201711_01_1.jpg" width="30%"><br><a id="more"></a><br>加一个遮罩。<br><img src="http://kevinwu.cn/image/android_201711_01_2.jpg" alt=""></p>
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Android使用遮罩实现夜间模式及优化</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年11月12日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#遮罩" class='tag'>遮罩</a>
+
+  <a href="/tags/#夜间模式" class='tag'>夜间模式</a>
+
+
+            
+          </div>
+          <h2 id="一、起因"><a href="#一、起因" class="headerlink" title="一、起因"></a>一、起因</h2><p>公司项目要求加个夜间模式。<br>我以为是终于可以开搞夜间皮肤，毕竟在架构阶段就预架好了皮肤快速接入的框架。<br>蓝鹅看到需求时<br>我大吃一鲸<br><img src="http://kevinwu.cn/image/android_201711_01_1.jpg" width="30%"><br><a id="more"></a><br>加一个遮罩。<br><img src="http://kevinwu.cn/image/android_201711_01_2.jpg" alt=""></p>
 <h2 id="二、现状"><a href="#二、现状" class="headerlink" title="二、现状"></a>二、现状</h2><p>目前很多APP都有了夜间模式，普遍有两种实现方式：</p>
 <h4 id="1、已有UI加遮罩，达到降低亮度的效果，例如：喜马拉雅FM："><a href="#1、已有UI加遮罩，达到降低亮度的效果，例如：喜马拉雅FM：" class="headerlink" title="1、已有UI加遮罩，达到降低亮度的效果，例如：喜马拉雅FM："></a>1、已有UI加遮罩，达到降低亮度的效果，例如：喜马拉雅FM：</h4><p>最早我看到这么处理的是为知笔记，不过现在已经改成了换皮肤方式。但主流APP中也不乏还有这么实现的。</p>
 <p>日间：<br><img src="http://kevinwu.cn/image/android_201711_01_3.png" width="40%"><br>夜间：<br><img src="http://kevinwu.cn/image/android_201711_01_4.png" width="40%"></p>
@@ -84,15 +91,15 @@
 <li>利用WindowManager通过addview来实现一层遮罩效果</li>
 </ol>
 <p>这里分别简单实现一下这两种：</p>
-<h3 id="1、调整APP独立屏幕亮度"><a href="#1、调整APP独立屏幕亮度" class="headerlink" title="1、调整APP独立屏幕亮度"></a>1、调整APP独立屏幕亮度</h3><p>首先调整亮度是需要权限的，不是说调就调，所以要在AndroidManifast.xml中加上写设置权限：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.WRITE_SETTINGS/"</span>&gt;</span><span class="tag">&lt;/<span class="name">uses-permission</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>蓝后，就是设置当前window的亮度<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAppBrightness</span><span class="params">(<span class="keyword">float</span> brightnessValue)</span> </span>&#123;</div><div class="line">    WindowManager.LayoutParams lp = getWindow().getAttributes();</div><div class="line">    <span class="keyword">if</span> (brightnessValue &gt; <span class="number">1.0f</span>) &#123;</div><div class="line">        lp.screenBrightness = <span class="number">1.0f</span>;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (brightnessValue &lt;= <span class="number">0.0f</span>) &#123;</div><div class="line">        lp.screenBrightness = <span class="number">0.0f</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        lp.screenBrightness = brightnessValue;</div><div class="line">    &#125;</div><div class="line">    getWindow().setAttributes(lp);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="1、调整APP独立屏幕亮度"><a href="#1、调整APP独立屏幕亮度" class="headerlink" title="1、调整APP独立屏幕亮度"></a>1、调整APP独立屏幕亮度</h3><p>首先调整亮度是需要权限的，不是说调就调，所以要在AndroidManifast.xml中加上写设置权限：<br><figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.WRITE_SETTINGS/"</span>&gt;</span><span class="tag">&lt;/<span class="name">uses-permission</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>蓝后，就是设置当前window的亮度<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAppBrightness</span><span class="params">(<span class="keyword">float</span> brightnessValue)</span> </span>&#123;</div><div class="line">    WindowManager.LayoutParams lp = getWindow().getAttributes();</div><div class="line">    <span class="keyword">if</span> (brightnessValue &gt; <span class="number">1.0f</span>) &#123;</div><div class="line">        lp.screenBrightness = <span class="number">1.0f</span>;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (brightnessValue &lt;= <span class="number">0.0f</span>) &#123;</div><div class="line">        lp.screenBrightness = <span class="number">0.0f</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        lp.screenBrightness = brightnessValue;</div><div class="line">    &#125;</div><div class="line">    getWindow().setAttributes(lp);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>WindowManager.LayoutParams中有个screenBrightness值就是代表当前app内的亮度，如果你当前屏幕亮度是1，然后在调用夜间模式时你设置了一个0.1的值进去，那么~</p>
 <p>你会很开心地发现，嘿，屏幕变暗了。</p>
 <p>因为亮度的截图也看不出变化，只是直观感受，这里就不截图了。</p>
 <p>然后你着手折腾恢复屏幕亮度，也就时还原为白天模式，因为不能设置了夜间模式就没法还原白天模式了嘛。</p>
 <p>其实也很简单，就是取当前系统亮度，然后设置回去就ok了。</p>
 <p>需要注意的是，通过<strong>Settings.System.<br>                getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);</strong>取到的是一个0~255的值，需要换算一下。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">getSystemBrightness</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> brightnessValue = <span class="number">125</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            brightnessValue = Settings.System.</div><div class="line">                    getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> brightnessValue/<span class="number">255.0f</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">getSystemBrightness</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> brightnessValue = <span class="number">125</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            brightnessValue = Settings.System.</div><div class="line">                    getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> brightnessValue/<span class="number">255.0f</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p>然后你发现，嘿呀，果然机智，又回到白天模式了。</p>
 <p>但是！</p>
 <p>你高兴太早了，通过亮度来做“夜间模式”其实很智障。</p>
@@ -107,10 +114,10 @@
 <p>思路是这样的：<br>在Activity上增加一层有一定透明度的暗色调View，然后就是看着没那么刺眼了。</p>
 <p>还挺简单的，但要留意的是因为你是简单粗暴在上面加上一层，所以要禁止调触摸事件和禁止获取焦点，不然内容只能看不能摸搞毛啊。</p>
 <p>禁止触摸事件是<strong>WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE</strong>属性<br>禁止获取焦点是<strong>WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE</strong>属性</p>
-<p>建议设置两个成员变量：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> WindowManager windowManager;</div><div class="line"><span class="keyword">private</span> View wmNightView;</div></pre></td></tr></table></figure></p>
-<p>然后下面是切换夜间模式的,为了方便对比我设置了个#66000000的颜色值进去：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setWM0</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(wmNightView!=<span class="keyword">null</span>)<span class="keyword">return</span>;</div><div class="line">        windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);</div><div class="line">        WindowManager.LayoutParams params = <span class="keyword">new</span> WindowManager.LayoutParams(</div><div class="line">                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT,</div><div class="line">                WindowManager.LayoutParams.TYPE_APPLICATION,</div><div class="line">                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,</div><div class="line">                PixelFormat.TRANSLUCENT);</div><div class="line">        params.gravity = Gravity.TOP;</div><div class="line">        params.y = <span class="number">10</span>;</div><div class="line">        wmNightView = <span class="keyword">new</span> View(<span class="keyword">this</span>);</div><div class="line">        wmNightView.setBackgroundColor(<span class="number">0x66000000</span>);</div><div class="line">        windowManager.addView(wmNightView, params);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>建议设置两个成员变量：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">private</span> WindowManager windowManager;</div><div class="line"><span class="keyword">private</span> View wmNightView;</div></pre></td></tr></table></figure></p>
+<p>然后下面是切换夜间模式的,为了方便对比我设置了个#66000000的颜色值进去：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setWM0</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(wmNightView!=<span class="keyword">null</span>)<span class="keyword">return</span>;</div><div class="line">        windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);</div><div class="line">        WindowManager.LayoutParams params = <span class="keyword">new</span> WindowManager.LayoutParams(</div><div class="line">                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT,</div><div class="line">                WindowManager.LayoutParams.TYPE_APPLICATION,</div><div class="line">                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,</div><div class="line">                PixelFormat.TRANSLUCENT);</div><div class="line">        params.gravity = Gravity.TOP;</div><div class="line">        params.y = <span class="number">10</span>;</div><div class="line">        wmNightView = <span class="keyword">new</span> View(<span class="keyword">this</span>);</div><div class="line">        wmNightView.setBackgroundColor(<span class="number">0x66000000</span>);</div><div class="line">        windowManager.addView(wmNightView, params);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
 <p>需要注意的是设置前一定要判断一下是否已经add过那个view了，我简单粗暴就直接判断一下成员变量是否为空了。</p>
-<p>这个时候，还原为白天模式时，只需要把对应view remove掉就可以了：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setWM1</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (wmNightView != <span class="keyword">null</span>) &#123;</div><div class="line">        windowManager.removeViewImmediate(wmNightView);</div><div class="line">        windowManager = <span class="keyword">null</span>;</div><div class="line">        wmNightView = <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个时候，还原为白天模式时，只需要把对应view remove掉就可以了：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setWM1</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (wmNightView != <span class="keyword">null</span>) &#123;</div><div class="line">        windowManager.removeViewImmediate(wmNightView);</div><div class="line">        windowManager = <span class="keyword">null</span>;</div><div class="line">        wmNightView = <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>下面是两种模式对比图：</p>
 <p>夜间模式：<br><img src="http://kevinwu.cn/image/android_201711_01_8.png" width="40%"></p>
 <p>白天模式：<br><img src="http://kevinwu.cn/image/android_201711_01_9.png" width="40%"></p>
@@ -122,9 +129,9 @@
 <p>辣么，当然不是没办法，曲线救国还是很多道路的。</p>
 <h3 id="2、利用预设View来实现夜间模式"><a href="#2、利用预设View来实现夜间模式" class="headerlink" title="2、利用预设View来实现夜间模式"></a>2、利用预设View来实现夜间模式</h3><p>这个其实跟第二个原理差不多，但是这个是直接把它预设进布局文件里面。</p>
 <p>可以看一眼布局。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">FrameLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">    &gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">LinearLayout</span></span></div><div class="line">        <span class="attr">android:orientation</span>=<span class="string">"vertical"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_light0"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"调节亮度-夜间"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_light1"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"调节亮度-白天"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_wm0"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"WindowManager遮罩-夜间"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_wm1"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"WindowManager遮罩-白天"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_view0"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"预设View-夜间"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_view1"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"预设View-白天"</span>/&gt;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">View</span></span></div><div class="line">        <span class="attr">android:visibility</span>=<span class="string">"gone"</span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/view_nightmode"</span></div><div class="line">        <span class="attr">android:background</span>=<span class="string">"#66000000"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">FrameLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">FrameLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">    &gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">LinearLayout</span></span></div><div class="line">        <span class="attr">android:orientation</span>=<span class="string">"vertical"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_light0"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"调节亮度-夜间"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_light1"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"调节亮度-白天"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_wm0"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"WindowManager遮罩-夜间"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_wm1"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"WindowManager遮罩-白天"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_view0"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"预设View-夜间"</span>/&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_view1"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:text</span>=<span class="string">"预设View-白天"</span>/&gt;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">View</span></span></div><div class="line">        <span class="attr">android:visibility</span>=<span class="string">"gone"</span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/view_nightmode"</span></div><div class="line">        <span class="attr">android:background</span>=<span class="string">"#66000000"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">FrameLayout</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>其实道理很简单，就是有一个浮层，只是白天时显示，夜间时隐藏。</p>
-<p>无非一句代码的事：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">viewNight.setVisibility(View.VISIBLE);</div></pre></td></tr></table></figure></p>
+<p>无非一句代码的事：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">viewNight.setVisibility(View.VISIBLE);</div></pre></td></tr></table></figure></p>
 <p>那么先来看看效果。</p>
 <p>夜间模式：<br><img src="http://kevinwu.cn/image/android_201711_01_8.png" width="40%"></p>
 <p>白天模式：<br><img src="http://kevinwu.cn/image/android_201711_01_9.png" width="40%"></p>
@@ -133,7 +140,7 @@
 <p>没错，是一样，状态栏一样没影响。</p>
 <p>那么这还有什么用呢？</p>
 <p>当你的项目使用<strong>沉浸式状态栏</strong>时，它就有点不一样了。</p>
-<p>还是那个demo,我们来在OnCreate中设置一下沉浸式状态栏：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setUpStatusBar</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;</div><div class="line">            <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</div><div class="line">                Window window = <span class="keyword">this</span>.getWindow();</div><div class="line">                View decorView = window.getDecorView();</div><div class="line">                <span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN</div><div class="line">                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;</div><div class="line">                decorView.setSystemUiVisibility(option);</div><div class="line">                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);</div><div class="line">                window.setStatusBarColor(Color.TRANSPARENT);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                Window window = <span class="keyword">this</span>.getWindow();</div><div class="line">                WindowManager.LayoutParams attributes = window.getAttributes();</div><div class="line">                <span class="keyword">int</span> flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;</div><div class="line">                attributes.flags |= flagTranslucentStatus;</div><div class="line">                window.setAttributes(attributes);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>还是那个demo,我们来在OnCreate中设置一下沉浸式状态栏：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setUpStatusBar</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;</div><div class="line">            <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</div><div class="line">                Window window = <span class="keyword">this</span>.getWindow();</div><div class="line">                View decorView = window.getDecorView();</div><div class="line">                <span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN</div><div class="line">                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;</div><div class="line">                decorView.setSystemUiVisibility(option);</div><div class="line">                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);</div><div class="line">                window.setStatusBarColor(Color.TRANSPARENT);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                Window window = <span class="keyword">this</span>.getWindow();</div><div class="line">                WindowManager.LayoutParams attributes = window.getAttributes();</div><div class="line">                <span class="keyword">int</span> flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;</div><div class="line">                attributes.flags |= flagTranslucentStatus;</div><div class="line">                window.setAttributes(attributes);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
 <p>同时为了方便展示就不去取系统状态高度了，直接在布局里面添加一个50dp的占位view，底色就随便一个亮一点的黄色，便于观察。</p>
 <p>搞完之后，这个Demo它是这样的：</p>
 <p><img src="http://kevinwu.cn/image/android_201711_01_10.png" width="40%"></p>
@@ -148,17 +155,17 @@
 <p>而且Dialog之类的也可以这么做，定义一个BaseDialog，一切都好解决。</p>
 <p>下面说说优化：</p>
 <p>当夜间模式硬编码了透明度，颜色值后，如果用户动态改动屏幕亮度，或者用户手机本来就是自动调节亮度的，那这个时候如果高亮度透明度低还好，起码还看得见，但是低亮度情况下，透明度也低，那就真的对用户很不友好了，这个时候比较好的解决思路是：动态检测亮度，然后相应改动透明度。</p>
-<p>上菜：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(isNightMode)&#123;</div><div class="line">                <span class="keyword">int</span> light = <span class="number">125</span>;</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    light = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);</div><div class="line">                &#125; <span class="keyword">catch</span> (Settings.SettingNotFoundException e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">double</span> lightQ = light/<span class="number">255.0</span>;</div><div class="line">                <span class="keyword">if</span>(lightQ&lt;<span class="number">0.05</span>)lightQ = <span class="number">0.05</span>;</div><div class="line">                nightMod.setBackgroundColor(Color.argb((<span class="keyword">int</span>) (<span class="number">255</span>*<span class="number">0.8</span>*lightQ),<span class="number">5</span>,<span class="number">5</span>,<span class="number">5</span>));</div><div class="line">                nightMod.setVisibility(View.VISIBLE);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span></div><div class="line">                nightMod.setVisibility(View.GONE);</div></pre></td></tr></table></figure></p>
+<p>上菜：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">if</span>(isNightMode)&#123;</div><div class="line">                <span class="keyword">int</span> light = <span class="number">125</span>;</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    light = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);</div><div class="line">                &#125; <span class="keyword">catch</span> (Settings.SettingNotFoundException e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">double</span> lightQ = light/<span class="number">255.0</span>;</div><div class="line">                <span class="keyword">if</span>(lightQ&lt;<span class="number">0.05</span>)lightQ = <span class="number">0.05</span>;</div><div class="line">                nightMod.setBackgroundColor(Color.argb((<span class="keyword">int</span>) (<span class="number">255</span>*<span class="number">0.8</span>*lightQ),<span class="number">5</span>,<span class="number">5</span>,<span class="number">5</span>));</div><div class="line">                nightMod.setVisibility(View.VISIBLE);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span></div><div class="line">                nightMod.setVisibility(View.GONE);</div></pre></td></tr></table></figure></p>
 <p>因为要实时改动透明度，所以我通过Color.argb((int) (255<em>0.8</em>lightQ),5,5,5)来设置背景颜色，默认颜色值为（亮度0~1范围为1时）是：#CC050505。</p>
 <blockquote>
 <p>透明度RGB和16进制值换算为：透明度*255再转成16进制就行。</p>
 </blockquote>
 <p>同时为了避免用户说开了跟没开一样（当亮度最低时，light的值为0，那就相当于完全透明，就是没开）</p>
-<p>所以我加了一句：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(lightQ&lt;<span class="number">0.05</span>)lightQ = <span class="number">0.05</span>;</div></pre></td></tr></table></figure></p>
+<p>所以我加了一句：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">if</span>(lightQ&lt;<span class="number">0.05</span>)lightQ = <span class="number">0.05</span>;</div></pre></td></tr></table></figure></p>
 <p>这就可以保证用户在最低亮度情况下看到的夜间模式依旧变暗了一些。</p>
 <p>那么问题来了，当用户屏幕亮度改动，或者开了自动调整的情况怎么办？</p>
 <p>注册一个观察者然后监听屏幕亮度情况,当屏幕亮度改动时响应改动就可以：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">ContentObserver brightnessObserver = <span class="keyword">new</span> ContentObserver(<span class="keyword">new</span> Handler()) &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onChange</span><span class="params">(<span class="keyword">boolean</span> selfChange)</span> </span>&#123;</div><div class="line">                setDayOrNightMode();</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line">        <span class="keyword">this</span>.getContentResolver().registerContentObserver(</div><div class="line">                Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS), <span class="keyword">true</span>,</div><div class="line">                brightnessObserver);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">ContentObserver brightnessObserver = <span class="keyword">new</span> ContentObserver(<span class="keyword">new</span> Handler()) &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onChange</span><span class="params">(<span class="keyword">boolean</span> selfChange)</span> </span>&#123;</div><div class="line">                setDayOrNightMode();</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line">        <span class="keyword">this</span>.getContentResolver().registerContentObserver(</div><div class="line">                Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS), <span class="keyword">true</span>,</div><div class="line">                brightnessObserver);</div></pre></td></tr></table></figure>
 <h2 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h2><p>这也是我在公司项目中实现夜间模式的方案。</p>
 <p>这不是完美方案，因为我心中的夜间模式是换皮肤的，这种加遮罩的方式，如果从用户角度出发，会给我一种在赶项目赶不及为加这个功能而敷衍我的感觉。</p>
 <p>但程序猿不应违抗产品和设计的初衷，要和他们好好相处。</p>
@@ -167,167 +174,93 @@
 <p>同时，如果是用原生Android提供的控件，不是不能遮罩，只是这种加一层的方式实现起来就不会那么优雅了。</p>
 <p>但扯开来说，要是原生控件，那直接改动theme.style的方式来换主题，那应该才是正确的打开方式。</p>
 
-      
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、起因"><span class="toc-number">1.</span> <span class="toc-text">一、起因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、现状"><span class="toc-number">2.</span> <span class="toc-text">二、现状</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、已有UI加遮罩，达到降低亮度的效果，例如：喜马拉雅FM："><span class="toc-number">2.0.1.</span> <span class="toc-text">1、已有UI加遮罩，达到降低亮度的效果，例如：喜马拉雅FM：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、深色调皮肤，符合夜间特性，例如：知乎："><span class="toc-number">2.0.2.</span> <span class="toc-text">2、深色调皮肤，符合夜间特性，例如：知乎：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、实现"><span class="toc-number">3.</span> <span class="toc-text">三、实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、调整APP独立屏幕亮度"><span class="toc-number">3.1.</span> <span class="toc-text">1、调整APP独立屏幕亮度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、利用WindowManager通过addview来实现一层遮罩效果"><span class="toc-number">3.2.</span> <span class="toc-text">2、利用WindowManager通过addview来实现一层遮罩效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、利用预设View来实现夜间模式"><span class="toc-number">3.3.</span> <span class="toc-text">2、利用预设View来实现夜间模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、优化"><span class="toc-number">4.</span> <span class="toc-text">四、优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、总结"><span class="toc-number">5.</span> <span class="toc-text">五、总结</span></a></li></ol>
+        </div>
     </div>
-    <footer>
-      
-        
-  
-  <div class="categories">
-    <a href="/categories/Android/">Android</a>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2017 | Powered by KevinWu&nbsp
+    </div>
   </div>
-
-        
-  
-  <div class="tags">
-    <a href="/tags/遮罩/">遮罩</a>, <a href="/tags/夜间模式/">夜间模式</a>
-  </div>
-
-        
-        <nav id="pagination">
+</footer>
 
 
-      
-
-      
-        <a href="/2017/08/15/一本正经胡说八道/201708/重新认识游戏/" class="alignright next">下一篇</a>
-      
-
-</nav>
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="谷歌搜索本站">
-    <input type="hidden" name="q" value="site:kevinwu.cn">
-  </form>
-</div>
-
-  
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/Android/">Android</a><small>7</small></li>
-  
-    <li><a href="/categories/Java/">Java</a><small>10</small></li>
-  
-    <li><a href="/categories/一本正经胡说八道/">一本正经胡说八道</a><small>3</small></li>
-  
-    <li><a href="/categories/在线刷题/">在线刷题</a><small>1</small></li>
-  
-    <li><a href="/categories/师大-技术说明书/">师大+ 技术说明书</a><small>5</small></li>
-  
-    <li><a href="/categories/师大-辅助文档/">师大+ 辅助文档</a><small>1</small></li>
-  
-    <li><a href="/categories/计算机基础/">计算机基础</a><small>2</small></li>
-  
-    <li><a href="/categories/酷玩/">酷玩</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
-  <div class="entry">
-    <a href="/tags/2048/" style="font-size: 10px;">2048</a> <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 18.33px;">Android</a> <a href="/tags/DIY/" style="font-size: 10px;">DIY</a> <a href="/tags/GC/" style="font-size: 10px;">GC</a> <a href="/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/JVM/" style="font-size: 11.67px;">JVM</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Json/" style="font-size: 10px;">Json</a> <a href="/tags/Jsoup/" style="font-size: 11.67px;">Jsoup</a> <a href="/tags/Mupdf/" style="font-size: 10px;">Mupdf</a> <a href="/tags/PDF阅读/" style="font-size: 10px;">PDF阅读</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SO库编译/" style="font-size: 10px;">SO库编译</a> <a href="/tags/SharedPreferences/" style="font-size: 11.67px;">SharedPreferences</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/二维数组/" style="font-size: 10px;">二维数组</a> <a href="/tags/冒泡/" style="font-size: 10px;">冒泡</a> <a href="/tags/加载模式/" style="font-size: 10px;">加载模式</a> <a href="/tags/单片机/" style="font-size: 10px;">单片机</a> <a href="/tags/启动模式/" style="font-size: 10px;">启动模式</a> <a href="/tags/基础/" style="font-size: 10px;">基础</a> <a href="/tags/基础知识/" style="font-size: 11.67px;">基础知识</a> <a href="/tags/夜间模式/" style="font-size: 10px;">夜间模式</a> <a href="/tags/天气/" style="font-size: 10px;">天气</a> <a href="/tags/学籍管理/" style="font-size: 10px;">学籍管理</a> <a href="/tags/实战/" style="font-size: 10px;">实战</a> <a href="/tags/工具/" style="font-size: 15px;">工具</a> <a href="/tags/师大/" style="font-size: 10px;">师大+</a> <a href="/tags/引用/" style="font-size: 10px;">引用</a> <a href="/tags/快排/" style="font-size: 10px;">快排</a> <a href="/tags/总结/" style="font-size: 16.67px;">总结</a> <a href="/tags/手工/" style="font-size: 10px;">手工</a> <a href="/tags/排序/" style="font-size: 11.67px;">排序</a> <a href="/tags/插座/" style="font-size: 10px;">插座</a> <a href="/tags/播放器/" style="font-size: 10px;">播放器</a> <a href="/tags/智能/" style="font-size: 10px;">智能</a> <a href="/tags/查找/" style="font-size: 10px;">查找</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/模拟登录/" style="font-size: 10px;">模拟登录</a> <a href="/tags/游戏/" style="font-size: 10px;">游戏</a> <a href="/tags/源码解析/" style="font-size: 10px;">源码解析</a> <a href="/tags/硬件/" style="font-size: 10px;">硬件</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/解析/" style="font-size: 11.67px;">解析</a> <a href="/tags/计算机网络/" style="font-size: 11.67px;">计算机网络</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a> <a href="/tags/选择/" style="font-size: 10px;">选择</a> <a href="/tags/遮罩/" style="font-size: 10px;">遮罩</a> <a href="/tags/随笔/" style="font-size: 13.33px;">随笔</a> <a href="/tags/集合/" style="font-size: 10px;">集合</a>
-  </div>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">最新文章</h3>
-  <ul class="entry">
-    
-      <li>
-        <a href="/2017/11/12/Android/201711/01_Android使用遮罩实现夜间模式/">Android使用遮罩实现夜间模式及优化</a>
-      </li>
-    
-      <li>
-        <a href="/2017/08/15/一本正经胡说八道/201708/重新认识游戏/">重新认识游戏</a>
-      </li>
-    
-      <li>
-        <a href="/2017/06/25/Android/201706/MuPdf的编译/">MuPdf的编译</a>
-      </li>
-    
-      <li>
-        <a href="/2016/09/04/Android/201609/Android播放器拔耳机暂停音乐播放/">Android播放器拔耳机暂停音乐播放</a>
-      </li>
-    
-      <li>
-        <a href="/2016/08/22/一本正经胡说八道/201608/七月洪流/">七月洪流</a>
-      </li>
-    
-  </ul>
-</div>
-
-
-  <div class="widget tag">
-<h3 class="title">友情链接</h3>
-<ul class="entry">
-<li><a href="http://www.fengbee.com/"  target="_blank" title="蜂背科技">蜂背科技</a></li>
-<li><a href="http://www.jxnu.edu.cn/" target="_blank" title="江西师范大学">江西师范大学</a></li>
-<li><a href="http://blog.csdn.net/mummyding/" target="_blank" title="MummyDing">MummyDing</a></li>
-<li><a href="http://ddragonever.com/" target="_blank" title="Ddragon">Ddragon</a></li>
-<li><a href="http://blog.csdn.net/lyf_somethink" target="_blank" title="lyf_Somethink">lyf_Somethink</a></li>
-</ul>
-</div>
-
-  <div class="widget tag">
-<h3 class="title">动态</h3>
-<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=5162758478&verifier=58037745&colors=ffffff,ffffff,666666,000000,ffffff&dpc=1"></iframe>
-</div>
-</aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"><div class="alignleft">
-  
-  &copy; 2017 Kevin Wu
-  
-</div>
-<div class="clearfix"></div></footer>
-  <script src="/js/jquery.min.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
-
-
-
-
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
-
-<div id="totop" style="position:fixed;bottom:50px;right:50px;cursor: pointer;">
-<a><img src="/imgs/scrollup.png"/></a>
-</div>
-
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
 <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?undefined";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
 
 
-<script src="/js/totop.js"></script>
 </body>
 </html>

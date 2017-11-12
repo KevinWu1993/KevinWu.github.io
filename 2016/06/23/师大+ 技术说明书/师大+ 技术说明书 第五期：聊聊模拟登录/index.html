@@ -1,79 +1,88 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  <title>师大+ 技术说明书 第五期：聊聊模拟登录 | KevinWu.CN</title>
-  <meta name="author" content="Kevin Wu">
-  
-  <meta name="description" content="KevinWu的个人博客">
-  
-  
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <meta property="og:title" content="师大+ 技术说明书 第五期：聊聊模拟登录"/>
-  <meta property="og:site_name" content="KevinWu.CN"/>
-
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
   
-    <meta property="og:image" content="undefined"/>
+    <link rel="icon" href="">
   
-
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="KevinWu.CN" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-	ga('create', 'undefined', 'auto');
-	ga('send', 'pageview');
-
-</script>
-
-
+    
+  <title>师大+ 技术说明书 第五期：聊聊模拟登录 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
 </head>
 
-
 <body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">KevinWu.CN</a></h1>
-  <h2><a href="/">慢几步，深几度</a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">主页</a></li>
-    
-      <li><a href="/archives">归档</a></li>
-    
-      <li><a href="/about">关于</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div></header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
-  
-  <div class="post-content">
-    <header>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
       
-        <div class="icon"></div>
-        <time datetime="2016-06-22T16:00:00.000Z"><a href="/2016/06/23/师大+ 技术说明书/师大+ 技术说明书 第五期：聊聊模拟登录/">2016-06-23</a></time>
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
       
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
       
-  
-    <h1 class="title">师大+ 技术说明书 第五期：聊聊模拟登录</h1>
-  
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
 
-    </header>
-    <div class="entry">
-      
-        <p>有些网站需要获取信息时，需要用户登录账户，这时就要用到模拟登录。</p>
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>师大+ 技术说明书 第五期：聊聊模拟登录</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2016年06月23日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/师大-技术说明书/">师大+ 技术说明书</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#Java" class='tag'>Java</a>
+
+  <a href="/tags/#Android" class='tag'>Android</a>
+
+  <a href="/tags/#模拟登录" class='tag'>模拟登录</a>
+
+
+            
+          </div>
+          <p>有些网站需要获取信息时，需要用户登录账户，这时就要用到模拟登录。</p>
 <p>而目前的登录，大部分都是直接用post发送请求的，既然是这样，必然带有参数，原理也很简单，有参数，有url，那模拟在浏览器中的操作，就可以“骗”过网站实现登录的效果。<br><a id="more"></a><br>目前安全机制在不断进步，大部分登录操作都有重定向，比如【师大+】的图书馆和自习室的登录，当然，这一个重定向而已，也可以视为几乎没有任何安全的登录方式了，而类似github就会采用auth验证取得tooken等方式进行登录，明显是要安全很多的，但同时也会给模拟登录的实现造成很多困难。</p>
 <p>当没有验证时，模拟登录是最简单的操作，一步到位，这里为了说明流程，直接选择这种网站，也是【师大+】中一个主要的登录源，江西师大的教务在线。</p>
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>写下模拟登录的代码之前，先来分析要登录的url，登录一次，抓包，看看会发送什么数据到服务器。</p>
@@ -92,176 +101,100 @@
 <p><img src="http://7xrn7f.com1.z0.glb.clouddn.com/16-6-23/72324744.jpg" alt=""></p>
 <p>所以小结一下，如果需要以学生身份登录教务在线，那么就需要学号（用户名）和密码两个参数，其它照搬。</p>
 <h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>下面看看模拟登录在【师大+】里面的具体实现，先把主要代码放出来：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/*主要代码开始*/</span></div><div class="line"></div><div class="line">NetManageUtil.post(Urlconfig.Education_Login_URL)</div><div class="line">        .addTag(TAG)</div><div class="line">        .addParams(<span class="string">"__EVENTTARGET"</span>, <span class="string">""</span>)</div><div class="line">        .addParams(<span class="string">"__EVENTARGUMENT"</span>, <span class="string">""</span>)</div><div class="line">        .addParams(<span class="string">"__LASTFOCUS"</span>, <span class="string">""</span>)</div><div class="line">        .addParams(<span class="string">"__VIEWSTATE"</span>, <span class="string">"/wEPDwUJNjk1MjA1..."</span>)<span class="comment">//源代码太长，影响代码可读性，所以这里节选部分</span></div><div class="line">        .addParams(<span class="string">"__EVENTVALIDATION"</span>, <span class="string">"/wEWSgLYl4..."</span>)<span class="comment">//同上</span></div><div class="line">        .addParams(<span class="string">"rblUserType"</span>, <span class="string">"Student"</span>)</div><div class="line">        .addParams(<span class="string">"ddlCollege"</span>, <span class="string">"180     "</span>)</div><div class="line">        .addParams(<span class="string">"StuNum"</span>, getUsername(usernameET))</div><div class="line">        .addParams(<span class="string">"TeaNum"</span>, <span class="string">""</span>)</div><div class="line">        .addParams(<span class="string">"Password"</span>, getPassword(passwordET))</div><div class="line">        .addParams(<span class="string">"login"</span>, <span class="string">"登录"</span>)</div><div class="line">        .enqueue(<span class="keyword">new</span> StringCallback() &#123;</div><div class="line"> <span class="comment">/*主要代码结束*/</span></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(String result, <span class="keyword">final</span> Headers headers)</span> </span>&#123;</div><div class="line">                EducationalSysLoginParse myParse = <span class="keyword">new</span> EducationalSysLoginParse(result);</div><div class="line">                <span class="keyword">final</span> List endList = myParse.getEndList();</div><div class="line">                <span class="keyword">new</span> Handler(Looper.getMainLooper()).post(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                        <span class="keyword">if</span> (endList == <span class="keyword">null</span> || endList.isEmpty())&#123;</div><div class="line">                            EventBus.getDefault().post(<span class="keyword">new</span> EventModel&lt;String&gt;(EVENT.EDUCATION_LOGIN_SERVER_ERROR));</div><div class="line">                        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (endList.get(<span class="number">0</span>).toString().equals(EducationalSysLoginParse.LOGIN_FAIL_NO_ID_STR)) &#123;</div><div class="line">                            EventBus.getDefault().post(<span class="keyword">new</span> EventModel&lt;String&gt;(EVENT.EDUCATION_LOGIN_FAILURE_NO_ID));</div><div class="line">                        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (endList.get(<span class="number">0</span>).toString().equals(EducationalSysLoginParse.LOGIN_FAIL_PASSWORD_INCORRECT_STR)) &#123;</div><div class="line">                            EventBus.getDefault().post(<span class="keyword">new</span> EventModel&lt;String&gt;(EVENT.EDUCATION_LOGIN_FAILURE_PASSWORD_INCORRECT));</div><div class="line">                        &#125; <span class="keyword">else</span> &#123;</div><div class="line">                            String userNum = getUsername(usernameET);</div><div class="line">                            String userName = endList.get(<span class="number">0</span>).toString();</div><div class="line">                            String nowTerm = TermUtil.getNowTerm();</div><div class="line">                            String baseCookie=<span class="keyword">null</span>,specialCookie=<span class="keyword">null</span>;</div><div class="line">                            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; headers.size(); i++) &#123;</div><div class="line">                                <span class="keyword">if</span>(headers.name(i).equals(<span class="string">"Set-Cookie"</span>))&#123;</div><div class="line">                                    baseCookie=cutBaseCookie(headers.value(i));</div><div class="line">                                    specialCookie=cutSpecialCookie(headers.value(i+<span class="number">1</span>));</div><div class="line">                                    <span class="keyword">break</span>;</div><div class="line">                                &#125;</div><div class="line">                            &#125;</div><div class="line">                            saveToSP(userNum, userName, nowTerm, baseCookie, specialCookie);</div><div class="line">                            EventBus.getDefault().post(<span class="keyword">new</span> EventModel&lt;String&gt;(EVENT.EDUCATION_LOGIN_SUCCESS));</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(String error)</span> </span>&#123;</div><div class="line">                <span class="keyword">new</span> Handler(Looper.getMainLooper()).post(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                        EventBus.getDefault().post(<span class="keyword">new</span> EventModel&lt;String&gt;(EVENT.EDUCATION_LOGIN_FAILURE_NETWORK_ERROR));</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/*主要代码开始*/</span></div><div class="line"></div><div class="line">NetManageUtil.post(Urlconfig.Education_Login_URL)</div><div class="line">        .addTag(TAG)</div><div class="line">        .addParams(<span class="string">"__EVENTTARGET"</span>, <span class="string">""</span>)</div><div class="line">        .addParams(<span class="string">"__EVENTARGUMENT"</span>, <span class="string">""</span>)</div><div class="line">        .addParams(<span class="string">"__LASTFOCUS"</span>, <span class="string">""</span>)</div><div class="line">        .addParams(<span class="string">"__VIEWSTATE"</span>, <span class="string">"/wEPDwUJNjk1MjA1..."</span>)<span class="comment">//源代码太长，影响代码可读性，所以这里节选部分</span></div><div class="line">        .addParams(<span class="string">"__EVENTVALIDATION"</span>, <span class="string">"/wEWSgLYl4..."</span>)<span class="comment">//同上</span></div><div class="line">        .addParams(<span class="string">"rblUserType"</span>, <span class="string">"Student"</span>)</div><div class="line">        .addParams(<span class="string">"ddlCollege"</span>, <span class="string">"180     "</span>)</div><div class="line">        .addParams(<span class="string">"StuNum"</span>, getUsername(usernameET))</div><div class="line">        .addParams(<span class="string">"TeaNum"</span>, <span class="string">""</span>)</div><div class="line">        .addParams(<span class="string">"Password"</span>, getPassword(passwordET))</div><div class="line">        .addParams(<span class="string">"login"</span>, <span class="string">"登录"</span>)</div><div class="line">        .enqueue(<span class="keyword">new</span> StringCallback() &#123;</div><div class="line"> <span class="comment">/*主要代码结束*/</span></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(String result, <span class="keyword">final</span> Headers headers)</span> </span>&#123;</div><div class="line">                EducationalSysLoginParse myParse = <span class="keyword">new</span> EducationalSysLoginParse(result);</div><div class="line">                <span class="keyword">final</span> List endList = myParse.getEndList();</div><div class="line">                <span class="keyword">new</span> Handler(Looper.getMainLooper()).post(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                        <span class="keyword">if</span> (endList == <span class="keyword">null</span> || endList.isEmpty())&#123;</div><div class="line">                            EventBus.getDefault().post(<span class="keyword">new</span> EventModel&lt;String&gt;(EVENT.EDUCATION_LOGIN_SERVER_ERROR));</div><div class="line">                        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (endList.get(<span class="number">0</span>).toString().equals(EducationalSysLoginParse.LOGIN_FAIL_NO_ID_STR)) &#123;</div><div class="line">                            EventBus.getDefault().post(<span class="keyword">new</span> EventModel&lt;String&gt;(EVENT.EDUCATION_LOGIN_FAILURE_NO_ID));</div><div class="line">                        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (endList.get(<span class="number">0</span>).toString().equals(EducationalSysLoginParse.LOGIN_FAIL_PASSWORD_INCORRECT_STR)) &#123;</div><div class="line">                            EventBus.getDefault().post(<span class="keyword">new</span> EventModel&lt;String&gt;(EVENT.EDUCATION_LOGIN_FAILURE_PASSWORD_INCORRECT));</div><div class="line">                        &#125; <span class="keyword">else</span> &#123;</div><div class="line">                            String userNum = getUsername(usernameET);</div><div class="line">                            String userName = endList.get(<span class="number">0</span>).toString();</div><div class="line">                            String nowTerm = TermUtil.getNowTerm();</div><div class="line">                            String baseCookie=<span class="keyword">null</span>,specialCookie=<span class="keyword">null</span>;</div><div class="line">                            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; headers.size(); i++) &#123;</div><div class="line">                                <span class="keyword">if</span>(headers.name(i).equals(<span class="string">"Set-Cookie"</span>))&#123;</div><div class="line">                                    baseCookie=cutBaseCookie(headers.value(i));</div><div class="line">                                    specialCookie=cutSpecialCookie(headers.value(i+<span class="number">1</span>));</div><div class="line">                                    <span class="keyword">break</span>;</div><div class="line">                                &#125;</div><div class="line">                            &#125;</div><div class="line">                            saveToSP(userNum, userName, nowTerm, baseCookie, specialCookie);</div><div class="line">                            EventBus.getDefault().post(<span class="keyword">new</span> EventModel&lt;String&gt;(EVENT.EDUCATION_LOGIN_SUCCESS));</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(String error)</span> </span>&#123;</div><div class="line">                <span class="keyword">new</span> Handler(Looper.getMainLooper()).post(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                        EventBus.getDefault().post(<span class="keyword">new</span> EventModel&lt;String&gt;(EVENT.EDUCATION_LOGIN_FAILURE_NETWORK_ERROR));</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
 <p>上面的代码片段中我标注出来的主要部分的代码，赶时间的可以直接看那一部分内容，完整代码可以参考<a href="https://github.com/MummyDing/Awesome-Campus/blob/dev/app/src/main/java/cn/edu/jxnu/awesome_campus/support/utils/login/EducationLoginUtil.java" target="_blank" rel="external">EducationLoginUtil</a></p>
 <p>这里的代码不详细说，因为这里用的网络工具是经过我们封装后的OKHTTP工具，取决与网络工具的不同，所以操作也略有区别，但无论如何，都是通过Post方式发送数据，把该有的参数加上，就可以实现登录。</p>
 <p>而登录后，把cookie存下来，抓取课程表难道还会有问题么？</p>
 <p>抓取到课程表的话，具体的解析可以参考上一期的内容。</p>
 <p>很久没更新这一专题了，这次写完这个可能又要N久才更新这一专题，这期也写得比较渣。感觉还是很多东西想去写，最近又要复习期末考试，特别是一个写代码的还要考信号与系统这种东西。。又马上到时候出去长路漫漫的实习了，所以，无限期跳票。。</p>
 
-      
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#分析"><span class="toc-number">1.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现"><span class="toc-number">2.</span> <span class="toc-text">实现</span></a></li></ol>
+        </div>
     </div>
-    <footer>
-      
-        
-  
-  <div class="categories">
-    <a href="/categories/师大-技术说明书/">师大+ 技术说明书</a>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2017 | Powered by KevinWu&nbsp
+    </div>
   </div>
-
-        
-  
-  <div class="tags">
-    <a href="/tags/Java/">Java</a>, <a href="/tags/Android/">Android</a>, <a href="/tags/模拟登录/">模拟登录</a>
-  </div>
-
-        
-        <nav id="pagination">
+</footer>
 
 
-      
-        <a href="/2016/06/24/酷玩/DIY一个智能插座/" class="alignleft prev">上一篇</a>
-      
-
-      
-        <a href="/2016/05/08/师大+ 技术说明书/师大+技术说明书 第四期：Jsoup解析实战/" class="alignright next">下一篇</a>
-      
-
-</nav>
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="谷歌搜索本站">
-    <input type="hidden" name="q" value="site:kevinwu.cn">
-  </form>
-</div>
-
-  
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/Android/">Android</a><small>7</small></li>
-  
-    <li><a href="/categories/Java/">Java</a><small>10</small></li>
-  
-    <li><a href="/categories/一本正经胡说八道/">一本正经胡说八道</a><small>3</small></li>
-  
-    <li><a href="/categories/在线刷题/">在线刷题</a><small>1</small></li>
-  
-    <li><a href="/categories/师大-技术说明书/">师大+ 技术说明书</a><small>5</small></li>
-  
-    <li><a href="/categories/师大-辅助文档/">师大+ 辅助文档</a><small>1</small></li>
-  
-    <li><a href="/categories/计算机基础/">计算机基础</a><small>2</small></li>
-  
-    <li><a href="/categories/酷玩/">酷玩</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
-  <div class="entry">
-    <a href="/tags/2048/" style="font-size: 10px;">2048</a> <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 18.33px;">Android</a> <a href="/tags/DIY/" style="font-size: 10px;">DIY</a> <a href="/tags/GC/" style="font-size: 10px;">GC</a> <a href="/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/JVM/" style="font-size: 11.67px;">JVM</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Json/" style="font-size: 10px;">Json</a> <a href="/tags/Jsoup/" style="font-size: 11.67px;">Jsoup</a> <a href="/tags/Mupdf/" style="font-size: 10px;">Mupdf</a> <a href="/tags/PDF阅读/" style="font-size: 10px;">PDF阅读</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SO库编译/" style="font-size: 10px;">SO库编译</a> <a href="/tags/SharedPreferences/" style="font-size: 11.67px;">SharedPreferences</a> <a href="/tags/String/" style="font-size: 10px;">String</a> <a href="/tags/二维数组/" style="font-size: 10px;">二维数组</a> <a href="/tags/冒泡/" style="font-size: 10px;">冒泡</a> <a href="/tags/加载模式/" style="font-size: 10px;">加载模式</a> <a href="/tags/单片机/" style="font-size: 10px;">单片机</a> <a href="/tags/启动模式/" style="font-size: 10px;">启动模式</a> <a href="/tags/基础/" style="font-size: 10px;">基础</a> <a href="/tags/基础知识/" style="font-size: 11.67px;">基础知识</a> <a href="/tags/夜间模式/" style="font-size: 10px;">夜间模式</a> <a href="/tags/天气/" style="font-size: 10px;">天气</a> <a href="/tags/学籍管理/" style="font-size: 10px;">学籍管理</a> <a href="/tags/实战/" style="font-size: 10px;">实战</a> <a href="/tags/工具/" style="font-size: 15px;">工具</a> <a href="/tags/师大/" style="font-size: 10px;">师大+</a> <a href="/tags/引用/" style="font-size: 10px;">引用</a> <a href="/tags/快排/" style="font-size: 10px;">快排</a> <a href="/tags/总结/" style="font-size: 16.67px;">总结</a> <a href="/tags/手工/" style="font-size: 10px;">手工</a> <a href="/tags/排序/" style="font-size: 11.67px;">排序</a> <a href="/tags/插座/" style="font-size: 10px;">插座</a> <a href="/tags/播放器/" style="font-size: 10px;">播放器</a> <a href="/tags/智能/" style="font-size: 10px;">智能</a> <a href="/tags/查找/" style="font-size: 10px;">查找</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/模拟登录/" style="font-size: 10px;">模拟登录</a> <a href="/tags/游戏/" style="font-size: 10px;">游戏</a> <a href="/tags/源码解析/" style="font-size: 10px;">源码解析</a> <a href="/tags/硬件/" style="font-size: 10px;">硬件</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/解析/" style="font-size: 11.67px;">解析</a> <a href="/tags/计算机网络/" style="font-size: 11.67px;">计算机网络</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a> <a href="/tags/选择/" style="font-size: 10px;">选择</a> <a href="/tags/遮罩/" style="font-size: 10px;">遮罩</a> <a href="/tags/随笔/" style="font-size: 13.33px;">随笔</a> <a href="/tags/集合/" style="font-size: 10px;">集合</a>
-  </div>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">最新文章</h3>
-  <ul class="entry">
-    
-      <li>
-        <a href="/2017/11/12/Android/201711/01_Android使用遮罩实现夜间模式/">Android使用遮罩实现夜间模式及优化</a>
-      </li>
-    
-      <li>
-        <a href="/2017/08/15/一本正经胡说八道/201708/重新认识游戏/">重新认识游戏</a>
-      </li>
-    
-      <li>
-        <a href="/2017/06/25/Android/201706/MuPdf的编译/">MuPdf的编译</a>
-      </li>
-    
-      <li>
-        <a href="/2016/09/04/Android/201609/Android播放器拔耳机暂停音乐播放/">Android播放器拔耳机暂停音乐播放</a>
-      </li>
-    
-      <li>
-        <a href="/2016/08/22/一本正经胡说八道/201608/七月洪流/">七月洪流</a>
-      </li>
-    
-  </ul>
-</div>
-
-
-  <div class="widget tag">
-<h3 class="title">友情链接</h3>
-<ul class="entry">
-<li><a href="http://www.fengbee.com/"  target="_blank" title="蜂背科技">蜂背科技</a></li>
-<li><a href="http://www.jxnu.edu.cn/" target="_blank" title="江西师范大学">江西师范大学</a></li>
-<li><a href="http://blog.csdn.net/mummyding/" target="_blank" title="MummyDing">MummyDing</a></li>
-<li><a href="http://ddragonever.com/" target="_blank" title="Ddragon">Ddragon</a></li>
-<li><a href="http://blog.csdn.net/lyf_somethink" target="_blank" title="lyf_Somethink">lyf_Somethink</a></li>
-</ul>
-</div>
-
-  <div class="widget tag">
-<h3 class="title">动态</h3>
-<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=5162758478&verifier=58037745&colors=ffffff,ffffff,666666,000000,ffffff&dpc=1"></iframe>
-</div>
-</aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"><div class="alignleft">
-  
-  &copy; 2017 Kevin Wu
-  
-</div>
-<div class="clearfix"></div></footer>
-  <script src="/js/jquery.min.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
-
-
-
-
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
-
-<div id="totop" style="position:fixed;bottom:50px;right:50px;cursor: pointer;">
-<a><img src="/imgs/scrollup.png"/></a>
-</div>
-
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
 <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?undefined";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
 
 
-<script src="/js/totop.js"></script>
 </body>
 </html>
