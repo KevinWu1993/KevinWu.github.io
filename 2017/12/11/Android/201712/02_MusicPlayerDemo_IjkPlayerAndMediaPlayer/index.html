@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>音乐播放器实践：MediaPlayer和IjkPlayer方案对比使用 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>音乐播放器实践：MediaPlayer和IjkPlayer方案对比使用</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年12月11日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#MediaPlayer" class='tag'>MediaPlayer</a>
+
+  <a href="/tags/#IjkPlayer" class='tag'>IjkPlayer</a>
+
+  <a href="/tags/#音乐播放器" class='tag'>音乐播放器</a>
+
+
+            
+          </div>
+          <p>这篇文章将从演示怎么白手起家。<br>噢不，应该是怎么白手撸一个播放器。<br>好像还是不对，手不白。<br>那就。<br>撸一个播放器。<br><a id="more"></a></p>
+<h2 id="在Android系统中播放声音"><a href="#在Android系统中播放声音" class="headerlink" title="在Android系统中播放声音"></a>在Android系统中播放声音</h2><p>Android中播放音频可以使用SoundPool、MediaPlayer或AudioTrack三种方式。</p>
+<h3 id="SoundPool"><a href="#SoundPool" class="headerlink" title="SoundPool"></a>SoundPool</h3><p>官方文档中有如下介绍：</p>
+<blockquote>
+<p> The SoundPool class manages and plays audio resources for applications.<br>A SoundPool is a collection of samples that can be loaded into memory from a resource inside the APK or from a file in the file system. The SoundPool library uses the MediaPlayer service to decode the audio into a raw 16-bit PCM mono or stereo stream. This allows applications to ship with compressed streams without having to suffer the CPU load and latency of decompressing during playback.</p>
+</blockquote>
+<p>简单翻译下就是说SoundPool类是Android用于管理和播放应用程序的音频资源的类。一个SoundPool对象可以看作是一个可以从APK中导入资源或者从文件系统中载入文件的样本集合。它利用MediaPlayer服务为音频解码为一个原始16位PCM流。这个特性使得应用程序可以进行流压缩，而无须忍受在播放音频时解压所带来的CPU负载和时延。</p>
+<p>注意最后一句话：无须忍受在播放音频时解压所带来的CPU负载和时延。</p>
+<p>这句话是针对MediaPlayer来说的，没错，就是针对你！</p>
+<p>为什么？<br>因为MediaPlayer资源占用量较高、加载延迟时间较长、不支持多个音频同时播放。想像一下，游戏里面用MediaPlayer来播放声音那不得崩溃~</p>
+<p>但是既然SoundPool比MediaPlayer屌，还要MediaPlayer有何用？</p>
+<p>不，too young too simple！<br><strong>虽然SoundPool可以装载多个音频资源，但是最大只能申请1MB的内存空间！！！</strong><br>这就意味着，你想用它来作为音乐播放器的方式，做做梦好了，除非你都是放那些一分钟以下音乐的需求。<br>具体SoundPool知识这里不展开（越扯越远的节奏），想了解更多可以看google dev文档（没梯子打不开别怪我）：<a href="https://developer.android.com/reference/android/media/SoundPool.html" target="_blank" rel="external">SoundPool</a></p>
+<h3 id="MediaPlayer"><a href="#MediaPlayer" class="headerlink" title="MediaPlayer"></a>MediaPlayer</h3><p>官方文档对MdeiaPlayer介绍比较简洁：</p>
+<blockquote>
+<p>MediaPlayer class can be used to control playback of audio/video files and streams.</p>
+</blockquote>
+<p>不过言简意赅，很明显，MediaPlayer通吃音频和视频（这里做音乐播放器关我卵事把我拉进来），而且MediaPlayer对于音乐播放器来说有着天然的优势，就是接口完整，各个状态回掉比较完善，只是<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"></div><div class="line">开头一张图，后面全靠吹：</div><div class="line"></div><div class="line">&lt;img src=&quot;https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_02_1.jpg&quot; width = &quot;100%&quot; /&gt;</div><div class="line"></div><div class="line">上图看起来是不是眼花缭乱，莫慌，先看看各状态代表什么：</div><div class="line"></div><div class="line">- **Idle状态**：当使用new()方法创建一个MediaPlayer对象或者调用了reset()方法时，MediaPlayer对象就会处于idle状态。</div><div class="line">- **End状态**：调用release()方法后就会进入这个状态。需要注意的是如果MediaPlayer对象进入了End状态，就不会在进入任何其他状态了。</div><div class="line">- **Initialized状态**：当MediaPlayer对象调用setDataSource()方法就进入Initialized状态，表示已经初始化了。</div><div class="line">- **Prepared状态**：当调用prepare()或prepareAsync()方法后，注意前一个是同步方法，调用完就进入PrePared状态了，后一个异步方法，要配合OnPreparedListener.onPrepared()回调使用。只有在这个状态才能开始播放。</div><div class="line">- **Preparing状态**：当使用prepareAsync()方法时会进入这个状态，表明正在prepare，完成会触发OnPreparedListener.onPrepared()回调。</div><div class="line">- **Started状态**：这个状态在调用start()方法后进入，表明音频文件正在播放，动次打次~~~这个状态下可以使用isPlaying()判断是否正在播放，也可以使用seekTo()方法来切换播放的时间点</div><div class="line">- **Paused状态**：当处于Started状态时调用pause()方法，就会进入Paused状态，这个状态也可以调用seekTo()方法切换时间点，不过切换完不会改变状态。</div><div class="line">- **Stop状态**：Started或者Paused状态下调用stop()方法就进入这个状态，而处于Stop状态时想重新播放，需要通过prepareAsync()和prepare()回到先前的Prepared状态。</div><div class="line">- **PlaybackCompleted状态**：正常一个音频播放完成后又没有设置循环就会进入这个状态，这个时候会触发OnCompletionListener.onCompletion()回调。</div><div class="line">- **Error状态**：这个状态就mmp咯~~各种原因使到MediaPlayer出现错误，会触发OnErrorListener.onError()回调，这个时候就会进入Error状态，这里的坑比较大，有可能是你不小心状态不允许某些操作时操作了会导致这样，这个很容易定位问题并解决，还有可能是奇奇怪怪的状态错误。-38算比较常见的，这个跟状态有关，但-1003，-1004也是比较折磨我的几个错误码。</div><div class="line"></div><div class="line">本来打算不对状态图展开讲，看一下这里一个主角是MediaPlayer所以还是展开讲了下，具体更多还是看官方文档去吧：[MediaPlayer](https://developer.android.com/reference/android/media/MediaPlayer.html)</div><div class="line"></div><div class="line">### AudioTrack</div><div class="line"></div><div class="line">这个是一个比较低级的东西。</div><div class="line"></div><div class="line">注意我们用计算机角度审视“低级”。</div><div class="line"></div><div class="line">也就是说这个是个很屌的东西，利用这个可以实现任意音频播放，嗯，任意。</div><div class="line"></div><div class="line">先看看官方定义：</div><div class="line"></div><div class="line">&gt;The AudioTrack class manages and plays a single audio resource for Java applications. It allows streaming of PCM audio buffers to the audio sink for playback. This is achieved by &quot;pushing&quot; the data to the AudioTrack object using one of the write(byte[], int, int), write(short[], int, int), and write(float[], int, int, int) methods.</div><div class="line"></div><div class="line">这里就不细说了，简单说，就是它可以播放PCM音频数据，但要注意的是，播放的音频必须是**解码**后的PCM数据。</div><div class="line"></div><div class="line">其实MediaPlayer底层也是使用AudioTrack实现的。</div><div class="line"></div><div class="line">上面我加粗了解码，是因为这个就是我前面说的任意音频播放，只要你能解码，就能播放，什么海贝音乐（扯远了哇哈哈哈哈哈~~~）</div><div class="line"></div><div class="line">而这里的解码，比较常见的方案有：</div><div class="line">- FFmpeg（IjkPlayer也是用这个），官网地址：https://www.ffmpeg.org/</div><div class="line">- MediaCodec，Google官方文档地址：https://developer.android.com/reference/android/media/MediaCodec.html</div><div class="line">- EasyAudioDecoder，开源项目地址：https://github.com/EasyDarwin/EasyAudioDecoder</div><div class="line">- Speex，官网地址：https://www.speex.org/</div><div class="line"></div><div class="line">## IjkPlayer的导入</div><div class="line"></div><div class="line">在build.gradle文件中添加以下依赖（当然按需添加）：</div><div class="line"></div><div class="line">```gradle</div><div class="line"># required, enough for most devices.</div><div class="line">compile &apos;tv.danmaku.ijk.media:ijkplayer-java:0.8.4&apos;</div><div class="line">compile &apos;tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4&apos;</div><div class="line"></div><div class="line"> # Other ABIs: optional</div><div class="line">compile &apos;tv.danmaku.ijk.media:ijkplayer-armv5:0.8.4&apos;</div><div class="line">compile &apos;tv.danmaku.ijk.media:ijkplayer-arm64:0.8.4&apos;</div><div class="line">compile &apos;tv.danmaku.ijk.media:ijkplayer-x86:0.8.4&apos;</div><div class="line">compile &apos;tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.4&apos;</div><div class="line"></div><div class="line"># ExoPlayer as IMediaPlayer: optional, experimental</div><div class="line">compile &apos;tv.danmaku.ijk.media:ijkplayer-exo:0.8.4&apos;</div><div class="line">```</div><div class="line"></div><div class="line">## 音乐播放器实践</div><div class="line"></div><div class="line">### UI设计</div><div class="line">扯了那么久背景知识，终于说到今天的重点了。</div><div class="line">想了很久这里还是叫UI设计。。。吧。</div><div class="line">其实是了解界面有什么东东，理清楚逻辑就好了。</div><div class="line">先看看效果（咱实现功能，别吐槽样子丑）：</div><div class="line"></div><div class="line">选择解码方式：</div><div class="line">&lt;img src=&quot;https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_02_2.png&quot; width = &quot;80%&quot; /&gt;</div><div class="line"></div><div class="line">播放器界面：</div><div class="line">&lt;img src=&quot;https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_02_3.png&quot; width = &quot;80%&quot; /&gt;</div><div class="line"></div><div class="line">### 包结构图</div><div class="line"></div><div class="line">先看一下最后实现了的包结构图，对整体有个了解：</div><div class="line"></div><div class="line">&lt;img src=&quot;https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_02_4.png&quot; width = &quot;80%&quot; /&gt;</div><div class="line"></div><div class="line">### 关键实现</div><div class="line"></div><div class="line">也就是喜闻乐见的~贴代码环节。</div><div class="line"></div><div class="line">#### 建模</div><div class="line"></div><div class="line">房子都是一粒粒沙子筑起来的，所以实现一个播放器我的思路是先从对象开始搞起来。</div><div class="line"></div><div class="line">先实现一个音乐对象模型：</div><div class="line"></div><div class="line">``` java</div><div class="line">public class MusicModel implements Serializable &#123;</div><div class="line">    private String name;</div><div class="line">    private String url;</div><div class="line"></div><div class="line">    public String getName() &#123;</div><div class="line">        return name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setName(String name) &#123;</div><div class="line">        this.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public String getUrl() &#123;</div><div class="line">        return url;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setUrl(String url) &#123;</div><div class="line">        this.url = url;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">```</div><div class="line"></div><div class="line">#### 播放列表</div><div class="line"></div><div class="line">音乐播放器的播放列表管理者所有待播放的音频，并且可以知道下一首，上一首，当前播放的音频。</div><div class="line"></div><div class="line">而且还有一个很重要的点，它应该是一个单例。</div><div class="line"></div><div class="line">这里用静态内部类实现一个播放列表单例（关于单例模式可以参考博客一篇说单例模式文章）。</div><div class="line"></div><div class="line">##### 设置当前播放索引</div><div class="line"></div><div class="line">在播放列表中点击一首音乐，或者在别的地方（假设）决定要播放第几首音乐是，就应该设置当前的播放列表的索引，然后再开始播放音乐。</div><div class="line"></div><div class="line">``` java</div><div class="line">/**</div><div class="line">    * 设置当前播放索引</div><div class="line">    * @param index</div><div class="line">    */</div><div class="line">    public void setNowPlayIndex(int index)&#123;</div><div class="line">        if(index&lt;0)&#123;</div><div class="line">            throw new IndexOutOfBoundsException(&quot;index&gt;0 required&quot;);</div><div class="line">        &#125;</div><div class="line">        this.nowPlayIndex = index;</div><div class="line">    &#125;</div><div class="line">```</div><div class="line"></div><div class="line">##### 播放下一首</div><div class="line"></div><div class="line">播放下一首的逻辑也很简单，当播放完当前索引的音乐，或者用户主动点击“下一首”时会调用，这个方法如下：</div><div class="line"></div><div class="line">``` java</div><div class="line">  /**</div><div class="line">    * 获取下一首</div><div class="line">    * @return</div><div class="line">    */</div><div class="line">    public MusicModel getNext()&#123;</div><div class="line">        //当前只支持顺序播放</div><div class="line">        if(musicList.size() == 0)return null;</div><div class="line">        if(++nowPlayIndex&lt;musicList.size())&#123;</div><div class="line">            return musicList.get(nowPlayIndex);</div><div class="line">        &#125;else&#123;</div><div class="line">            nowPlayIndex = 0;</div><div class="line">            return musicList.get(nowPlayIndex);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">```</div><div class="line"></div><div class="line">思路大概是检测当前播放的曲目有没有到达最后一首，如果到了最后一手就返回第0个位置。</div><div class="line">上一首同理，不细说。</div><div class="line"></div><div class="line">#### 播放状态</div><div class="line"></div><div class="line">播放状态利用Java中的枚举确定几个状态，分别对应MediaPlayer中的Idle、Preparing、Playing（Started）和Pause（Paused）状态。</div><div class="line"></div><div class="line">``` java</div><div class="line">public enum PlayState &#123;</div><div class="line">    STATE_IDLE(0),</div><div class="line">    STATE_PREPARING(1),</div><div class="line">    STATE_PLAYING(2),</div><div class="line">    STATE_PAUSE(3);</div><div class="line"></div><div class="line">    private int code;</div><div class="line"></div><div class="line">    PlayState(int code)&#123;</div><div class="line">        this.code = code;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">```</div><div class="line"></div><div class="line">### 播放状态回调接口</div><div class="line"></div><div class="line">设计一个接口用来接收播放状态的改变，当需要使用到该状态的地方可以实现该接口。</div><div class="line"></div><div class="line">说明我都写在注释上了。</div><div class="line"></div><div class="line">``` java</div><div class="line">public interface OnPlayStateListener &#123;</div><div class="line">    void onPlayStart();//开始播放</div><div class="line">    void onPlayPause();//暂停播放</div><div class="line">    void onInitMusic(MusicModel musicModel);//初始化音乐完成</div><div class="line">    void onUpdatePlayProgress(int progress);//更新播放进度</div><div class="line">    void onUpdateBufferProgress(int progress);//更新缓冲进度</div><div class="line">&#125;</div><div class="line">```</div><div class="line"></div><div class="line">### 播放基础服务类</div><div class="line"></div><div class="line">这里叫播放基础服务类，是因为这里我们要实现IjkPlayer和MediaPlayer两种解码方案，而他们大多数操作基本是一致的，为了遵循面向对象的基本原则，我们抽离共同的特征。</div><div class="line"></div><div class="line">``` java</div><div class="line">public abstract class PlayService extends Service &#123;</div><div class="line">    protected OnPlayStateListener playStateListener;</div><div class="line">    protected Handler playHandler;</div><div class="line">    protected static final long UPDATE_TIME = 1000;</div><div class="line">    protected MusicModel nowPlayingMusic;//当前播放音乐</div><div class="line">    protected PlayState playState = PlayState.STATE_IDLE;</div><div class="line"></div><div class="line">    protected abstract int getCurrentPosition();</div><div class="line">    protected abstract void init();</div><div class="line">    protected abstract void playImpl();</div><div class="line">    protected abstract void pauseImpl();</div><div class="line">    protected abstract void stopImpl();</div><div class="line">    protected abstract void seekToImpl(int progress);</div><div class="line">    protected abstract void playContinueImpl();</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 暴露的开始播放方法</div><div class="line">    */</div><div class="line">    public void play()&#123;</div><div class="line">        if(!isPause())&#123;</div><div class="line">            nowPlayingMusic = PlayList.getInstance().getNowPlaying();//从播放列表获取当前播放的音频</div><div class="line">            playState = PlayState.STATE_PREPARING;//状态改为正在parpare</div><div class="line">            playImpl();//parpare具体实现（可查看下面IjkPlayerImplService 中的实现）</div><div class="line">        &#125;else&#123;</div><div class="line">            playContinueImpl();//暂停继续播放的情况，可查看下面IjkPlayerImplService 中的实现</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 暴露的暂停播放方法</div><div class="line">    */</div><div class="line">    public void pause()&#123;</div><div class="line">      pauseImpl();//暂停播放，可查看下面IjkPlayerImplService 中的实现</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 暴露的停止播放方法</div><div class="line">    */</div><div class="line">    public void stop() &#123;</div><div class="line">        stopImpl();//停止播放，可查看下面IjkPlayerImplService 中的实现</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 跳转到指定的时间位置</div><div class="line">    */</div><div class="line">    public void seekTo(int progress) &#123;</div><div class="line">      seekToImpl(progress);//seekTo方法实现可查看下面IjkPlayerImplService </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 暴露的播放下一首方法</div><div class="line">    */</div><div class="line">    public void playNext()&#123;</div><div class="line">        if((nowPlayingMusic=PlayList.getInstance().getNext())==null)return;//注意在获取下一首时索引已经自动移动到下一个位置</div><div class="line">        play();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 暴露的播放上一首方法</div><div class="line">    */</div><div class="line">    public void playPrev()&#123;</div><div class="line">        if((nowPlayingMusic=PlayList.getInstance().getPrev())==null)return;//注意在获取上一首时索引已经自动移动上一个位置</div><div class="line">        play();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Nullable</div><div class="line">    @Override</div><div class="line">    public IBinder onBind(Intent intent) &#123;</div><div class="line">        return  new PlayServiceBinder();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public boolean onUnbind(Intent intent) &#123;</div><div class="line">        return super.onUnbind(intent);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public class PlayServiceBinder extends Binder &#123;</div><div class="line">        public PlayService getService() &#123;</div><div class="line">            return PlayService.this;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onCreate() &#123;</div><div class="line">        super.onCreate();</div><div class="line">        playHandler = new Handler();</div><div class="line">        init();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setPlayStateListener(OnPlayStateListener playStateListener) &#123;</div><div class="line">        this.playStateListener = playStateListener;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean isPlaying() &#123;</div><div class="line">        return playState == PlayState.STATE_PLAYING;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean isPause()&#123;</div><div class="line">        return playState == PlayState.STATE_PAUSE;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean isIdle()&#123;</div><div class="line">        return playState == PlayState.STATE_IDLE;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean isPreparing()&#123;</div><div class="line">        return playState == PlayState.STATE_PREPARING;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 更新进度条时调用</div><div class="line">    * @param percent</div><div class="line">    */</div><div class="line">    protected void onUpdateBufferProgress(int percent)&#123;</div><div class="line">        if(playStateListener!=null)playStateListener.onUpdateBufferProgress(percent);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 开始播放后调用</div><div class="line">    */</div><div class="line">    protected void played()&#123;</div><div class="line">        playState = PlayState.STATE_PLAYING;</div><div class="line">        playHandler.post(updateProgressRunnable);</div><div class="line">        if (playStateListener != null) &#123;</div><div class="line">            playStateListener.onPlayStart();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 暂停播放后调用</div><div class="line">    */</div><div class="line">    protected void paused()&#123;</div><div class="line">        playState = PlayState.STATE_PAUSE;</div><div class="line">        playHandler.removeCallbacks(updateProgressRunnable);</div><div class="line">        if (playStateListener != null) &#123;</div><div class="line">            playStateListener.onPlayPause();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 停止播放后调用</div><div class="line">    */</div><div class="line">    protected void stoped()&#123;</div><div class="line">        playState = PlayState.STATE_IDLE;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">    * 拖动进度条后调用</div><div class="line">    */</div><div class="line">    protected void seekToed(int progress)&#123;</div><div class="line">        if (playStateListener != null) &#123;</div><div class="line">            playStateListener.onUpdatePlayProgress(progress);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private Runnable updateProgressRunnable = new Runnable() &#123;</div><div class="line">        @Override</div><div class="line">        public void run() &#123;</div><div class="line">            if (isPlaying() &amp;&amp; playStateListener != null) &#123;</div><div class="line">                playStateListener.onUpdatePlayProgress((int) getCurrentPosition());</div><div class="line">            &#125;</div><div class="line">            playHandler.postDelayed(this, UPDATE_TIME);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line">```</div><div class="line"></div><div class="line">这里基本将一个音乐播放器的状态处理了，而对于具体用到IjkPlayer还是MediaPlayer实现，要在一系列的abstract方法中等待实现。</div><div class="line"></div><div class="line">### 具体音乐播放服务的实现</div><div class="line"></div><div class="line">``` java</div><div class="line">public class IjkPlayerImplService extends PlayService implements</div><div class="line">        IjkMediaPlayer.OnPreparedListener,</div><div class="line">        IjkMediaPlayer.OnBufferingUpdateListener,</div><div class="line">        IjkMediaPlayer.OnCompletionListener,</div><div class="line">        IjkMediaPlayer.OnErrorListener &#123;</div><div class="line">    private IMediaPlayer iMediaPlayer;</div><div class="line"></div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected int getCurrentPosition() &#123;</div><div class="line">        if(iMediaPlayer == null)return 0;</div><div class="line">        float current = (float) (iMediaPlayer.getCurrentPosition()*1.0);</div><div class="line">        float du = (float)iMediaPlayer.getDuration();</div><div class="line">        return (int) (current*100/du);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void init() &#123;</div><div class="line">        iMediaPlayer = new IjkMediaPlayer();</div><div class="line">        iMediaPlayer.setOnPreparedListener(this);</div><div class="line">        iMediaPlayer.setOnBufferingUpdateListener(this);</div><div class="line">        iMediaPlayer.setOnCompletionListener(this);</div><div class="line">        iMediaPlayer.setOnErrorListener(this);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void playImpl() &#123;</div><div class="line">        if(nowPlayingMusic == null)&#123;</div><div class="line">            throw new NullPointerException(&quot;music is null&quot;);</div><div class="line">        &#125;</div><div class="line">        try&#123;</div><div class="line">            iMediaPlayer.reset();</div><div class="line">            iMediaPlayer.setDataSource(nowPlayingMusic.getUrl());</div><div class="line">            iMediaPlayer.prepareAsync();//Ijkplayer不提供prepare方法</div><div class="line">            if(playStateListener!=null)playStateListener.onInitMusic(nowPlayingMusic);</div><div class="line">        &#125;catch (IOException e)&#123;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void pauseImpl() &#123;</div><div class="line">        if (!isPlaying()) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        iMediaPlayer.pause();</div><div class="line">        paused();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void stopImpl() &#123;</div><div class="line">        if (isIdle()) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        pause();</div><div class="line">        iMediaPlayer.reset();</div><div class="line">      stoped();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void seekToImpl(int progress) &#123;</div><div class="line">        if (isPlaying() || isPause()) &#123;</div><div class="line">            iMediaPlayer.seekTo(progress* iMediaPlayer.getDuration() / 100);</div><div class="line">            seekToed(progress);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void playContinueImpl() &#123;</div><div class="line">        if(isPause())&#123;</div><div class="line">            iMediaPlayer.start();</div><div class="line">        &#125;</div><div class="line">        played();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onBufferingUpdate(IMediaPlayer iMediaPlayer, int percent) &#123;</div><div class="line">        onUpdateBufferProgress(percent);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onPrepared(IMediaPlayer iMediaPlayer) &#123;</div><div class="line">        if(isPreparing())&#123;</div><div class="line">            if (!isPreparing() &amp;&amp; !isPause()) &#123;</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">            iMediaPlayer.start();</div><div class="line">            played();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onDestroy() &#123;</div><div class="line">        iMediaPlayer.reset();</div><div class="line">        iMediaPlayer.release();</div><div class="line">        iMediaPlayer = null;</div><div class="line">        PlayServiceManager.setPlayService(null);</div><div class="line">        super.onDestroy();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onCompletion(IMediaPlayer iMediaPlayer) &#123;</div><div class="line">        playNext();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public boolean onError(IMediaPlayer iMediaPlayer, int i, int i1) &#123;</div><div class="line">       //demo未作处理，但实际应用中一定要处理这个状态，在出错时重试或者播放下一首等操作（别怪我没提醒你，记得打点到服务器以便排查错误原因哈哈哈哈哈）</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">```</div><div class="line"></div><div class="line">### 播放服务管理</div><div class="line"></div><div class="line">对于播放服务管理，这里使用一个静态内部类单例来实现：</div><div class="line"></div><div class="line">``` java </div><div class="line">public class PlayServiceManager &#123;</div><div class="line">    private PlayServiceManager()&#123;</div><div class="line">    &#125;</div><div class="line">    private static class SingletonHolder &#123;</div><div class="line">        private static PlayServiceManager playServiceManager = new PlayServiceManager();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private static PlayServiceManager getInstance() &#123;</div><div class="line">        return SingletonHolder.playServiceManager;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private PlayService playService;</div><div class="line">    private Context context;</div><div class="line"></div><div class="line">    public static void init(Application application) &#123;</div><div class="line">        getInstance().onInit(application);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void onInit(Application application) &#123;</div><div class="line">        this.context = application;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public static PlayService getPlayService()&#123;</div><div class="line">        return getInstance().playService;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public static void setPlayService(PlayService playService)&#123;</div><div class="line">        getInstance().playService = playService;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">```</div><div class="line"></div><div class="line">## 思路剖析</div><div class="line"></div><div class="line">如果你一层一层一层地剥开我的心，你会发现，我~会死</div></pre></td></tr></table></figure></p>
+<p>上面洋洋洒洒贴了一大堆代码，是不是看的很想打死我，莫方，我只是先把关键部分代码贴出来，以便可以看这环节回头看一下相关实现。</p>
+<h3 id="点击播放列表会发生什么"><a href="#点击播放列表会发生什么" class="headerlink" title="点击播放列表会发生什么"></a>点击播放列表会发生什么</h3><p>如果用户点击播放列表，如下图点击“0. 测试音乐1”，简单来说，会进行以下几个步骤：</p>
+<ol>
+<li>获取当前点击position，调用PlayList中的setNowPlayIndex(pos)设置播放索引（当然在这之前肯定已经把播放列表设置好了的哈哈哈哈）。</li>
+<li>通过PlayServiceManager获取当前播放服务，调用play()方法</li>
+<li>play()方法会先判断当前是播放中途暂停状态还是新播放状态，这里假设是新播放状态</li>
+<li>在PlayList中获取当前播放音频，设置播放状态PlayState为Preparing状态，</li>
+<li>IjkPlayerImplServier中先对播放器实例进行reset()，setDataSource(url)和prepareAsyn()<strong>（注意IjkPlay在Prepare完成后自动开始播放，不用调用start()）</strong>操作</li>
+<li>playStateListener接口回调onInitMusic方法告知初始化完成</li>
+<li>在异步回调onPrepared方法后调用played()方法设置正在播放的状态，这个时候应该开始<del>动次打次了</del>~</li>
+</ol>
+<h3 id="如何更新进度条"><a href="#如何更新进度条" class="headerlink" title="如何更新进度条"></a>如何更新进度条</h3><p>在播放过程中，进度条需要实时更新状态。</p>
+<p>这里分为两个状态更新，分别是缓冲状态更新和播放状态更新。</p>
+<h4 id="缓冲状态更新"><a href="#缓冲状态更新" class="headerlink" title="缓冲状态更新"></a>缓冲状态更新</h4><p>缓冲状态更新主要用到onBufferingUpdate回调实现。<br>当一首音乐开始播放后，会发生以下事情：</p>
+<ol>
+<li>音乐开始播放后会触发onBufferingUpdate回调（如果设置了回调的话，这里当然是设置了的啊哈哈哈哈）</li>
+<li>调用我们设计的playStateListener接口中的onUpdateBufferProgress(percent)方法</li>
+<li>UI那边收到回调，更新UI（具体是seekBar.setSecondaryProgress(progress)实现）</li>
+</ol>
+<h3 id="音乐实时播放状态更新"><a href="#音乐实时播放状态更新" class="headerlink" title="音乐实时播放状态更新"></a>音乐实时播放状态更新</h3><p>音乐实时播放状态这个是木有api回调滴，不过这个实现更新的方法有很多，可以用一个timer实现定期任务（定个1s这样子），或者利用一个Handler结合Runnable实现<br>在一首音乐正在播放时，会发生以下事情：</p>
+<ol>
+<li>在played方法设置正在播放状态后，Handler会post一个updateProgressRunnable</li>
+<li>在updateProgressRunnable的run方法里面会调用我们设计的playStateListener接口中的onUpdatePlayProgress(percent)方法</li>
+<li>percent的获取是通过(CurrentPosition()<em>100.0)/(Duration())获取到的，为毛</em>100.0？因为要算百分比，而且转浮点计算减少精度损失（另外注意：<strong>IjkPlay中的getCurrentPosition()和getDuration()返回的是long型，而MediaPlayer中两个方法返回int</strong>）</li>
+<li>UI那边收到回调，更新UI（具体是seekBar.setProgress(progress)实现）</li>
+</ol>
+<p>这就完成了一次进度的更新。</p>
+<p>这就完了？？what？？？下一秒过去怎么更新？</p>
+<p>莫方，我说了是一次进度的更新，先看看updateProgressRunnable实现（养成看注释习惯哈）：</p>
+<p>··· java<br>private Runnable updateProgressRunnable = new Runnable() {<br>        @Override<br>        public void run() {<br>            if (isPlaying() &amp;&amp; playStateListener != null) {<br>                playStateListener.onUpdatePlayProgress((int) getCurrentPosition());<br>            }<br>            playHandler.postDelayed(this, UPDATE_TIME);//注意这里，在一次进度更新完成后延迟UPDATE_TIME（我设置了1000毫秒）后再次更新<br>        }<br>    };<br>···</p>
+<h3 id="拖动进度条"><a href="#拖动进度条" class="headerlink" title="拖动进度条"></a>拖动进度条</h3><p>辣么，拖动进度条会发生什么事？</p>
+<p>这里要分几种情况，前面讲MediaPlayer状态机也说到seekTo，如果当前处于正在播放的状态，那么拖动进度条会定位到最新的进度并继续播放，如果当前处于暂停状态，那么拖动进度条就会定位到最新状态并继续保持暂停。</p>
+<p>这里以正在播放状态为例：</p>
+<ol>
+<li>用户操作UI，拉动进度条</li>
+<li>setOnSeekBarChangeListener接口中，如果用户开始了拉动，会调用onStartTrackingTouch方法，在这个方法中我们记录一个Boolean变量isDraggingProgress，置为true，标识用户正在操作进度条</li>
+<li>onUpdatePlayProgress方法调用前会检测isDraggingProgress，如果用户正在拖动，就不要更新播放进度</li>
+<li>当用户操作完成，拉到一个用户心满意足的位置（没用户那么变态拖来拖去能拖一天吧），然后他放手了</li>
+<li>setOnSeekBarChangeListener接口onStopTrackingTouch调用，这个时候赶紧把isDraggingProgress置为false先，告诉程序可以更新状态了，然后通过PlayServiceManager获取当前音乐播放服务</li>
+<li>调用音乐播放服务暴露的seekTo(progress)方法</li>
+<li>调用音乐播放实例的.seekTo(progress* iMediaPlayer.getDuration() / 100)，注意将0~100进度这种形式转化为音乐播放实例的Position</li>
+</ol>
+<h2 id="MediaPlayer和IjkPlayer的选择"><a href="#MediaPlayer和IjkPlayer的选择" class="headerlink" title="MediaPlayer和IjkPlayer的选择"></a>MediaPlayer和IjkPlayer的选择</h2><p>上面代码也贴完了，洋葱也剥完了（好像没啥不对），来简单说几句关于MediaPlayer和IjkPlayer的选择该怎么选择。</p>
+<p>如果发现MediaPlayer状态使用都是正确的（可能有不正确的时候只是一直没法发觉），但总会发现个别机子爆出奇奇怪怪的错误，而且错误码官方文档都没定义，查遍StackOverFlow无解，这个时候你就可以考虑换一波解码方案了。</p>
+<p>其实可以考虑ExoPlayer，比IjkPlayer更轻量级，但是如果你的项目要支持Api16以下，就可以放弃ExoPlayer了，或者考虑二者兼容的方案（类似这里的MediaPlayer和IjkPlayer同时实现，你可以把MediaPlayer和ExoPlayer解码方案同时实现，根据机器系统版本决定使用哪一个播放服务）。</p>
+<p>而IjkPlayer支持API 9~23（官方文档给出），当然正常来说都能23+。</p>
+<p>而且IjkPlayer可以支持变速播放。</p>
+<p>加密音频文件也不是问题，而这个在MediaPlayer上是无法实现的。</p>
+<h2 id="一些周边的优化方案"><a href="#一些周边的优化方案" class="headerlink" title="一些周边的优化方案"></a>一些周边的优化方案</h2><p>这个不太想说，但是既然在这个Demo中用到就提一下。</p>
+<h3 id="可靠解码方案"><a href="#可靠解码方案" class="headerlink" title="可靠解码方案"></a>可靠解码方案</h3><p>这一点前面也提了下，在实际商业项目中引入新的解码方案时，如果可能的话，可以保留原有解码方案，虽然有不满意，不完美，但至少也维持跑了那么长一段时间，证明还是有可靠性的，在切换新的方案过程中可以随时发觉新方案的问题以便及时修复并决定是否要切换回旧方案（配置相关接口保留切换开关）。</p>
+<h3 id="通知栏点击事件优化"><a href="#通知栏点击事件优化" class="headerlink" title="通知栏点击事件优化"></a>通知栏点击事件优化</h3><p>这个在Demo中没有实际体现出来，但是如果真正的音乐播放器，势必会用到通知栏播放条，这里就会有一个点击通知栏究竟打开哪个界面的问题（这个同样适用于推送消息）。<br>在这里有一个至关重要的东西——registerActivityLifecycleCallbacks</p>
+<p>这个东西可以利用Application对象注册，然后所有Activity生命流程你都可以自行处理，所以在通知栏点击事件这里，有两种优化方案可以考虑，我把它称为轻量型和灵活型。</p>
+<ul>
+<li>轻量型：记录MainActivity对象是否被destory，如果是，下次点击播放条先按顺序启动MainActivity（注意这里需要设置一下启动模式）再PlayActivity，否则直接启动PlayActivity，当然这个最好抽离出来一个地方去操作，因为Android系统的Notification的特性，PendingIntent中intent参数只能用来启动一个Activity，所以最好写一个透明的Activity用来处理通知逻辑，处理完自动结束就好了</li>
+<li>灵活型：所谓灵活型，就是通过registerActivityLifecycleCallbacks中完整记录每一个Activity的生命流程，说白了，就是自定义一个Activity栈，因为这样你就能知道哪个Activity启动了，哪个不在栈里面，再决定点击通知后的启动顺序</li>
+</ul>
+<h3 id="独立进程"><a href="#独立进程" class="headerlink" title="独立进程"></a>独立进程</h3><p>因为系统给每一个进程分配的内存有限制，不同手机根据RAM大小等不同分配的最大内存都可能不一样，对于某些时刻进程吃紧，可能音乐播放服务就会被强制回收导致音乐停止，那么这个时候，用一个独立进程来处理音乐播放逻辑，可能就能起到闭着眼去优化内存的事半功倍作用。<br>但使用独立进程需要注意SharedPreferences不能并发读写，虽然读写一般来看你会觉得没问题，但总会有一次出错导致文件丢失的。<br>所以对于音乐播放逻辑的解耦就很重要。<br>对音乐播放的独立进程来说，让它安安静静播放音乐，别的事情都不要操心就对了。<br>当然也要处理好IPC，Android提供了好多中IPC方式，音乐播放中的进程交互文件这种就不要考虑了，优先可以考虑AIDL，当然也可以粗暴点Binder&amp;Messenger。</p>
+<h3 id="彩蛋"><a href="#彩蛋" class="headerlink" title="彩蛋"></a>彩蛋</h3><p>正所谓罗马不是一天建成的（又扯远了哈哈哈哈~）<br>Demo也不是一天撸成的，周末睡前+睡醒撸一发。<br>论电脑轻薄随便扔的重要性哈哈哈哈哈哈。<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_02_5.jpg" width="100%"></p>
+<p><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_02_6.jpg" width="100%"><br>逃~</p>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#在Android系统中播放声音"><span class="toc-number">1.</span> <span class="toc-text">在Android系统中播放声音</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SoundPool"><span class="toc-number">1.1.</span> <span class="toc-text">SoundPool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MediaPlayer"><span class="toc-number">1.2.</span> <span class="toc-text">MediaPlayer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#点击播放列表会发生什么"><span class="toc-number">1.3.</span> <span class="toc-text">点击播放列表会发生什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何更新进度条"><span class="toc-number">1.4.</span> <span class="toc-text">如何更新进度条</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#缓冲状态更新"><span class="toc-number">1.4.1.</span> <span class="toc-text">缓冲状态更新</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#音乐实时播放状态更新"><span class="toc-number">1.5.</span> <span class="toc-text">音乐实时播放状态更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#拖动进度条"><span class="toc-number">1.6.</span> <span class="toc-text">拖动进度条</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MediaPlayer和IjkPlayer的选择"><span class="toc-number">2.</span> <span class="toc-text">MediaPlayer和IjkPlayer的选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些周边的优化方案"><span class="toc-number">3.</span> <span class="toc-text">一些周边的优化方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#可靠解码方案"><span class="toc-number">3.1.</span> <span class="toc-text">可靠解码方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通知栏点击事件优化"><span class="toc-number">3.2.</span> <span class="toc-text">通知栏点击事件优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#独立进程"><span class="toc-number">3.3.</span> <span class="toc-text">独立进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#彩蛋"><span class="toc-number">3.4.</span> <span class="toc-text">彩蛋</span></a></li></ol></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2017 | Powered by KevinWu&nbsp
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>
