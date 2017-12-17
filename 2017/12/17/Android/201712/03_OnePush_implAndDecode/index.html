@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>OnePsuh集成小米推送使用及源码解读 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>OnePsuh集成小米推送使用及源码解读</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年12月17日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#OnePush" class='tag'>OnePush</a>
+
+  <a href="/tags/#推送" class='tag'>推送</a>
+
+  <a href="/tags/#开源框架" class='tag'>开源框架</a>
+
+  <a href="/tags/#源码解读" class='tag'>源码解读</a>
+
+
+            
+          </div>
+          <p>最近有要做推送的需求，接到这个需求时其实一脸懵逼，不是不知道怎么下手，而是深知Android平台在国内搞推送，真的是很烦，很恶心。<br>小米、华为、Flyme、极光、友盟、个推、信鸽等等，每一个都有其优势，也有其不足。<br>如果你只选择接一个，例如小米，那么在华为等手机上进程被杀的情况下是没法接收到推送的。<br>还有很坑爹的一点，Oppo和Vivo手机，进程被杀情况下以上第三方貌似都没法收到推送，除非加入白名单，或者利用友盟等平台的兄弟app相互唤醒（讲道理，这个是很恶心的东西，但又是很取巧的办法，有时候程序猿就是进退两难，不想做辣鸡应用，但又不得不做辣鸡应用）。<br><a id="more"></a><br>想起很久之前在知乎看到的一张讲IOS推送和Android推送区别的图：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_03_1.jpg" width="100%"><br>（图片版权说明：因为是很久之前看见保存下来的图，找不到原图出处的知乎答案链接，如果作者看到要求加上版权声明或者要求我删除图片请联系我，谢谢！）</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>这里以使用OnePush集成小米推送为例，其它平台使用类似。</p>
+<h3 id="OnePush依赖"><a href="#OnePush依赖" class="headerlink" title="OnePush依赖"></a>OnePush依赖</h3><p>如果只是使用mi-push是不需要要在项目project的build.gradle添加Maven源的，只需要在工程module的build.gradle文件添加OnePush核心模块和OnePush小米推送模块依赖（以写这篇文章时使用的1.2.1版本为准）：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">compile <span class="string">'com.peng.library:one-push-core:1.2.1'</span></div><div class="line">compile <span class="string">'com.peng.library:one-push-xiaomi:1.2.1'</span></div></pre></td></tr></table></figure>
+<h3 id="AppId和AppKey设置"><a href="#AppId和AppKey设置" class="headerlink" title="AppId和AppKey设置"></a>AppId和AppKey设置</h3><p>小米推送Android ADK需要使用AppID和AppKey，OnePush作为一个集成，自然需要使用这两个信息。在“小米开放平台——推送运营平台”可以找到这两个信息，如下图：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_03_2.jpg" width="100%"><br>在获取这两个信息后，填入主应用包名的AndroidManifist.xml文件中：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">meta-data</span></span></div><div class="line">        <span class="attr">android:name</span>=<span class="string">"MI_PUSH_APP_ID"</span></div><div class="line">        <span class="attr">android:value</span>=<span class="string">"\ 2882303761517577233"</span>/&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">meta-data</span></span></div><div class="line">        <span class="attr">android:name</span>=<span class="string">"MI_PUSH_APP_KEY"</span></div><div class="line">        <span class="attr">android:value</span>=<span class="string">"\ 5701757717233"</span>/&gt;</div></pre></td></tr></table></figure>
+<p>需要注意的时这里对小米的AppId和AppKey设置需要添加”\  “，这个的原因后面在解读源码中会揭露。</p>
+<h3 id="添加推送实现类"><a href="#添加推送实现类" class="headerlink" title="添加推送实现类"></a>添加推送实现类</h3><p>然后还要在AndroidManifest.xml的application标签下，添加小米推送实现类：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">meta-data</span></span></div><div class="line">            <span class="attr">android:name</span>=<span class="string">"OnePush_XiaoMi_101"</span></div><div class="line">            <span class="attr">android:value</span>=<span class="string">"com.peng.one.push.xiaomi.XiaomiPushClient"</span>/&gt;</div></pre></td></tr></table></figure>
+<p>上面的小米实现类的value是位于<strong>one-push-xiaomi:1.2.1</strong>模块依赖的类完整路径，如果看到这你第一个想到的关键字是反射，那么恭喜你大概知道思路了，具体后面源码解读中再来看具体实现。</p>
+<h3 id="继承BaseOnePushReceiver实现"><a href="#继承BaseOnePushReceiver实现" class="headerlink" title="继承BaseOnePushReceiver实现"></a>继承BaseOnePushReceiver实现</h3><p>自定义一个广播接收器，继承BaseOnePushReceiver，实现所有抽象方法，下面是一个最简单实现示例：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">import</span> android.content.Context;</div><div class="line"><span class="keyword">import</span> android.util.Log;</div><div class="line"><span class="keyword">import</span> com.peng.one.push.entity.OnePushCommand;</div><div class="line"><span class="keyword">import</span> com.peng.one.push.entity.OnePushMsg;</div><div class="line"><span class="keyword">import</span> com.peng.one.push.receiver.BaseOnePushReceiver;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">pushRecv</span> <span class="keyword">extends</span> <span class="title">BaseOnePushReceiver</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"pushRecv"</span>;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceiveNotificationClick</span><span class="params">(Context context, OnePushMsg msg)</span> </span>&#123;</div><div class="line">        Log.d(TAG,<span class="string">"onReceiveNotificationClick"</span>+msg.toString());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceiveMessage</span><span class="params">(Context context, OnePushMsg msg)</span> </span>&#123;</div><div class="line">        Log.d(TAG,<span class="string">"onReceiveMessage"</span>+msg.toString());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCommandResult</span><span class="params">(Context context, OnePushCommand command)</span> </span>&#123;</div><div class="line">        Log.d(TAG,<span class="string">"onCommandResult"</span>+command.toString());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后再在AndroidManifest.xml中注册这个自定义的广播接收器：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">".pushRecv"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.peng.one.push.ACTION_RECEIVE_NOTIFICATION"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.peng.one.push.ACTION_RECEIVE_NOTIFICATION_CLICK"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.peng.one.push.ACTION_RECEIVE_MESSAGE"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.peng.one.push.ACTION_RECEIVE_COMMAND_RESULT"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"> <span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="初始化OnePush"><a href="#初始化OnePush" class="headerlink" title="初始化OnePush"></a>初始化OnePush</h3><p>在Application中初始化OnePush（注意：这里因为只用了小米推送，所以直接在判断平台时返回一个选项）：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">if</span> (BuildConfig.APPLICATION_ID.equals(processName)) &#123;</div><div class="line">    OnePush.init(<span class="keyword">this</span>, <span class="keyword">new</span> OnOnePushRegisterListener() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onRegisterPush</span><span class="params">(<span class="keyword">int</span> platformCode, String platformName)</span> </span>&#123;</div><div class="line">          <span class="keyword">return</span> platformCode == <span class="number">101</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">    OnePush.register();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可能直接看上面那段代码会对processName这个参数产生疑惑，这是当前进程名称，可以封装为一个ProcessUtil工具类，然后写一个静态方法，需要时就根据以下方法取得：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getProcessName</span><span class="params">(Context context, <span class="keyword">int</span> pid)</span> </span>&#123;</div><div class="line">        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);</div><div class="line">        List&lt;ActivityManager.RunningAppProcessInfo&gt; runningsList = am.getRunningAppProcesses();</div><div class="line">        <span class="keyword">if</span> (runningsList == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; runningsList.size(); i++) &#123;</div><div class="line">            <span class="keyword">if</span> (runningsList.get(i).pid == pid) &#123;</div><div class="line">                <span class="keyword">return</span> runningsList.get(i).processName;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="推送测试"><a href="#推送测试" class="headerlink" title="推送测试"></a>推送测试</h3><p>在完成以上快速集成步骤之后，可以在小米推送运营平台上推送一条测试消息看看到达情况。</p>
+<p>推送平台配置推送的工具如下：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_03_3.png" width="100%"></p>
+<p>在配置完测试推送后，可以点击“完成”发送一条测试的推送消息到App上，正常来说App会秒到，当然碰上拥塞时需要排队，消息到达可能会有延迟的情况。</p>
+<p>消息到达：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_03_4.png" width="100%"></p>
+<h3 id="服务端对接小米推送"><a href="#服务端对接小米推送" class="headerlink" title="服务端对接小米推送"></a>服务端对接小米推送</h3><p>虽然小米推送提供了一个推送消息配置后台，但正常情况下，一个App接入推送不止小米一家，就算只接入小米推送，在小米提供的推送运营平台上的工具上进行用户消息推送运营也是很反人类的工作，所以这就需要服务端去对接小米推送服务器。</p>
+<p>这里不对服务端具体实现对接做讨论，只是模拟服务端调用，说明问题。</p>
+<p>参照Mi-Push的服务端接入指南官方文档可以看到向所有设备推送消息接口为：<a href="https://api.xmpush.xiaomi.com/v3/message/all" target="_blank" rel="external">https://api.xmpush.xiaomi.com/v3/message/all</a></p>
+<p>插个嘴：正常情况下很少用到向所有设备推送，产品逻辑应该区分用户群、标签等推送。</p>
+<p><strong>再吐槽一句：小米推送的文档真的反人类啊！！！空格被吃掉了？或者参数加个粗不行？？不说了，看下文档截图吧，以payload为例，能不踩坑就得出这个参数的我敬你是条汉子</strong></p>
+<p><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_03_5.png" width="100%"></p>
+<p>好了吐槽完，正式开始模拟服务端调用接口进行推送。</p>
+<p>参照文档，得出以下参数列表：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>payload</td>
+<td>String</td>
+<td>消息的内容（需要做urlencode处理）</td>
+</tr>
+<tr>
+<td>restricted_package_name</td>
+<td>String</td>
+<td>App的包名。V2版本支持一个包名，V3版本支持多包名（中间用逗号分割）</td>
+</tr>
+<tr>
+<td>pass_through</td>
+<td>Integer</td>
+<td>0 表示通知栏消息，1 表示透传消息</td>
+</tr>
+<tr>
+<td>title</td>
+<td>String</td>
+<td>展示在通知栏的标题</td>
+</tr>
+<tr>
+<td>description</td>
+<td>String</td>
+<td>展示在通知栏中的描述</td>
+</tr>
+<tr>
+<td>notify_type</td>
+<td>Integer</td>
+<td>DEFAULT_ALL = -1;DEFAULT_SOUND  = 1;  // 使用默认提示音提示；DEFAULT_VIBRATE = 2;  // 使用默认震动提示；DEFAULT_LIGHTS = 4;  // 使用默认led灯光提示；</td>
+</tr>
+<tr>
+<td>time_to_live</td>
+<td>long</td>
+<td>可选项，如果用户离线，设置消息在服务器保存的时间，默认两周</td>
+</tr>
+</tbody>
+</table>
+<p>在了解清楚接口和请求参数后，下面可以利用PostMan模拟以下接口调用：<br>这里有两个需要注意的点：</p>
+<ol>
+<li>header的content-type在post请求中需要设置为：application/x-www-form-urlencoded</li>
+<li>header添加Authorization参数，值为：key=你应用的AppScrect</li>
+</ol>
+<p>请求参数及发起模拟请求后如果看到如下就成功了，接着的工作只需要交给后端处理对接问题：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_03_6.png" width="100%"></p>
+<p>接口调用成功后客户端会收到响应的推送消息：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_03_7.png" width="100%"></p>
+<p>至此使用部分介绍结束。</p>
+<h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2><p>知其然，亦知其所以然。<br>（不看过源码怎么放心使用一个开源框架哈哈哈哈哈）<br>这里的源码解读分成两大部分，分别是one-push-core模块和one-push-xiaomi模块。<br>这里按照OnePush业务流程来解读它是怎么工作的。</p>
+<h3 id="OnePush初始化"><a href="#OnePush初始化" class="headerlink" title="OnePush初始化"></a>OnePush初始化</h3><p>OnePush初始化需要在主进程中进行，前面给了一个获取当前进程名称，没仔细说明，这里解释一下：<br>因为一个APP很可能在跑的不只是一个进程，而无论是以“:”开头的私有进程还是全局进程，在进程初始化的时候都会调用Application的onCreate方法，如果没在onCreate中判断，那就可能回造成很多不必在所有进程初始化的单例，对象等被创建出一份毫无意义的实例，所以正常的做法是在Application中的onCreate方法中判断进程的名称然后根据需要进行不同的初始化工作。</p>
+<p>再看一遍OnePush使用中初始化的代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">if</span> (BuildConfig.APPLICATION_ID.equals(processName)) &#123;</div><div class="line">    OnePush.init(<span class="keyword">this</span>, <span class="keyword">new</span> OnOnePushRegisterListener() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onRegisterPush</span><span class="params">(<span class="keyword">int</span> platformCode, String platformName)</span> </span>&#123;</div><div class="line">          <span class="keyword">return</span> platformCode == <span class="number">101</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">    OnePush.register();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这次我们顺着init方法一路看下去，先看看OnePush中的init方法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    *Initialize One Push</div><div class="line">    * <span class="doctag">@param</span> application</div><div class="line">    * <span class="doctag">@param</span> listener</div><div class="line">    */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(Application application, OnOnePushRegisterListener listener)</span></span>&#123;</div><div class="line">        OnePushContext.getInstance().init(application, listener);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>可以看到，init方法传进去2个参数，分别是Application对象和OnOnePushRegisterListener接口实现，而且OnePsuh的初始化实际上是在OnePushContext中进行的，OnePushContext是一个静态内部类实现的单例模式。</p>
+<p>先来看看OnOnePushRegisterListener接口，里面只有一个方法，这个方法的作用是用来判断要不要初始化当前推送平台服务的：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnOnePushRegisterListener</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">    * When you start the use of registration</div><div class="line">    *</div><div class="line">    * the code and name is you defined meta-data in the AndroidManifest.xml</div><div class="line">    * like OnePush_name_code</div><div class="line">    * <span class="doctag">@param</span> platformCode The code of the platform</div><div class="line">    * <span class="doctag">@param</span> platformName The name of the platform</div><div class="line">    * <span class="doctag">@return</span></div><div class="line">    */</div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">onRegisterPush</span><span class="params">(<span class="keyword">int</span> platformCode,String platformName)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着，进入OnePushContext中的init方法。<br>一进入这个方法，下面这段代码就立马吸引了眼球：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    <span class="comment">//find all support push platform</span></div><div class="line">    Bundle metaData = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;</div><div class="line">    <span class="keyword">if</span> (metaData != <span class="keyword">null</span>) &#123;</div><div class="line">        Set&lt;String&gt; allKeys = metaData.keySet();</div><div class="line">        <span class="keyword">if</span> (allKeys != <span class="keyword">null</span> &amp;&amp; !allKeys.isEmpty()) &#123;</div><div class="line">            Iterator&lt;String&gt; iterator = allKeys.iterator();</div><div class="line">            <span class="keyword">while</span> (iterator.hasNext()) &#123;</div><div class="line">                String key = iterator.next();</div><div class="line">                <span class="keyword">if</span> (key.startsWith(META_DATA_PUSH_HEADER)) &#123;</div><div class="line">                    mAllSupportPushPlatformMap.put(key, metaData.getString(key));</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125; <span class="keyword">catch</span> (PackageManager.NameNotFoundException e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这段代码的作用是去把AndroidManifest.xml文件中的metaData信息都取出来，存放在一个mAllSupportPushPlatformMap中，这个mAllSupportPushPlatformMap是一个LinkedHashMap，在OnePushContext中作为成员变量存在，并在类加载过程中就进行了初始化：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="comment">//all support push platform map</span></div><div class="line"><span class="keyword">private</span> LinkedHashMap&lt;String, String&gt; mAllSupportPushPlatformMap = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</div></pre></td></tr></table></figure></p>
+<p>如果只用小米推送，那么这个时候打断点调试可以看到这个LinkedHashMap如下：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201712_03_8.png" width="100%"></p>
+<p>接着看一下接下来一段代码：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">Iterator&lt;Map.Entry&lt;String, String&gt;&gt; iterator = mAllSupportPushPlatformMap.entrySet().iterator();</div><div class="line">        <span class="keyword">while</span> (iterator.hasNext()) &#123;</div><div class="line">            Map.Entry&lt;String, String&gt; next = iterator.next();</div><div class="line">            String metaPlatformName = next.getKey();</div><div class="line">            String metaPlatformClassName = next.getValue();</div><div class="line">            StringBuilder stringBuilder = <span class="keyword">new</span> StringBuilder(metaPlatformName).delete(<span class="number">0</span>, <span class="number">8</span>);</div><div class="line">            <span class="keyword">int</span> len = stringBuilder.length();</div><div class="line">            <span class="keyword">int</span> lastIndexSymbol = stringBuilder.lastIndexOf(METE_DATA_SPLIT_SYMBOL);</div><div class="line">            <span class="keyword">int</span> platformCode = Integer.parseInt(stringBuilder.substring(lastIndexSymbol + <span class="number">1</span>, len));</div><div class="line">            String platformName = stringBuilder.substring(<span class="number">0</span>, lastIndexSymbol);</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                Class&lt;?&gt; currentClz = Class.forName(metaPlatformClassName);</div><div class="line">                Class&lt;?&gt;[] interfaces = currentClz.getInterfaces();</div><div class="line">                List&lt;Class&lt;?&gt;&gt; allInterfaces = Arrays.asList(interfaces);</div><div class="line">                <span class="keyword">if</span> (allInterfaces.contains(IPushClient.class)) &#123;</div><div class="line">                    <span class="comment">//create object with no params</span></div><div class="line">                    IPushClient iPushClient = (IPushClient) currentClz.newInstance();</div><div class="line">                    <span class="keyword">if</span> (listener.onRegisterPush(platformCode, platformName)) &#123;</div><div class="line">                        <span class="keyword">this</span>.mIPushClient = iPushClient;</div><div class="line">                        <span class="keyword">this</span>.mPlatformCode = platformCode;</div><div class="line">                        <span class="keyword">this</span>.mPlatformName = platformName;</div><div class="line">                        <span class="comment">//invoke IPushClient initContext method</span></div><div class="line">                        OneLog.i(<span class="string">"current register platform is "</span>+metaPlatformName);</div><div class="line">                        iPushClient.initContext(application);</div><div class="line">                        <span class="keyword">break</span>;</div><div class="line">                    &#125;</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(metaPlatformClassName + <span class="string">"is not implements "</span> + IPushClient.class.getName());</div><div class="line">                &#125;</div><div class="line"></div><div class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"can not find class "</span> + metaPlatformClassName);</div><div class="line">            &#125; <span class="keyword">catch</span> (InstantiationException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+<p>在这段代码里面，看起来好像很复杂的样子，其实一个个看下来逻辑都是很清晰的，下面来一点点剥洋葱。</p>
+<p>try之前那段代码是分离platformCode和platformName的作用的，但这里有一个点反应出来，那就是代码是固定模式检测你设置在metaData里的数据的，这说明了一个问题，那就是使用的骚年们，不要玩火乱来哈哈哈哈哈~</p>
+<p>下面看看try里面的实现，回到上面的代码，metaPlatformClassName里面拿到的是value值，也就是完整的类型路径，然后通过反射的方式获取到类，再获取实现的接口，判断到如果接口包含有IPushClient的实现就会通过反射实例化一个IPushClient对象，这个时候前面说的OnOnePushRegisterListener接口的onRegisterPush就发挥作用了，这个时候就会通过这个方法的返回来决定要不要注册当前平台。</p>
+<hr>
+<p>为了避免一些思路跟不上的读者理解更清晰，这里再回顾一下这儿方法在Application中的实现情况（因为是只用了小米推送，所以就只写了一句return platformCode == 101;）：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">new</span> OnOnePushRegisterListener() &#123;</div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onRegisterPush</span><span class="params">(<span class="keyword">int</span> platformCode, String platformName)</span> </span>&#123;</div><div class="line">                  <span class="keyword">return</span> platformCode == <span class="number">101</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div></pre></td></tr></table></figure></p>
+<p>当然接入多个平台推送时就会灵活判断然后决定注册哪一个：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">new</span> OnOnePushRegisterListener() &#123;</div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onRegisterPush</span><span class="params">(<span class="keyword">int</span> platformCode, String platformName)</span> </span>&#123;</div><div class="line">                  <span class="keyword">boolean</span> result = <span class="keyword">false</span>;</div><div class="line">                <span class="keyword">if</span> (RomUtils.isMiuiRom()) &#123;</div><div class="line">                    result=  platformCode == <span class="number">101</span>;</div><div class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (RomUtils.isHuaweiRom()) &#123;</div><div class="line">                    result= platformCode == <span class="number">107</span>;</div><div class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span>(RomUtils.isFlymeRom())&#123;</div><div class="line">                    result = platformCode == <span class="number">103</span>;</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    result= platformCode == <span class="number">104</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">return</span> result;</div><div class="line">                &#125;</div><div class="line">            &#125;</div></pre></td></tr></table></figure>
+<hr>
+<p>回到上面，在判断到小米平台返回true后，进入if条件，然后把当前OnePushContext中的mIPushClient、mPlatformCode和mPlatformName赋值，接着实现IPushClient实例中的initContext(application)方法。</p>
+<p>因为IPushClient接口的具体实现在这里对应的是XiaomiPushClient，下面来看看XiaomiPushClient中的initContext(application)方法实现。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initContext</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.mContext = context.getApplicationContext();</div><div class="line">        <span class="comment">//读取小米对应的appId和appSecret</span></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Bundle metaData = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;</div><div class="line">            mAppId = metaData.getString(MI_PUSH_APP_ID);</div><div class="line">            mAppKey = metaData.getString(MI_PUSH_APP_KEY);</div><div class="line">        &#125; <span class="keyword">catch</span> (PackageManager.NameNotFoundException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">            OneLog.i(<span class="string">"can't find MI_PUSH_APP_ID or MI_PUSH_APP_KEY in AndroidManifest.xml"</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>这就简洁明了了，就是读取我们设置在AndroidManifest.xml中的信息并赋值IPushClient实例的mAppId和mAppKey。</p>
+<p>初始化工作基本完成了，后面的就是清空mAllSupportPushPlatformMap缓存和对没任何推送服务开启的判断。</p>
+<p>接着我们又回头看一下在Application中初始化的流程：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">if</span> (BuildConfig.APPLICATION_ID.equals(processName)) &#123;</div><div class="line">    OnePush.init(<span class="keyword">this</span>, <span class="keyword">new</span> OnOnePushRegisterListener() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onRegisterPush</span><span class="params">(<span class="keyword">int</span> platformCode, String platformName)</span> </span>&#123;</div><div class="line">          <span class="keyword">return</span> platformCode == <span class="number">101</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">    OnePush.register();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在调用完OnePush中的init后接着就调用OnePush中的register方法，同样这个方法具体实现在OnePushContext：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* Registered push</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">()</span></span>&#123;</div><div class="line">    OnePushContext.getInstance().register();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其实看完前面的初始化过程基本就知道接下来会发生什么了，进入OnePushContext看看，就会看到实际上是调用IPushClient方法实现的：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">()</span> </span>&#123;</div><div class="line">        mIPushClient.register();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>下面看看XiaomiPushClient中的具体实现方法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (TextUtils.isEmpty(mAppId) || TextUtils.isEmpty(mAppKey)) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"xiaomi push appId or appKey is not init,"</span> +</div><div class="line">                    <span class="string">"check you AndroidManifest.xml is has MI_PUSH_APP_ID or MI_PUSH_APP_KEY meta-data flag please"</span>);</div><div class="line">        &#125;</div><div class="line">        MiPushClient.registerPush(mContext, mAppId, mAppKey);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>看到 MiPushClient.registerPush(mContext, mAppId, mAppKey);这一句是不是会心一笑~</p>
+<p>这里其实就是注册小米推送sdk的代码了，具体可参照小米官方文档，这里就不细说了。</p>
+<p>小米官方推送Android SDK接入文档：<a href="https://dev.mi.com/console/doc/detail?pId=41#_2_0" target="_blank" rel="external">https://dev.mi.com/console/doc/detail?pId=41#_2_0</a></p>
+<p>到这里，OnePush整合小米推送的基础工作已经初始化完成了。</p>
+<p>另外像小米推送SDK规定的要在AndroidManifest.xml中申明的权限，注册服务等这些初始化的都在one-push-xiaomi这个模块中去完成，因为权限的android:name属性需要用到应用包名，one-push-xiaomi模块中的AndroidManifest.xml中通过读取工程module的build.gradle中的defaultConfig中的applicationId来完成：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">permission</span></span></div><div class="line">        <span class="attr">android:name</span>=<span class="string">"$&#123;applicationId&#125;.permission.MIPUSH_RECEIVE"</span></div><div class="line">        <span class="attr">android:protectionLevel</span>=<span class="string">"signature"</span>/&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"$&#123;applicationId&#125;.permission.MIPUSH_RECEIVE"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="OnePush推送消息接收"><a href="#OnePush推送消息接收" class="headerlink" title="OnePush推送消息接收"></a>OnePush推送消息接收</h3><p>下面来看看OnePush对推送到达的消息是怎么处理的。</p>
+<p>接收这个环节要从小米推送SDK官方文档说起：<br>官方文档2.2中有说到，要接入SDK，需要自定义一个BroadcastReceiver（继承PushMessageReceiver），直接引用文档：</p>
+<blockquote>
+<p>为了接收消息，您需要自定义一个继承自PushMessageReceiver类的BroadcastReceiver，实现其中的onReceivePassThroughMessage，onNotificationMessageClicked，onNotificationMessageArrived，onCommandResult和onReceiveRegisterResult方法，然后把该receiver注册到AndroidManifest.xml文件中。onReceivePassThroughMessage用来接收服务器发送的透传消息，onNotificationMessageClicked用来接收服务器发来的通知栏消息（用户点击通知栏时触发），onNotificationMessageArrived用来接收服务器发来的通知栏消息（消息到达客户端时触发，并且可以接收应用在前台时不弹出通知的通知消息），onCommandResult用来接收客户端向服务器发送命令消息后返回的响应，onReceiveRegisterResult用来接受客户端向服务器发送注册命令消息后返回的响应。</p>
+</blockquote>
+<p>嗯，知道了有这么个事。<br>所以这会儿看回one-push-xiaomi这块的代码，里面还有个XiaomiPushReceiver广播接收器，这个是在AndroidManifest.xml中静态注册的：<br><figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">receiver</span></span></div><div class="line">            <span class="attr">android:exported</span>=<span class="string">"true"</span></div><div class="line">            <span class="attr">android:name</span>=<span class="string">"com.peng.one.push.xiaomi.XiaomiPushReceiver"</span>&gt;</div><div class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.xiaomi.mipush.RECEIVE_MESSAGE"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.xiaomi.mipush.MESSAGE_ARRIVED"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.xiaomi.mipush.ERROR"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>再看XiaomiPushReceiver，里面重写了PushMessageReceiver中的onReceivePassThroughMessage、onNotificationMessageClicked、onNotificationMessageArrived、onCommandResult和onReceiveRegisterResult五个方法，下面是这5个方法的说明：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>onReceivePassThroughMessage</td>
+<td>接收服务器向客户端发送的透传消息</td>
+</tr>
+<tr>
+<td>onNotificationMessageClicked</td>
+<td>接收服务器向客户端发送的通知消息，用户手动点击消息后触发</td>
+</tr>
+<tr>
+<td>onNotificationMessageArrived</td>
+<td>接收服务器向客户端发送的通知消息，在通知消息到达客户端时触发。另外应用在前台时不弹出通知的通知消息到达客户端也会触发</td>
+</tr>
+<tr>
+<td>onCommandResult</td>
+<td>用来接收客户端向服务器发送命令后的响应结果</td>
+</tr>
+<tr>
+<td>onReceiveRegisterResult</td>
+<td>用来接收客户端向服务器发送注册命令后的响应结果</td>
+</tr>
+</tbody>
+</table>
+<p>当推送服务器有消息推送下来时，PushMessageReceiver中的onNotificationMessageArrived会被调用，自然就走到了XiaomiPushReceiver中的onNotificationMessageArrived方法，进到这个方法，可以看到这个方法里面代码如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">OneRepeater.transmitNotification(context,message.getNotifyId(),message.getTitle(),message.getDescription(),message.getContent(), message.getExtra());</div></pre></td></tr></table></figure>
+<p>可以看到，这里会将消息传送到OneRepeater中的transmitNotification方法中处理，这个时候再进入transmitNotification方法看看：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">  * Repeater notice</div><div class="line">  *</div><div class="line">  * <span class="doctag">@param</span> context</div><div class="line">  * <span class="doctag">@param</span> notifyId</div><div class="line">  * <span class="doctag">@param</span> title</div><div class="line">  * <span class="doctag">@param</span> content</div><div class="line">  * <span class="doctag">@param</span> extraMsg</div><div class="line">  */</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">transmitNotification</span><span class="params">(Context context, <span class="keyword">int</span> notifyId, String title</span></span></div><div class="line">          , String content, String extraMsg, Map&lt;String, String&gt; keyValue) &#123;</div><div class="line">      transmit(context, OnePushAction.RECEIVE_NOTIFICATION</div><div class="line">              , <span class="keyword">new</span> OnePushMsg(notifyId, title, content, <span class="keyword">null</span>, extraMsg, keyValue));</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>实际上transmitNotification是一个转发消息的方法，里面把消息封装成一个Parcelable序列化的对象OnePushMsg，这个时候来看一下这个序列化对象的构造方法就会知道里面有什么了：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">OnePushMsg</span><span class="params">(<span class="keyword">int</span> notifyId, String title, String content, String msg, String extraMsg,Map&lt;String,String&gt; keyValue)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.notifyId = notifyId;</div><div class="line">    <span class="keyword">this</span>.title = title;</div><div class="line">    <span class="keyword">this</span>.content = content;</div><div class="line">    <span class="keyword">this</span>.msg = msg;</div><div class="line">    <span class="keyword">this</span>.extraMsg = extraMsg;</div><div class="line">    <span class="keyword">this</span>.keyValue = keyValue;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在OnePushMsg中，定义了一个OnePush推送消息的基本结构，相当于把小米推送、华为推送等待平台的消息转化成OnePushMsg通用消息结构来处理。</p>
+<p>继续回头看前面提到的的transmit方法，这个方法实现如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* The main method to repeater information</div><div class="line">* <span class="doctag">@param</span> context</div><div class="line">* <span class="doctag">@param</span> action</div><div class="line">* <span class="doctag">@param</span> data</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">transmit</span><span class="params">(Context context, String action, Parcelable data)</span> </span>&#123;</div><div class="line">    TransmitDataManager.sendPushData(context, action, data);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>OnePush定义了一个工具类来处理消息发送和解析，在TransmitDataManager中的sendPushData中，实际上是进行一个广播消息的发送：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">Intent intent = <span class="keyword">new</span> Intent(action);</div><div class="line">intent.putExtra(INTENT_DATA_PUSH, data);</div><div class="line">context.sendBroadcast(intent);</div></pre></td></tr></table></figure>
+<p>那么利用小米推送SDK收到推送消息后，转化成OnePush消息对象然后发送了个广播，接下来到哪里处理了呢？<br>莫方，这个时候想一下我们在前面说如何使用的环节降到的自定义广播接收器，如果忘了可以看下面，再拿出来看看：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">".pushRecv"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.peng.one.push.ACTION_RECEIVE_NOTIFICATION"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.peng.one.push.ACTION_RECEIVE_NOTIFICATION_CLICK"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.peng.one.push.ACTION_RECEIVE_MESSAGE"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.peng.one.push.ACTION_RECEIVE_COMMAND_RESULT"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"> <span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>注意看 <action android:name="com.peng.one.push.ACTION_RECEIVE_NOTIFICATION">这个，实际上就是广播发送时的action： OnePushAction.RECEIVE_NOTIFICATION，我们看看这个final变量的定义就豁然开朗了：</action></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">String RECEIVE_NOTIFICATION = <span class="string">"com.peng.one.push.ACTION_RECEIVE_NOTIFICATION"</span>;</div></pre></td></tr></table></figure>
+<p>好，接着看一下我们使用时定义的pushRecv广播接收器的父类，也就是BaseOnePushReceiver，这个类实现了其中一个接口是IPushReceiver，这个接口定义了以下四个方法，分别为：</p>
+<ul>
+<li>onReceiveNotification(Context context, OnePushMsg msg);</li>
+<li>onReceiveNotificationClick(Context context, OnePushMsg msg);</li>
+<li>onReceiveMessage(Context context, OnePushMsg msg);</li>
+<li>onCommandResult(Context context, OnePushCommand command);</li>
+</ul>
+<p>这四个方法实际上是没有实现的，是要在使用时定义的pushRecv中来实现的，我们看看BaseOnePushReceiver中是怎么处理这四个方法的：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</div><div class="line">        String action = intent.getAction();</div><div class="line">        Parcelable parcelable = TransmitDataManager.parsePushData(intent);</div><div class="line">        <span class="keyword">if</span> (OnePushAction.RECEIVE_COMMAND_RESULT.equals(action)) &#123;</div><div class="line">            onCommandResult(context, (OnePushCommand) parcelable);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (OnePushAction.RECEIVE_NOTIFICATION.equals(action)) &#123;</div><div class="line">            onReceiveNotification(context, (OnePushMsg) parcelable);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (OnePushAction.RECEIVE_NOTIFICATION_CLICK.equals(action)) &#123;</div><div class="line">            onReceiveNotificationClick(context,  (OnePushMsg) parcelable);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (OnePushAction.RECEIVE_MESSAGE.equals(action)) &#123;</div><div class="line">            onReceiveMessage(context, (OnePushMsg) parcelable);</div><div class="line">        &#125;</div><div class="line">        OneLog.i(String.format(<span class="string">"%s--%s"</span>, action, String.valueOf(parcelable)));</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>先是把Parcelable 解析出来，然后根据action分别调用子类（pushRecv）中实现的方法，这个时候消息就会到达我们使用时静态注册的广播接收器中，我们就可以根据自己需要来做相关处理了。</p>
+<p>上面解读了消息到达安装了客户端的手机上的处理逻辑，对于消息点击后的处理等操作，实际上思路类似，这里就不再进行一一解读。</p>
+<p>总结一下这个流程：</p>
+<ol>
+<li>小米推送服务端推送消息</li>
+<li>客户端接收到消息，在小米推送SDK要求定义的广播接收器中接收到消息（one-push-xiaomi模块中定义）</li>
+<li>接收到消息后转化成OnePushMsg类型通用消息结构</li>
+<li>转发到使用OnePush框架客户端，自行处理后续步骤</li>
+</ol>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用"><span class="toc-number">1.</span> <span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OnePush依赖"><span class="toc-number">1.1.</span> <span class="toc-text">OnePush依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AppId和AppKey设置"><span class="toc-number">1.2.</span> <span class="toc-text">AppId和AppKey设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加推送实现类"><span class="toc-number">1.3.</span> <span class="toc-text">添加推送实现类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#继承BaseOnePushReceiver实现"><span class="toc-number">1.4.</span> <span class="toc-text">继承BaseOnePushReceiver实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化OnePush"><span class="toc-number">1.5.</span> <span class="toc-text">初始化OnePush</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推送测试"><span class="toc-number">1.6.</span> <span class="toc-text">推送测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#服务端对接小米推送"><span class="toc-number">1.7.</span> <span class="toc-text">服务端对接小米推送</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码解读"><span class="toc-number">2.</span> <span class="toc-text">源码解读</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OnePush初始化"><span class="toc-number">2.1.</span> <span class="toc-text">OnePush初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OnePush推送消息接收"><span class="toc-number">2.2.</span> <span class="toc-text">OnePush推送消息接收</span></a></li></ol></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2017 | Powered by KevinWu&nbsp
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>
