@@ -98,6 +98,45 @@
       </section>
     
       <section>
+        <a href="/2018/01/04/Android/201801/09_SQLiteOpenHelper_concurrence/">
+          <h3 class='post-head'>
+            SQLiteOpenHelper并发问题处理
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <p>这个问题我决定从一个<code>IllegalStateException</code>谈起。<br>当APP跑着跑着，不小心在操作数据库的时候，抛出了以下异常：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">java.lang.IllegalStateException: Cannot perform <span class="keyword">this</span> operation because the connection pool has been closed.</div><div class="line">java.lang.IllegalStateException: attempt to re-open an already-closed object: SQLiteDatabase:</div></pre></td></tr></table></figure></p>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#并发" class='tag'>并发</a>
+
+  <a href="/tags/#SQLiteOpenHelper" class='tag'>SQLiteOpenHelper</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
         <a href="/2018/01/04/Android/201801/08_Android中_WebViewheight/">
           <h3 class='post-head'>
             Android中对于WebView的高度计算问题
@@ -130,45 +169,6 @@
   <a href="/tags/#webview" class='tag'>webview</a>
 
   <a href="/tags/#高度计算" class='tag'>高度计算</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2018/01/04/Android/201801/07_Android_Studio_logcat/">
-          <h3 class='post-head'>
-            Android Studio的logcat从窗口模式恢复
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>这是个比较奇怪的问题，困扰了我好几天，因为一次开发过程中手贱。。。。，进行了如下操作：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201801_07_1.png" width = "50%" /><br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#Android Studio" class='tag'>Android Studio</a>
-
-  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
-
-  <a href="/tags/#Logcat" class='tag'>Logcat</a>
 
 
           
@@ -220,15 +220,15 @@
       </section>
     
       <section>
-        <a href="/2018/01/04/Android/201801/09_SQLiteOpenHelper_concurrence/">
+        <a href="/2018/01/04/Android/201801/07_Android_Studio_logcat/">
           <h3 class='post-head'>
-            SQLiteOpenHelper并发问题处理
+            Android Studio的logcat从窗口模式恢复
           </h3>
         </a>
         
         <div class="post-content">
           
-            <p>这个问题我决定从一个<code>IllegalStateException</code>谈起。<br>当APP跑着跑着，不小心在操作数据库的时候，抛出了以下异常：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">java.lang.IllegalStateException: Cannot perform <span class="keyword">this</span> operation because the connection pool has been closed.</div><div class="line">java.lang.IllegalStateException: attempt to re-open an already-closed object: SQLiteDatabase:</div></pre></td></tr></table></figure></p>
+            <p>这是个比较奇怪的问题，困扰了我好几天，因为一次开发过程中手贱。。。。，进行了如下操作：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201801_07_1.png" width = "50%" /><br>
           
         </div>
         <div class='post-meta'>
@@ -247,11 +247,11 @@
                 <i class="fa fa-tags" aria-hidden="true"></i>
               
              
+  <a href="/tags/#Android Studio" class='tag'>Android Studio</a>
+
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#并发" class='tag'>并发</a>
-
-  <a href="/tags/#SQLiteOpenHelper" class='tag'>SQLiteOpenHelper</a>
+  <a href="/tags/#Logcat" class='tag'>Logcat</a>
 
 
           
