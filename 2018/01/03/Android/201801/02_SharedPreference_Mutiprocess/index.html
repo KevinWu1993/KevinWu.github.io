@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>SharedPreference中多进程并发的坑 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>SharedPreference中多进程并发的坑</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#多进程" class='tag'>多进程</a>
+
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#SharedPreference" class='tag'>SharedPreference</a>
+
+
+            
+          </div>
+          <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在SharedPreference中记录了一些应用的配置信息，如播放列表，偶尔在快速切换音频时会出现整个SharedPreference文件丢失，所有记录配置信息失效。</p>
+<a id="more"></a>
+<h2 id="排查步骤"><a href="#排查步骤" class="headerlink" title="排查步骤"></a>排查步骤</h2><ol>
+<li>快速切换音频，直至播放器播放出错</li>
+<li>配置文件丢失，与配置相关的信息统统失效，需要用户重新初始化所有配置</li>
+</ol>
+<h2 id="解决方案与总结"><a href="#解决方案与总结" class="headerlink" title="解决方案与总结"></a>解决方案与总结</h2><p>这个问题的根本在于在不同进程中进行了SharedPreference文件的读取。<br>SharedPreference有三种读写模式，分别如下：</p>
+<ol>
+<li><code>MODE_PRIVATE</code> 私有模式，一般情况下都使用这种模式。</li>
+<li><code>MODE_WORLD_READABLE</code>、<code>MODE_WORLD_WRITEABLE</code> ，开放可读写权限，不提倡使用。</li>
+<li><code>MODE_MULTI_PROCESS</code>，多进程模式，文档描述虽然是可以多进程操作，但是也提出是不可靠的，当前已经处于@deprecated的了。</li>
+</ol>
+<p>回看Google官方文档，可以看到：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    * SharedPreference loading flag: when set, the file on disk will</div><div class="line">    * be checked for modification even if the shared preferences</div><div class="line">    * instance is already loaded in this process.  This behavior is</div><div class="line">    * sometimes desired in cases where the application has multiple</div><div class="line">    * processes, all writing to the same SharedPreferences file.</div><div class="line">    * Generally there are better forms of communication between</div><div class="line">    * processes, though.</div><div class="line">    *</div><div class="line">    * <span class="doctag">@deprecated</span> MODE_MULTI_PROCESS does not work reliably in</div><div class="line">    * some versions of Android, and furthermore does not provide any</div><div class="line">    * mechanism for reconciling concurrent modifications across</div><div class="line">    * processes.  Applications should not attempt to use it.  Instead,</div><div class="line">    * they should use an explicit cross-process data management</div><div class="line">    * approach such as &#123;<span class="doctag">@link</span> android.content.ContentProvider ContentProvider&#125;.</div><div class="line">    */</div></pre></td></tr></table></figure></p>
+<p>所以最终要解决这个问题，就要避免在多进程中读写SharedPreference文件。<br>那么，既然是播放列表等播放一条音频前后需要获取的数据，可以在App主进程中操作文件，获取必要的信息然后通过Android进程交互的方式提供给MediaPlayer的独立音乐播放进程，这样就可以彻底解决这个问题。</p>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#现象描述"><span class="toc-number">1.</span> <span class="toc-text">现象描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#排查步骤"><span class="toc-number">2.</span> <span class="toc-text">排查步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案与总结"><span class="toc-number">3.</span> <span class="toc-text">解决方案与总结</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2018 | Powered by KevinWu&nbsp
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

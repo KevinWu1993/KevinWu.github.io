@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>MuPdf的编译 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>MuPdf的编译</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年06月25日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#PDF阅读" class='tag'>PDF阅读</a>
+
+  <a href="/tags/#SO库编译" class='tag'>SO库编译</a>
+
+  <a href="/tags/#Mupdf" class='tag'>Mupdf</a>
+
+
+            
+          </div>
+          <p>工作中需要开发内置PDF阅读器的功能，底层研发短时间内不可能完成，也不是应该考虑的实现方案，所以前期就去找第三方开源库，我第一个找到的是<a href="https://github.com/barteksc/AndroidPdfViewer" target="_blank" rel="external">Android PdfViewer</a>，是一个基于PdfiumAndroid扩展的开源库，怎奈集成进去包的话安装包会增大16M……这个太可怕，我们自己的apk才3M。所以，砍掉。<br><a id="more"></a><br>再继续找就找到了MuPdf，这是一个C++写的库，也提供了Android平台的可以直接使用的View封装源码，通过源码可以直接编译出so运行库来，有了so，包大小就好处理了，因为就算大，我们可以使用动态加载，这个后面再说。</p>
+<h3 id="大体步骤"><a href="#大体步骤" class="headerlink" title="大体步骤"></a>大体步骤</h3><ol>
+<li>下载MuPdf源码：<a href="https://mupdf.com/downloads/" target="_blank" rel="external">https://mupdf.com/downloads/</a></li>
+<li>安装Cygwin：<a href="https://www.cygwin.com/" target="_blank" rel="external">https://www.cygwin.com/</a><br> （这一步需要注意选择好插件，不然make命令可能都找不到）</li>
+<li>安装NDK，配置NDK环境变量</li>
+<li>打开Cygwin，进入到源码的根目录，执行make命令</li>
+<li>make执行完后进入源码platform\android目录，输入ndk-build.cmd开始编译</li>
+</ol>
+<h3 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h3><p>我所用的是1.8版本的源码，最新已经到1.11了，在我编译时看到1.11版本还没有对应封装好的Android View控件等东西，又综合对比一下体积，决定使用这个版本。</p>
+<h3 id="Cygwin安装"><a href="#Cygwin安装" class="headerlink" title="Cygwin安装"></a>Cygwin安装</h3><p>在这里踩过一次坑，想着就一个Cygwin，直接下载好安装包装上不不就行了？结果发现太年轻，装完连make命令都找不着。</p>
+<p>在安装Cygwin时，如果没有梯子建议选择个国内的镜像，而且安装过程网上也可以很方便搜索到，这里只说需要注意的点：</p>
+<ul>
+<li>在选择需要安装的组件时，选择Category那一栏，如果喜欢精细，可以挑GNU make相关组件安装，而我，经历第一次浪费时间后，干脆在吃午饭前，直接选择ALL，简单粗暴！</li>
+</ul>
+<h3 id="NDK的安装"><a href="#NDK的安装" class="headerlink" title="NDK的安装"></a>NDK的安装</h3><p>这个就直接去<a href="https://developer.android.com/ndk/index.html下载好然后安装就行了，简单粗暴，不详细说。" target="_blank" rel="external">https://developer.android.com/ndk/index.html下载好然后安装就行了，简单粗暴，不详细说。</a></p>
+<p>不过装完记得在电脑高级设置-环境变量path里面配置一下安装路径。</p>
+<h3 id="Cygwin的使用"><a href="#Cygwin的使用" class="headerlink" title="Cygwin的使用"></a>Cygwin的使用</h3><p>这个和Linux命令差不多，不过也有点细小区别，一开始我上手想进去d盘，cd d回车，然后………………</p>
+<p>-bash: cd: d: No such file or directory</p>
+<p>什么鬼…</p>
+<p>好吧，mount看看：<br>$ mount<br>C:/cygwin64/bin on /usr/bin type ntfs (binary,auto)<br>C:/cygwin64/lib on /usr/lib type ntfs (binary,auto)<br>C:/cygwin64 on / type ntfs (binary,auto)<br>C: on /cygdrive/c type ntfs (binary,posix=0,user,noumount,auto)<br>D: on /cygdrive/d type ntfs (binary,posix=0,user,noumount,auto)<br>E: on /cygdrive/e type ntfs (binary,posix=0,user,noumount,auto)<br>F: on /cygdrive/f type ntfs (binary,posix=0,user,noumount,auto)<br>G: on /cygdrive/g type ntfs (binary,posix=0,user,noumount,auto)<br>H: on /cygdrive/h type ntfs (binary,posix=0,user,noumount,auto)</p>
+<p>好，果然挂载不是d这样的，那就输入$ cd /cygdrive/d，成功进去D盘，找到源码目录后进去，然后执行make。</p>
+<p>make跑完后，可以在源码目录找到一个generated文件夹，这个时候可以去开始编译so运行库了，进去platform\android，这个时候先不要着急编译，先用文件管理器找到platform\android\jni目录，找到Application.mk，文本编辑器打开（推荐sublime），找到APP_ABI 这个值，如果要编译全平台的SO库就选择填个all给它，正确填法示例如下：</p>
+<p><code>APP_ABI := armeabi</code></p>
+<p>同理，如果只需要编译其中一个ABI，例如X86，就填：</p>
+<p><code>APP_ABI := x86</code></p>
+<p><em>另：如果修改过封装好的java源码包名，记得进去mupdf.c里面修改对应的常量名称，不然so库无法运行别打我</em></p>
+<p>完成上面工作后，可以在Cygwin中跑起ndk-build.cmd了，如果编译全平台就要稍微久一点，冲杯咖啡刷刷知乎就好。</p>
+<p>编译完成后，就可以在platform\android\libs目录下找到对应平台的so文件了，如下图（感觉一篇文章都不上个图不厚道，其实只是我觉得markdown里插图还要先扔到图床嫌麻烦而已哈哈哈哈哈）：</p>
+<p><img src="http://7xvo7h.com1.z0.glb.clouddn.com/mupdf1%E5%9B%BE.png" alt="Mupdf编译后"></p>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#大体步骤"><span class="toc-number">1.</span> <span class="toc-text">大体步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#下载源码"><span class="toc-number">2.</span> <span class="toc-text">下载源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cygwin安装"><span class="toc-number">3.</span> <span class="toc-text">Cygwin安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NDK的安装"><span class="toc-number">4.</span> <span class="toc-text">NDK的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cygwin的使用"><span class="toc-number">5.</span> <span class="toc-text">Cygwin的使用</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2018 | Powered by KevinWu&nbsp
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>Android录音动画实现 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Android录音动画实现</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年11月18日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#动画" class='tag'>动画</a>
+
+  <a href="/tags/#Paint" class='tag'>Paint</a>
+
+
+            
+          </div>
+          <p>这篇文章主要讲一个自定义的View和最终封装成一个可在实际使用中灵活使用的控件流程。</p>
+<p>涉及到Android的Canvas的知识。</p>
+<p>在Android中，一个View就是一个Canvans，我们可以使用Paint在上面绘制图形。<br><a id="more"></a><br>先看看效果。<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201711_02_1.gif" width="90%"></p>
+<h2 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h2><p>简单交代下Canvans的背景知识。</p>
+<p>首先是坐标系，正常理解中的坐标系是左下角为原点，横坐标为X轴，纵坐标为Y轴，所以是这样滴：</p>
+<p><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201711_02_2.jpg" width="90%"></p>
+<p>画的很丑，看不惯我也没办法</p>
+<p><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201711_02_3.png" width="50%"></p>
+<p>但是在Android中就要换个角度想想了</p>
+<p><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201711_02_4.png" width="50%"></p>
+<p>因为在Android中，坐标系原点从左上角开始，所以它应该是这样的：</p>
+<p><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201711_02_5.jpg" width="90%"></p>
+<p>接下来是了解一下这里用到的Canvas中的绘制形状方法。</p>
+<p>首先了解一下<strong>Rect</strong>和<strong>RectF</strong></p>
+<p>Rect和RectF的区别是Rect的参数为int类型，而RectF的参数类型为float类型，所以后者精度更高一些。</p>
+<p>这是一个矩形形状结构的封装，有上下左右四个元素，决定了形状最终占用的位置<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">float</span> bottom;</div><div class="line"><span class="keyword">public</span> <span class="keyword">float</span> left;</div><div class="line"><span class="keyword">public</span> <span class="keyword">float</span> right;</div><div class="line"><span class="keyword">public</span> <span class="keyword">float</span> top;</div></pre></td></tr></table></figure></p>
+<p>下面简单列举下Canvas中提供的方法，只列举几个，完整的可以参考Android官方文档。</p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>drawRect(RectF rect, Paint paint)</td>
+<td>绘制一个矩形</td>
+</tr>
+<tr>
+<td>drawRoundRect(RectF rect, float rx, float ry, Paint paint)</td>
+<td>hui’zhi绘制一个圆角矩形</td>
+</tr>
+<tr>
+<td>drawPath(Path path, Paint paint)</td>
+<td>绘制一个路径</td>
+</tr>
+<tr>
+<td>drawLines(float[] pts, int offset, int count, Paint paint)</td>
+<td>绘制一条线</td>
+</tr>
+</tbody>
+</table>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>交代完背景，先来简单讲下思路。</p>
+<p>如下面这个形状（红色区域）：</p>
+<p><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201711_02_6.jpg" width="90%"></p>
+<p>根据这个图和Android坐标体系，我们可以得出以下结论：</p>
+<ul>
+<li>这个形状左上坐标为（0，0）</li>
+<li>这个形状右上坐标为（10，0）</li>
+<li>这个形状左下坐标为（0，30）</li>
+<li>这个形状右下坐标为（10，30）</li>
+</ul>
+<p>那么对于这个RectF对象来说，他的四个元素的值分别为：</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>left</td>
+<td>0</td>
+</tr>
+<tr>
+<td>top</td>
+<td>0</td>
+</tr>
+<tr>
+<td>right</td>
+<td>10</td>
+</tr>
+<tr>
+<td>bottom</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+<p>注意在Android系统里这里的单位都是px，不是dp</p>
+<p>所以我们要实现开头看的效果要先想办法在一块画布上画出一个矩形区域，然后偏移一定间隙，再画出一个矩形区域，一直重复下去。</p>
+<p>而为了平均分布，我们在定了矩形个数的情况下可以根据画布宽度来灵活计算要画的每个矩形的大小，并且计算出偏移量。</p>
+<p>利用View的周期中先执行onMeasure后执行onDraw就可以完成大小计算和绘制。</p>
+<p>然后再利用postInvalidate()触发View重绘（onDraw）就可以完成动画效果。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>这里只交代核心代码，后面会附上全部代码。</p>
+<p>对于计算大小，因为onMesure后会触发onSizeChange，所以就在这里搞点事情：</p>
+<p>cWidth是View的宽度大小；rectHeight直接取view的高度；偏移量offset用view宽度除以矩形总数；再除以4，为了少损失精度，取float运算再强转；而矩形宽度rectWidth就是总宽度减去偏移总量再除以个数。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onSizeChanged</span><span class="params">(<span class="keyword">int</span> w, <span class="keyword">int</span> h, <span class="keyword">int</span> oldw, <span class="keyword">int</span> oldh)</span> </span>&#123;</div><div class="line">       <span class="keyword">super</span>.onSizeChanged(w, h, oldw, oldh);</div><div class="line">       cWidth = getWidth();</div><div class="line">       rectHeight = getHeight();</div><div class="line">       offset = (<span class="keyword">int</span>) (cWidth / rectCount / <span class="number">4.0f</span>);</div><div class="line">       rectWidth = ((cWidth - offset) / rectCount);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>而在onDraw方法中，利用循环对矩形进行绘制：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onDraw(canvas);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rectCount; i++) &#123;</div><div class="line">        <span class="keyword">float</span> currentHeight = (<span class="keyword">float</span>) (nowIndex == i ? <span class="number">0</span> : rectHeight / <span class="number">2.0</span>);</div><div class="line">        <span class="keyword">float</span> left, top, bottom, right;</div><div class="line">        left = (rectWidth * i + offset);</div><div class="line">        right = (rectWidth * (i + <span class="number">1</span>));</div><div class="line">        <span class="keyword">if</span> (nowIndex == i) &#123;</div><div class="line">            top = currentHeight;</div><div class="line">            bottom = rectHeight;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            top = currentHeight - (<span class="keyword">int</span>) ((rectHeight * <span class="number">1.0</span>) / <span class="number">4</span>);</div><div class="line">            bottom = rectHeight - (<span class="keyword">int</span>) ((rectHeight * <span class="number">1.0</span>) / <span class="number">4</span>);</div><div class="line">        &#125;</div><div class="line">        canvas.drawRect(</div><div class="line">                left,</div><div class="line">                top,</div><div class="line">                right,</div><div class="line">                bottom,</div><div class="line">                paint);</div><div class="line">    &#125;</div><div class="line">    postInvalidateDelayed(<span class="number">160</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>因为在动图中可以看到，是有一个矩形要长于别的矩形的，长的矩形是普通的长度的二分之一，所以我们需要一个nowIndex的成员变量来记录当前是哪个矩形长出来，也用来确定下一个是哪个矩形要长出来。</p>
+<p>而这个nowIndex的改变也十分关键，因为每次触发postInvalidateDelayed都会重绘，所以可以把nowIndex的步进放到这里来做。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postInvalidateDelayed</span><span class="params">(<span class="keyword">long</span> delayMilliseconds)</span> </span>&#123;</div><div class="line">     <span class="keyword">if</span> (nowIndex &lt; rectCount - <span class="number">1</span>) nowIndex++;</div><div class="line">     <span class="keyword">else</span> nowIndex = <span class="number">0</span>;</div><div class="line">    <span class="keyword">super</span>.postInvalidateDelayed(delayMilliseconds);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>到此已经基本实现了这个效果。</p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>一般自定义View都希望在使用时有更多可以定制的元素，所以，这里充分利用AttributeSet来让使用时可以在xml文件中设置这个控件的特性。</p>
+<p>首先在Value文件夹定义一个<strong>volumeattrs.xml</strong>，内容如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">declare-styleable</span> <span class="attr">name</span>=<span class="string">"volumeattrs"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"count"</span> <span class="attr">format</span>=<span class="string">"integer"</span>&gt;</span><span class="tag">&lt;/<span class="name">attr</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"isRightToLeft"</span> <span class="attr">format</span>=<span class="string">"boolean"</span>&gt;</span><span class="tag">&lt;/<span class="name">attr</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"rectColorStr"</span> <span class="attr">format</span>=<span class="string">"string"</span>&gt;</span><span class="tag">&lt;/<span class="name">attr</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">declare-styleable</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>这里开放了三个可定义的特性，分别是矩形总数、是否强制从右到左、矩形颜色值。</p>
+<p>在使用中也很简单：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">cn.kevinwu.mydemo.VolumeView</span></span></div><div class="line">    <span class="attr">volume:count</span>=<span class="string">"12"</span></div><div class="line">    <span class="attr">volume:isRightToLeft</span>=<span class="string">"false"</span></div><div class="line">    <span class="attr">volume:rectColorStr</span>=<span class="string">"#fc4023"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"300dp"</span> /&gt;</div></pre></td></tr></table></figure>
+<p>所以我们在控件的逻辑代码中，就需要在初始化调用initView方法时，获取这些属性信息并利用起来，当然别忘了设置个默认值：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initView</span><span class="params">()</span> </span>&#123;</div><div class="line">    TypedArray typedArray = ctx.getTheme().obtainStyledAttributes(attributeSet,</div><div class="line">            R.styleable.volumeattrs, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">    rectCount = typedArray.getInt(R.styleable.volumeattrs_count, <span class="number">11</span>);</div><div class="line">    isRightToLeft = typedArray.getBoolean(R.styleable.volumeattrs_isRightToLeft, <span class="keyword">false</span>);</div><div class="line">    String color = typedArray.getString(R.styleable.volumeattrs_rectColorStr);</div><div class="line">    <span class="keyword">if</span>(color==<span class="keyword">null</span>)color = <span class="string">"#fc4023"</span>;</div><div class="line">    <span class="keyword">if</span>(isRightToLeft)nowIndex = rectCount-<span class="number">1</span>;</div><div class="line">    <span class="keyword">else</span> nowIndex = <span class="number">0</span>;</div><div class="line">    paint = <span class="keyword">new</span> Paint();</div><div class="line">    paint.setColor(Color.parseColor(color));</div><div class="line">    paint.setStyle(Paint.Style.FILL);</div><div class="line">    typedArray.recycle();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h2><p>我肯定无缘无故折腾个这不伦不类的货出来的，其实都是UI，早说好给我个gif图扔进去就好了，结果拖了好久还没见到图，懒得催了，有时间直接实现了动画了事。</p>
+<p>其实真正用上它的地方是这样滴：</p>
+<p><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201711_02_7.jpg" width="60%"></p>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">import</span> android.content.Context;</div><div class="line"><span class="keyword">import</span> android.content.res.TypedArray;</div><div class="line"><span class="keyword">import</span> android.graphics.Canvas;</div><div class="line"><span class="keyword">import</span> android.graphics.Color;</div><div class="line"><span class="keyword">import</span> android.graphics.Paint;</div><div class="line"><span class="keyword">import</span> android.util.AttributeSet;</div><div class="line"><span class="keyword">import</span> android.view.View;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by wqd19 on 2017/11/18.</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VolumeViewJava</span> <span class="keyword">extends</span> <span class="title">View</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> cWidth;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> rectWidth;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> rectHeight;</div><div class="line">    <span class="keyword">private</span> Paint paint;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> rectCount = <span class="number">11</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> nowIndex = <span class="number">0</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> offset = <span class="number">0</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isRightToLeft = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">private</span> AttributeSet attributeSet;</div><div class="line">    <span class="keyword">private</span> Context ctx;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">VolumeViewJava</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(context);</div><div class="line">        <span class="keyword">this</span>.ctx = context;</div><div class="line">        initView();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">VolumeViewJava</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(context, attrs);</div><div class="line">        <span class="keyword">this</span>.attributeSet = attrs;</div><div class="line">        <span class="keyword">this</span>.ctx = context;</div><div class="line">        initView();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">VolumeViewJava</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(context, attrs, defStyleAttr);</div><div class="line">        <span class="keyword">this</span>.attributeSet = attrs;</div><div class="line">        <span class="keyword">this</span>.ctx = context;</div><div class="line">        initView();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initView</span><span class="params">()</span> </span>&#123;</div><div class="line">        TypedArray typedArray = ctx.getTheme().obtainStyledAttributes(attributeSet,</div><div class="line">                R.styleable.volumeattrs, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">        rectCount = typedArray.getInt(R.styleable.volumeattrs_count, <span class="number">11</span>);</div><div class="line">        isRightToLeft = typedArray.getBoolean(R.styleable.volumeattrs_isRightToLeft, <span class="keyword">false</span>);</div><div class="line">        String color = typedArray.getString(R.styleable.volumeattrs_rectColorStr);</div><div class="line">        <span class="keyword">if</span>(color==<span class="keyword">null</span>)color = <span class="string">"#fc4023"</span>;</div><div class="line">        <span class="keyword">if</span>(isRightToLeft)nowIndex = rectCount-<span class="number">1</span>;</div><div class="line">        <span class="keyword">else</span> nowIndex = <span class="number">0</span>;</div><div class="line">        paint = <span class="keyword">new</span> Paint();</div><div class="line">        paint.setColor(Color.parseColor(color));</div><div class="line">        paint.setStyle(Paint.Style.FILL);</div><div class="line">        typedArray.recycle();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onSizeChanged</span><span class="params">(<span class="keyword">int</span> w, <span class="keyword">int</span> h, <span class="keyword">int</span> oldw, <span class="keyword">int</span> oldh)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onSizeChanged(w, h, oldw, oldh);</div><div class="line">        cWidth = getWidth();</div><div class="line">        rectHeight = getHeight();</div><div class="line">        offset = (<span class="keyword">int</span>) (cWidth / rectCount / <span class="number">4.0f</span>);</div><div class="line">        rectWidth = ((cWidth - offset) / rectCount);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onDraw(canvas);</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rectCount; i++) &#123;</div><div class="line">            <span class="keyword">float</span> currentHeight = (<span class="keyword">float</span>) (nowIndex == i ? <span class="number">0</span> : rectHeight / <span class="number">2.0</span>);</div><div class="line">            <span class="keyword">float</span> left, top, bottom, right;</div><div class="line">            left = (rectWidth * i + offset);</div><div class="line">            right = (rectWidth * (i + <span class="number">1</span>));</div><div class="line">            <span class="keyword">if</span> (nowIndex == i) &#123;</div><div class="line">                top = currentHeight;</div><div class="line">                bottom = rectHeight;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                top = currentHeight - (<span class="keyword">int</span>) ((rectHeight * <span class="number">1.0</span>) / <span class="number">4</span>);</div><div class="line">                bottom = rectHeight - (<span class="keyword">int</span>) ((rectHeight * <span class="number">1.0</span>) / <span class="number">4</span>);</div><div class="line">            &#125;</div><div class="line">            canvas.drawRect(</div><div class="line">                    left,</div><div class="line">                    top,</div><div class="line">                    right,</div><div class="line">                    bottom,</div><div class="line">                    paint);</div><div class="line">        &#125;</div><div class="line">        postInvalidateDelayed(<span class="number">160</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postInvalidateDelayed</span><span class="params">(<span class="keyword">long</span> delayMilliseconds)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(!isRightToLeft)&#123;</div><div class="line">            <span class="keyword">if</span> (nowIndex &lt; rectCount - <span class="number">1</span>) nowIndex++;</div><div class="line">            <span class="keyword">else</span> nowIndex = <span class="number">0</span>;</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">if</span>(nowIndex&gt;<span class="number">0</span>) nowIndex--;</div><div class="line">            <span class="keyword">else</span> nowIndex = rectCount-<span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">super</span>.postInvalidateDelayed(delayMilliseconds);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>插个嘴，因为最近也在熟悉Kotlin这门新语言，所以也用Kotlin写了个版本，你爱看不看哈哈哈哈：</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><div class="line"><span class="keyword">import</span> android.content.Context</div><div class="line"><span class="keyword">import</span> android.graphics.Canvas</div><div class="line"><span class="keyword">import</span> android.graphics.Color</div><div class="line"><span class="keyword">import</span> android.graphics.Paint</div><div class="line"><span class="keyword">import</span> android.util.AttributeSet</div><div class="line"><span class="keyword">import</span> android.view.View</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by wqd19 on 2017/11/18.</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">VolumeView</span> : <span class="type">View &#123;</span></span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> cWidth: <span class="built_in">Int</span> = <span class="number">0</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> rectWidth: <span class="built_in">Int</span> = <span class="number">0</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> rectHeight: <span class="built_in">Int</span> = <span class="number">0</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> paint: Paint? = <span class="literal">null</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> rectCount = <span class="number">11</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> nowIndex = <span class="number">0</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> offset = <span class="number">0</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> isRightToLeft = <span class="literal">false</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> attributeSet: AttributeSet? = <span class="literal">null</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> ctx: Context? = <span class="literal">null</span></div><div class="line"></div><div class="line"></div><div class="line">    <span class="keyword">constructor</span>(context: Context) : <span class="keyword">super</span>(context) &#123;</div><div class="line">        ctx = context;</div><div class="line">        initView()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">constructor</span>(context: Context, attrs: AttributeSet) : <span class="keyword">super</span>(context, attrs) &#123;</div><div class="line">        initView()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">constructor</span>(context: Context, attrs: AttributeSet, defaultAttr: <span class="built_in">Int</span>) : <span class="keyword">super</span>(context, attrs, defaultAttr) &#123;</div><div class="line">        initView()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">initView</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">val</span> typedArray = context.theme.obtainStyledAttributes(attributeSet,</div><div class="line">                R.styleable.volumeattrs, <span class="number">0</span>, <span class="number">0</span>)</div><div class="line">        rectCount = typedArray.getInt(R.styleable.volumeattrs_count, <span class="number">11</span>)</div><div class="line">        isRightToLeft = typedArray.getBoolean(R.styleable.volumeattrs_isRightToLeft, <span class="literal">false</span>)</div><div class="line">        <span class="keyword">var</span> color = typedArray.getString(R.styleable.volumeattrs_rectColorStr)</div><div class="line">        <span class="keyword">if</span> (color == <span class="literal">null</span>) color = <span class="string">"#fc4023"</span></div><div class="line">        <span class="keyword">if</span> (isRightToLeft)</div><div class="line">            nowIndex = rectCount - <span class="number">1</span></div><div class="line">        <span class="keyword">else</span></div><div class="line">            nowIndex = <span class="number">0</span></div><div class="line">        paint = Paint()</div><div class="line">        paint!!.color = Color.parseColor(color)</div><div class="line">        paint!!.style = Paint.Style.FILL</div><div class="line">        typedArray.recycle()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onSizeChanged</span><span class="params">(w: <span class="type">Int</span>, h: <span class="type">Int</span>, oldw: <span class="type">Int</span>, oldh: <span class="type">Int</span>)</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.onSizeChanged(w, h, oldw, oldh)</div><div class="line">        cWidth = width</div><div class="line">        rectHeight = height</div><div class="line">        offset = (cWidth.toFloat() / rectCount.toFloat() / <span class="number">4.0</span>f).toInt()</div><div class="line">        rectWidth = (cWidth - offset) / rectCount</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onDraw</span><span class="params">(canvas: <span class="type">Canvas</span>)</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.onDraw(canvas)</div><div class="line">        <span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">0</span> until rectCount) &#123;</div><div class="line">            <span class="keyword">val</span> currentHeight = <span class="keyword">if</span> (nowIndex == i) <span class="number">0</span>f <span class="keyword">else</span> rectHeight / <span class="number">2.0</span>f</div><div class="line">            <span class="keyword">val</span> left: <span class="built_in">Float</span></div><div class="line">            <span class="keyword">val</span> top: <span class="built_in">Float</span></div><div class="line">            <span class="keyword">val</span> bottom: <span class="built_in">Float</span></div><div class="line">            <span class="keyword">val</span> right: <span class="built_in">Float</span></div><div class="line">            left = (rectWidth * i + offset).toFloat()</div><div class="line">            right = (rectWidth * (i + <span class="number">1</span>)).toFloat()</div><div class="line">            <span class="keyword">if</span> (nowIndex == i) &#123;</div><div class="line">                top = currentHeight</div><div class="line">                bottom = rectHeight.toFloat()</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                top = currentHeight - (rectHeight * <span class="number">1.0</span> / <span class="number">4</span>).toInt()</div><div class="line">                bottom = (rectHeight - (rectHeight * <span class="number">1.0</span> / <span class="number">4</span>).toInt()).toFloat()</div><div class="line">            &#125;</div><div class="line">            canvas.drawRect(</div><div class="line">                    left,</div><div class="line">                    top,</div><div class="line">                    right,</div><div class="line">                    bottom,</div><div class="line">                    paint)</div><div class="line">        &#125;</div><div class="line">        postInvalidateDelayed(<span class="number">160</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">postInvalidateDelayed</span><span class="params">(delayMilliseconds: <span class="type">Long</span>)</span></span> &#123;</div><div class="line">        <span class="keyword">if</span> (!isRightToLeft) &#123;</div><div class="line">            <span class="keyword">if</span> (nowIndex &lt; rectCount - <span class="number">1</span>)</div><div class="line">                nowIndex++</div><div class="line">            <span class="keyword">else</span></div><div class="line">                nowIndex = <span class="number">0</span></div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">if</span> (nowIndex &gt; <span class="number">0</span>)</div><div class="line">                nowIndex--</div><div class="line">            <span class="keyword">else</span></div><div class="line">                nowIndex = rectCount - <span class="number">1</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">super</span>.postInvalidateDelayed(delayMilliseconds)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景知识"><span class="toc-number">1.</span> <span class="toc-text">背景知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#思路"><span class="toc-number">2.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现"><span class="toc-number">3.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化"><span class="toc-number">4.</span> <span class="toc-text">优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实际应用"><span class="toc-number">5.</span> <span class="toc-text">实际应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完整代码"><span class="toc-number">6.</span> <span class="toc-text">完整代码</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2018 | Powered by KevinWu&nbsp
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>
