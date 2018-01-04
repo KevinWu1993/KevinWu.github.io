@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>SQLiteOpenHelper并发问题处理 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>SQLiteOpenHelper并发问题处理</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#并发" class='tag'>并发</a>
+
+  <a href="/tags/#SQLiteOpenHelper" class='tag'>SQLiteOpenHelper</a>
+
+
+            
+          </div>
+          <p>这个问题我决定从一个<code>IllegalStateException</code>谈起。<br>当APP跑着跑着，不小心在操作数据库的时候，抛出了以下异常：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">java.lang.IllegalStateException: Cannot perform <span class="keyword">this</span> operation because the connection pool has been closed.</div><div class="line">java.lang.IllegalStateException: attempt to re-open an already-closed object: SQLiteDatabase:</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>对于这个异常，从信息中可以获取到大概是因为在准备执行数据库操作的时候，对应的SQLiteOpenHelper已经被调用<code>close()</code>方法关闭掉了，而数据库链接池被关闭掉后就不能再对该对象进行操作了。</p>
+<p>数据库的CRUD操作是不支持多线程的，所以这个时候第一个想到的是加锁，然后上Stackoverflow逛一波，发觉大体有两个解决方案：</p>
+<ol>
+<li>保持数据库CRUD操作在主线程中执行</li>
+<li>每次都new一个SQLiteOpenHelper对象</li>
+</ol>
+<p>但其实还有个更科学的方式，那就是利用<code>AtomicInteger</code>。</p>
+<p>对于AtomicInteger，Google官方文档(这是Java提供的，不是AndroidSDK提供的，不过我还是习惯看developer.android.com的文档)介绍如下：</p>
+<blockquote>
+<p>An int value that may be updated atomically. See the java.util.concurrent.atomic package specification for description of the properties of atomic variables. An AtomicInteger is used in applications such as atomically incremented counters, and cannot be used as a replacement for an Integer. However, this class does extend Number to allow uniform access by tools and utilities that deal with numerically-based classes.</p>
+</blockquote>
+<p>简单说，AtomicInteger是一个提供原子操作的Integer的类，它提供的接口可以实现线程安全的加减操作。</p>
+<p>所以，这里的思路就清晰起来了：</p>
+<ol>
+<li>定义一个AtomicInteger对象，用于记录SQLiteOpenHelper对象的开关情况，开时进行加操作，关时进行减操作</li>
+<li>在使用SQLiteOpenHelper对象进行CRUD操作时，通过判断AtomicInteger对象中线程安全的方法判断数据库开关情况，关了就通过<code>getWritableDatabase()</code>获取对应数据库可读对象</li>
+</ol>
+<p>这个方法关键实现如下：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">private</span> AtomicInteger openCounter = <span class="keyword">new</span> AtomicInteger(); </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> SQLiteDatabase <span class="title">openDatabase</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (openCounter.incrementAndGet() == <span class="number">1</span>) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            sqLiteDatabase = <span class="keyword">this</span>.getWritableDatabase();</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">            ex.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> sqLiteDatabase;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">closeDatabase</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (openCounter.decrementAndGet() == <span class="number">0</span>) &#123;</div><div class="line">        sqLiteDatabase.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当需要使用的时候，获取对象和关闭数据库链接对象如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">SQLiteDatabase db = DBHelper.getInstance(App.AppContext).openDatabase();</div><div class="line"></div><div class="line">DBHelper.getInstance(App.AppContext).closeDatabase();</div></pre></td></tr></table></figure>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2018 | Powered by KevinWu&nbsp
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

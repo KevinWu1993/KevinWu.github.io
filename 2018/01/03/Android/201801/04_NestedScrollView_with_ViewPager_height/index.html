@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>NestedScrollView嵌套ViewPager高度计算的坑 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>NestedScrollView嵌套ViewPager高度计算的坑</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#NestedScrollView" class='tag'>NestedScrollView</a>
+
+  <a href="/tags/#ViewPager" class='tag'>ViewPager</a>
+
+
+            
+          </div>
+          <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>现象1：<br>ViewPager中的内容无法显示，空白一片。<br>现象2：<br>ViewPager中嵌套的ListView显示不全。</p>
+<a id="more"></a>
+<h2 id="排查步骤"><a href="#排查步骤" class="headerlink" title="排查步骤"></a>排查步骤</h2><p>现象1：</p>
+<ol>
+<li>检查布局，是否内容显示区域在FrameLayout等父类布局中又处于底层</li>
+<li>继续检查布局，看看内容显示相关是否设置了<code>android:visibility=&quot;gone&quot;</code></li>
+<li>继续检查布局，看看ScrollView（NestedScrollView）有没有设置了<code>android:fillViewport=&quot;true&quot;</code>，看到没有设置该属性</li>
+</ol>
+<p>现象2：</p>
+<ol>
+<li>检查ListView的父类布局是否设置了match_parent相关属性</li>
+<li><p>判断是高度问题所致，重写ListView控件并重写<code>onMeasure</code>方法，如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE &gt;&gt; <span class="number">2</span>,</div><div class="line">                MeasureSpec.AT_MOST);</div><div class="line">        <span class="keyword">super</span>.onMeasure(widthMeasureSpec, expandSpec);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>问题未解决，考虑重写ViewPager实现，详细看解决方案</p>
+</li>
+</ol>
+<h2 id="解决方案与总结"><a href="#解决方案与总结" class="headerlink" title="解决方案与总结"></a>解决方案与总结</h2><p>对于现象1，最终设置了<code>android:fillViewport=&quot;true&quot;</code>属性使问题得以解决，原因是这个属性可以让ScrollView中的组件去充满它。</p>
+<p>对于现象2，这里展开来分析一下：<br>要实现Toolbar跟随滑动的效果，那么就可以使用Android成熟的<code>CoordinatorLayout</code>+<code>AppBarLayout</code>+<code>CollapsingToolbarLayout</code>+<code>NestedScrollView</code>方案，而要实现Toolbar跟随滑动同时内嵌几个Tab的方式，就需要在<code>NestedScrollView</code>中内嵌个<code>ViewPager</code>来实现了。</p>
+<p>如果在ViewPager中嵌套使用ListView，则高度计算是会有问题的，这个时候就需要设置ViewPager的高度，但如果是直接设置ViewPager的高度，还会带来另一个问题：如果有几页滑动切换的ViewPager，这个时候高度就会取最长的ViewPager为准，那么内容区域不够长的ViewPager就会滑着滑着。。。不见了。</p>
+<p>所以针对这个问题，可以通过重写ViewPager来解决，思路大概如下：</p>
+<ol>
+<li>定义一个<code>HashMap&lt;Integer, Integer&gt;</code>，里面存放子Fragment的index和height值</li>
+<li>重写<code>onMesure</code>方法，重新计算viewpager的高度</li>
+<li>暴露一个<code>addHeight(int index,int height)</code>方法，可通过这个方法添加内容到<code>HashMap&lt;Integer, Integer&gt;</code>中</li>
+<li>暴露一个<code>resetHeight(int index)</code>，在这个方法中调用<code>setLayoutParams(layoutParams)</code>来重新设置ViewPager高度</li>
+</ol>
+<p>关键实现如下：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">            <span class="keyword">int</span> height=<span class="number">0</span>;</div><div class="line">            <span class="keyword">if</span>(mChildrenViews.size()&gt;<span class="number">0</span> &amp;&amp; mChildrenViews.containsKey(currentPage))&#123;</div><div class="line">                height=mChildrenViews.get(currentPage);</div><div class="line">                <span class="keyword">if</span>(height&gt;<span class="number">0</span> &amp;&amp; height&lt; minHeight)height = minHeight;</div><div class="line">            &#125;</div><div class="line">            <span class="comment">//得到ViewPager的MeasureSpec，使用固定值和MeasureSpec.EXACTLY，</span></div><div class="line">            heightMeasureSpec=MeasureSpec.makeMeasureSpec(height,MeasureSpec.EXACTLY);</div><div class="line">            <span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">resetHeight</span><span class="params">(<span class="keyword">int</span> current)</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">this</span>.currentPage = current;</div><div class="line">            <span class="keyword">if</span> (mChildrenViews.size() &gt; current) &#123;</div><div class="line">                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) getLayoutParams();</div><div class="line">                <span class="keyword">if</span> (layoutParams == <span class="keyword">null</span>) &#123;</div><div class="line">                    layoutParams = <span class="keyword">new</span> LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, mChildrenViews.get(current));</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    layoutParams.height = mChildrenViews.get(current);</div><div class="line">                &#125;</div><div class="line">                setLayoutParams(layoutParams);</div><div class="line">            &#125;</div><div class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>另外，由于viewPager指定高度方法中需要传一个高度的值进去，所以需要获取ListView的高度，但是ListView是没有获取高度的API的，所以ListView也需要重写<code>setAdapter(ListAdapter adapter)</code>来实现高度计算，这个方法实现如下：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAdapter</span><span class="params">(ListAdapter adapter)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.setAdapter(adapter);</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;adapter.getCount();i++)&#123;</div><div class="line">            View item = adapter.getView(i, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line">            item.measure(MeasureSpec.makeMeasureSpec(<span class="number">0</span>, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(<span class="number">0</span>, MeasureSpec.UNSPECIFIED));</div><div class="line">            <span class="keyword">int</span> itemHeight = item.getMeasuredHeight();</div><div class="line">            height+=itemHeight;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(getHeaderViewsCount()&gt;<span class="number">0</span>)&#123;</div><div class="line">            height = headerHeight+height;</div><div class="line">        &#125;</div><div class="line">        measure(MeasureSpec.makeMeasureSpec(<span class="number">0</span>, MeasureSpec.UNSPECIFIED), height);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#现象描述"><span class="toc-number">1.</span> <span class="toc-text">现象描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#排查步骤"><span class="toc-number">2.</span> <span class="toc-text">排查步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案与总结"><span class="toc-number">3.</span> <span class="toc-text">解决方案与总结</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2018 | Powered by KevinWu&nbsp
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

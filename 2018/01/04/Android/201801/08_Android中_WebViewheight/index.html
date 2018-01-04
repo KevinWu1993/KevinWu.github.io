@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>Android中对于WebView的高度计算问题 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Android中对于WebView的高度计算问题</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#webview" class='tag'>webview</a>
+
+  <a href="/tags/#高度计算" class='tag'>高度计算</a>
+
+
+            
+          </div>
+          <p>前面文章中说到过NestedScrollView中嵌套ViewPager的高度问题，之后的解决方案是通过获取ViewPager中内容的高度，然后设置ViewPager的高度来解决的。<br>那么，如果ViewPager中有一个WebView，这个时候高度计算就有点头疼。<br>至于WebView的高度计算，这里我通过JS方式来实现。<br><a id="more"></a></p>
+<p>首先，我们需要允许webview使用Javascript：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">webView.getSettings().setJavaScriptEnabled(<span class="keyword">true</span>);</div></pre></td></tr></table></figure>
+<p>接着需要定义一个JS接口：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">JavascriptInterface</span> <span class="keyword">extends</span> <span class="title">JSBridge</span> </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>给webview添加JsBridge：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">webView.addJavascriptInterface(<span class="keyword">new</span> JavascriptInterface(getActivity()), <span class="string">"phoneListener"</span>)</div></pre></td></tr></table></figure>
+<p>接下来就是考虑怎么解决webview的内容高度问题了。</p>
+<p>思路如下：</p>
+<ol>
+<li>定义一个js方法，通过body或window对象的属性获取到确定的值</li>
+<li>设置webview的<code>WebViewClient</code>，通过<code>onPageFinished</code> 方法回调中调用js方法来获取网页高度</li>
+<li>js调用java方法，在java方法中设置高度</li>
+</ol>
+<p>对于思路的第一步，如果不是前端出身的Android程序猿估计会满脸疑惑，包括我一开始想到这个思路的时候。</p>
+<p>对于高度值的确定，可以通过以下js方法：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><div class="line">javascript:phoneListener.resize(<span class="built_in">document</span>.body.scrollHeight)</div></pre></td></tr></table></figure>
+<p>上面的js方法会调用<code>phoneListener</code>对象中的<code>resize</code>方法，并把<code>document.body.scrollHeight</code>的值传进来：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@android</span>.webkit.<span class="function">JavascriptInterface</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">resize</span><span class="params">(<span class="keyword">final</span> <span class="keyword">float</span> height)</span> &#123;</div><div class="line">    activityContext.runOnUiThread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">           <span class="comment">//处理UI中的高度等问题</span></div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>附上网页中各个参数：</p>
+<p>网页可见区域宽： document.body.clientWidth<br>网页可见区域高： document.body.clientHeight<br>网页可见区域宽： document.body.offsetWidth (包括边线的宽)<br>网页可见区域高： document.body.offsetHeight (包括边线的高)<br>网页正文全文宽： document.body.scrollWidth<br>网页正文全文高： document.body.scrollHeight<br>网页被卷去的高： document.body.scrollTop<br>网页被卷去的左： document.body.scrollLeft<br>网页正文部分上： window.screenTop<br>网页正文部分左： window.screenLeft<br>屏幕分辨率的高： window.screen.height<br>屏幕分辨率的宽： window.screen.width<br>屏幕可用工作区高度： window.screen.availHeight<br>屏幕可用工作区宽度： window.screen.availWidth<br>网页可见区域宽： document.body.clientWidth<br>网页可见区域高： document.body.clientHeight<br>网页可见区域宽： document.body.offsetWidth (包括边线的宽)<br>网页可见区域高： document.body.offsetHeight (包括边线的高)<br>网页正文全文宽： document.body.scrollWidth<br>网页正文全文高： document.body.scrollHeight<br>网页被卷去的高： document.body.scrollTop<br>网页被卷去的左： document.body.scrollLeft<br>网页正文部分上： window.screenTop<br>网页正文部分左： window.screenLeft<br>屏幕分辨率的高： window.screen.height<br>屏幕分辨率的宽： window.screen.width<br>屏幕可用工作区高度： window.screen.availHeight<br>屏幕可用工作区宽度： window.screen.availWidth<br>网页可见区域宽： document.body.clientWidth<br>网页可见区域高： document.body.clientHeight<br>网页可见区域宽： document.body.offsetWidth (包括边线的宽)<br>网页可见区域高： document.body.offsetHeight (包括边线的高)<br>网页正文全文宽： document.body.scrollWidth<br>网页正文全文高： document.body.scrollHeight<br>网页被卷去的高： document.body.scrollTop<br>网页被卷去的左： document.body.scrollLeft<br>网页正文部分上： window.screenTop<br>网页正文部分左： window.screenLeft<br>屏幕分辨率的高： window.screen.height<br>屏幕分辨率的宽： window.screen.width<br>屏幕可用工作区高度： window.screen.availHeight<br>屏幕可用工作区宽度： window.screen.availWidth</p>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2018 | Powered by KevinWu&nbsp
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

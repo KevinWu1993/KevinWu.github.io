@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>TabLayout的字体大小 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>TabLayout的字体大小</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#TabLayout" class='tag'>TabLayout</a>
+
+
+            
+          </div>
+          <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>Tablayout中需要固定大小，不能支持滑动，然后当Tablayout中内容过多时，或者出现<code>AA</code>、<code>BB</code>、<code>CCC</code>、<code>DD</code>这样的四个Tab时，如果字体固定了大小，那么CCC会因为显示空间不足而缩小字体大小，设置的固定字体大小无效，导致TabLayout显示不整齐。</p>
+<a id="more"></a>
+<h2 id="排查步骤"><a href="#排查步骤" class="headerlink" title="排查步骤"></a>排查步骤</h2><ol>
+<li>把<code>AA</code>、<code>BB</code>、<code>CCC</code>、<code>DD</code>改成<code>AA</code>、<code>BB</code>、<code>CC</code>、<code>DD</code>形式，发现字体大小设置可以生效，四个Tab字体大小一致</li>
+<li>把TabLayout的fixed改成scrollable模式，保持<code>AA</code>、<code>BB</code>、<code>CCC</code>、<code>DD</code>形式，字体大小设置依旧可以生效，四个Tab字体大小一致</li>
+<li>设置TabLayout中的tabTextAppearance属性字体大小为14sp，保持<code>AA</code>、<code>BB</code>、<code>CCC</code>、<code>DD</code>形式，可以看到，四个Tab大小一致</li>
+</ol>
+<h2 id="解决方案与总结"><a href="#解决方案与总结" class="headerlink" title="解决方案与总结"></a>解决方案与总结</h2><p>出现这个问题的原因是因为TabLayout启用了fixed模式，同时因为屏幕空间有限，无法根据设定的字体大小完整展示所有Tab内容，那么较长内容的Tab就会被缩小字体来展示。<br>目前需要解决这个问题有五个思路：</p>
+<ol>
+<li><code>AA</code>、<code>BB</code>、<code>CCC</code>、<code>DD</code>改成<code>AA</code>、<code>BB</code>、<code>CC</code>、<code>DD</code>形式，对齐所有tab，但是这个不是技术所能决定的事情，关乎产品和设计，这个方案over。</li>
+<li>把TabLayout的fixed改成scrollable模式，这样顶栏变成可滑动tab，不存在空间不够问题，但阻力同上。</li>
+<li>TabLayout中字体改成14sp，能适应当前方案，同时可以保证字体大小一致，不太符合设计的要求，因为在项目中设计要求大小为16sp，前期解决方案使用这个，因为能最快解决问题，牺牲一点点UI上的标准。</li>
+<li>重写TabLayout，实现自适应宽度，同时能提供更多扩展性，需求排期时间问题，这个方案over。</li>
+<li>引入<code>FlycoTabLayout</code>这个比官方提供的TabLayout扩展性更强的开源Tab框架，目前使用这个方案，同时这个控件可以支持角标，方便日后拓展。</li>
+</ol>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#现象描述"><span class="toc-number">1.</span> <span class="toc-text">现象描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#排查步骤"><span class="toc-number">2.</span> <span class="toc-text">排查步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案与总结"><span class="toc-number">3.</span> <span class="toc-text">解决方案与总结</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2018 | Powered by KevinWu&nbsp
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

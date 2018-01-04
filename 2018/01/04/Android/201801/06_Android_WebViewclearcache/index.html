@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>Android WebView之缓存清理 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Android WebView之缓存清理</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#Android webview" class='tag'>Android webview</a>
+
+  <a href="/tags/#cookie" class='tag'>cookie</a>
+
+  <a href="/tags/#清理缓存" class='tag'>清理缓存</a>
+
+
+            
+          </div>
+          <p>Android中使用混合模式开发的应用中，H5页面的缓存有时候需要手动强制清理，使用到强制清理的场景有两个：</p>
+<ol>
+<li>用户手动点击清理缓存，此时应该清理客户端网络框架请求缓存、图片缓存等后，还应该清理Webview的缓存</li>
+<li>H5页面有错误，需要通过紧急清理缓存开关强制清理Webview缓存<!--moew-->
+<h2 id="清理缓存实现"><a href="#清理缓存实现" class="headerlink" title="清理缓存实现"></a>清理缓存实现</h2></li>
+</ol>
+<p>WebView缓存结构这里就不展开介绍了，不过以下实现估计一目了然，基本也知道WebView中有几块缓存了：</p>
+<p>这里提供一种混合清理的方式，当App中接入了腾讯X5内核浏览器时，清理X5的缓存是必须的，但是同时也不要忘记清理原生浏览器产生的缓存：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="comment">//安卓自带浏览器内核</span></div><div class="line"> android.webkit.CookieSyncManager.createInstance(App.AppContext);</div><div class="line"> android.webkit.CookieManager cookieManager = android.webkit.CookieManager.getInstance();</div><div class="line"> cookieManager.removeAllCookie();</div><div class="line"> <span class="comment">//X5浏览器内核</span></div><div class="line"> CookieSyncManager.createInstance(App.AppContext);</div><div class="line"> CookieManager x5cookieManager = CookieManager.getInstance();</div><div class="line"> x5cookieManager.removeAllCookie();</div><div class="line"> <span class="comment">//删除浏览器相关数据库</span></div><div class="line"> App.AppContext.deleteDatabase(<span class="string">"webview.db"</span>);</div><div class="line"> App.AppContext.deleteDatabase(<span class="string">"webviewCache.db"</span>);</div><div class="line"> <span class="keyword">new</span> WebView(App.AppContext).clearCache(<span class="keyword">true</span>);</div><div class="line"> <span class="keyword">new</span> com.tencent.smtt.sdk.WebView(App.AppContext).clearCache(<span class="keyword">true</span>);</div></pre></td></tr></table></figure>
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#清理缓存实现"><span class="toc-number">1.</span> <span class="toc-text">清理缓存实现</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2018 | Powered by KevinWu&nbsp
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

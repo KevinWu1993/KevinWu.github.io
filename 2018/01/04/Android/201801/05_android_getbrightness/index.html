@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>自动亮度调节开启时获取亮度值的坑 | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>自动亮度调节开启时获取亮度值的坑</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#自动亮度" class='tag'>自动亮度</a>
+
+  <a href="/tags/#ContentObserver" class='tag'>ContentObserver</a>
+
+  <a href="/tags/#screen_auto_brightness_adj" class='tag'>screen_auto_brightness_adj</a>
+
+
+            
+          </div>
+          <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>背景：当开启夜间模式遮罩时，在BaseActivity中注册观察者<code>ContentObserver</code>来检测屏幕亮度的变化，从而灵活调整夜间模式中遮罩层的透明度。</p>
+<p>基于以上背景，当打开手机中的自动调节亮度功能后，通过<code>Settings.System.SCREEN_BRIGHTNESS</code>监听获取亮度变化失效，此时无法获取真实亮度，从而导致夜间模式失效。</p>
+<a id="more"></a>
+<h2 id="排查步骤"><a href="#排查步骤" class="headerlink" title="排查步骤"></a>排查步骤</h2><ol>
+<li>由于此问题现在华为手机上发现，所以先使用小米、魅族、VIVO、OPPO等手机测试，皆发现同样问题，故排除机型兼容性问题。<br>同时以上测试机型基本覆盖Android5.1~7.1系统，所以也暂时排除系统兼容性问题。</li>
+<li>打断点调试，发现开了自动亮度调节后，确实无法实时获取到亮度的改变</li>
+<li><p>查看系统Settings.java源码，看到有以下代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* Adjustment to auto-brightness to make it generally more (&gt;0.0 &lt;1.0)</div><div class="line">* or less (&lt;0.0 &gt;-1.0) bright.</div><div class="line">* <span class="doctag">@hide</span></div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String SCREEN_AUTO_BRIGHTNESS_ADJ = <span class="string">"screen_auto_brightness_adj"</span>;</div></pre></td></tr></table></figure>
+</li>
+<li><p>尝试像<code>Settings.System.SCREEN_BRIGHTNESS</code>这样来检测<code>SCREEN_AUTO_BRIGHTNESS_ADJ</code>的变化，但这是个隐藏api，无法使用</p>
+</li>
+<li>上StackOverFlow查找解决方案，最终解决问题也与<code>screen_auto_brightness_adj</code>有关，具体看解决方案</li>
+</ol>
+<h2 id="解决方案与总结"><a href="#解决方案与总结" class="headerlink" title="解决方案与总结"></a>解决方案与总结</h2><p>排查步骤中说到<code>screen_auto_brightness_adj</code>这个隐藏api，虽然不提供对外调用，但是可以通过以下方式调用：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">this</span>.getContentResolver().registerContentObserver(</div><div class="line">                Settings.System.getUriFor(<span class="string">"screen_auto_brightness_adj"</span>), <span class="keyword">true</span>,</div><div class="line">                brightnessObserver);</div></pre></td></tr></table></figure></p>
+<p>通过以上方式调用后可以实时获取到自动亮度调节开启的情况下亮度改变的值，但是使用的时候还有一点需要注意的，就是在处理夜间模式遮罩的过程中，如果是手动调节亮度模式，则获取屏幕亮度方式如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">Settings.System.getFloat(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);</div></pre></td></tr></table></figure>
+<p>但是自动亮度调节模式开了后，获取屏幕亮度方式如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">Settings.System.getFloat(getContentResolver(), <span class="string">"screen_auto_brightness_adj"</span>);</div></pre></td></tr></table></figure>
+<p>最后，有一个点特别提醒，在使用<code>ContentObserver</code>的时候，如果不需要继续使用，一定要，一定要，一定要调用<code>unregisterContentObserver</code>来反注册，不然会造成内存泄漏。</p>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#现象描述"><span class="toc-number">1.</span> <span class="toc-text">现象描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#排查步骤"><span class="toc-number">2.</span> <span class="toc-text">排查步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案与总结"><span class="toc-number">3.</span> <span class="toc-text">解决方案与总结</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2018 | Powered by KevinWu&nbsp
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

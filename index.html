@@ -56,15 +56,218 @@
   <div class="posts-list">
     
       <section>
-        <a href="/2018/01/03/Android/201801/01_AndroidWebViewMemoryleak/">
+        <a href="/2018/01/04/Android/201801/05_android_getbrightness/">
           <h3 class='post-head'>
-            Android WebView内存泄漏的坑
+            自动亮度调节开启时获取亮度值的坑
           </h3>
         </a>
         
         <div class="post-content">
           
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在H5接入一个自动播放声音的页面后，承载H5页面的Activity在finish后声音依旧在后台播放，无法停止，只有结束App进程或者在另外的地方获取系统音频焦点使得webview播放的声音失去音频焦点声音才停止播放。<br>
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>背景：当开启夜间模式遮罩时，在BaseActivity中注册观察者<code>ContentObserver</code>来检测屏幕亮度的变化，从而灵活调整夜间模式中遮罩层的透明度。</p>
+<p>基于以上背景，当打开手机中的自动调节亮度功能后，通过<code>Settings.System.SCREEN_BRIGHTNESS</code>监听获取亮度变化失效，此时无法获取真实亮度，从而导致夜间模式失效。</p>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#自动亮度" class='tag'>自动亮度</a>
+
+  <a href="/tags/#ContentObserver" class='tag'>ContentObserver</a>
+
+  <a href="/tags/#screen_auto_brightness_adj" class='tag'>screen_auto_brightness_adj</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2018/01/04/Android/201801/08_Android中_WebViewheight/">
+          <h3 class='post-head'>
+            Android中对于WebView的高度计算问题
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <p>前面文章中说到过NestedScrollView中嵌套ViewPager的高度问题，之后的解决方案是通过获取ViewPager中内容的高度，然后设置ViewPager的高度来解决的。<br>那么，如果ViewPager中有一个WebView，这个时候高度计算就有点头疼。<br>至于WebView的高度计算，这里我通过JS方式来实现。<br>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#webview" class='tag'>webview</a>
+
+  <a href="/tags/#高度计算" class='tag'>高度计算</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2018/01/04/Android/201801/07_Android_Studio_logcat/">
+          <h3 class='post-head'>
+            Android Studio的logcat从窗口模式恢复
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <p>这是个比较奇怪的问题，困扰了我好几天，因为一次开发过程中手贱。。。。，进行了如下操作：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201801_07_1.jpg" width = "50%" /><br>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#Android Studio" class='tag'>Android Studio</a>
+
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#Logcat" class='tag'>Logcat</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2018/01/04/Android/201801/06_Android_WebViewclearcache/">
+          <h3 class='post-head'>
+            Android WebView之缓存清理
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <p>Android中使用混合模式开发的应用中，H5页面的缓存有时候需要手动强制清理，使用到强制清理的场景有两个：</p>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#Android webview" class='tag'>Android webview</a>
+
+  <a href="/tags/#cookie" class='tag'>cookie</a>
+
+  <a href="/tags/#清理缓存" class='tag'>清理缓存</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2018/01/04/Android/201801/09_SQLiteOpenHelper_concurrence/">
+          <h3 class='post-head'>
+            SQLiteOpenHelper并发问题处理
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <p>这个问题我决定从一个<code>IllegalStateException</code>谈起。<br>当APP跑着跑着，不小心在操作数据库的时候，抛出了以下异常：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">java.lang.IllegalStateException: Cannot perform <span class="keyword">this</span> operation because the connection pool has been closed.</div><div class="line">java.lang.IllegalStateException: attempt to re-open an already-closed object: SQLiteDatabase:</div></pre></td></tr></table></figure></p>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#并发" class='tag'>并发</a>
+
+  <a href="/tags/#SQLiteOpenHelper" class='tag'>SQLiteOpenHelper</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2018/01/03/Android/201801/04_NestedScrollView_with_ViewPager_height/">
+          <h3 class='post-head'>
+            NestedScrollView嵌套ViewPager高度计算的坑
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>现象1：<br>ViewPager中的内容无法显示，空白一片。<br>现象2：<br>ViewPager中嵌套的ListView显示不全。</p>
           
         </div>
         <div class='post-meta'>
@@ -85,9 +288,46 @@
              
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#Webview" class='tag'>Webview</a>
+  <a href="/tags/#NestedScrollView" class='tag'>NestedScrollView</a>
 
-  <a href="/tags/#内存泄漏" class='tag'>内存泄漏</a>
+  <a href="/tags/#ViewPager" class='tag'>ViewPager</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2018/01/03/Android/201801/03_TabLayout_fontsize/">
+          <h3 class='post-head'>
+            TabLayout的字体大小
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>Tablayout中需要固定大小，不能支持滑动，然后当Tablayout中内容过多时，或者出现<code>AA</code>、<code>BB</code>、<code>CCC</code>、<code>DD</code>这样的四个Tab时，如果字体固定了大小，那么CCC会因为显示空间不足而缩小字体大小，设置的固定字体大小无效，导致TabLayout显示不整齐。</p>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#TabLayout" class='tag'>TabLayout</a>
 
 
           
@@ -134,6 +374,45 @@
       </section>
     
       <section>
+        <a href="/2018/01/03/Android/201801/01_AndroidWebViewMemoryleak/">
+          <h3 class='post-head'>
+            Android WebView内存泄漏的坑
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在H5接入一个自动播放声音的页面后，承载H5页面的Activity在finish后声音依旧在后台播放，无法停止，只有结束App进程或者在另外的地方获取系统音频焦点使得webview播放的声音失去音频焦点声音才停止播放。<br>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#Webview" class='tag'>Webview</a>
+
+  <a href="/tags/#内存泄漏" class='tag'>内存泄漏</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
         <a href="/2017/12/17/Android/201712/03_OnePush_implAndDecode/">
           <h3 class='post-head'>
             OnePsuh集成小米推送使用及源码解读
@@ -168,282 +447,6 @@
   <a href="/tags/#开源框架" class='tag'>开源框架</a>
 
   <a href="/tags/#源码解读" class='tag'>源码解读</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2017/12/11/Android/201712/02_MusicPlayerDemo_IjkPlayerAndMediaPlayer/">
-          <h3 class='post-head'>
-            音乐播放器实践：MediaPlayer和IjkPlayer方案对比使用
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>这篇文章将演示怎么白手起家。<br>噢不，应该是怎么白手撸一个播放器。<br>好像还是不对，手不白。<br>那就。<br>撸一个播放器。<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年12月11日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#MediaPlayer" class='tag'>MediaPlayer</a>
-
-  <a href="/tags/#IjkPlayer" class='tag'>IjkPlayer</a>
-
-  <a href="/tags/#音乐播放器" class='tag'>音乐播放器</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2017/12/04/redaingNote/201712/单例模式：读书笔记和小结/">
-          <h3 class='post-head'>
-            单例模式：读书笔记与小结
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>单例模式是应用最广泛的设计模式。</p>
-<p>实际应用中很多地方都会用到单例模式，比如图片加载框架，网络文件下载框架，网络请求框架等等，这些封装的整体功能中包含线程池，缓存系统、网络请求等很消耗系统资源，所以此时确保管理类有一个实例，可以节省资源，还可以协调系统整体的行为。<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年12月04日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#设计模式" class='tag'>设计模式</a>
-
-  <a href="/tags/#读书笔记" class='tag'>读书笔记</a>
-
-  <a href="/tags/#单例模式" class='tag'>单例模式</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2017/12/03/Android/201712/01_Android_mutiprocess/">
-          <h3 class='post-head'>
-            Android多进程使用小结
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>在日常开发中经常会用到多线程，而多进程就会比较少用。<br>而当一个应用对内存要求比较高或者不希望整天被GC引起内存频繁回收卡顿时，应用经常OOM时，在优化内存效果不明显的情况下，可以考虑使用多进程。<br>因为系统给每一个进程分配的内存有限制，不同手机根据RAM大小等不同分配的最大内存都可能不一样，而利用每个进程有独立资源和内存空间这点，可以考虑给应用的一个专门用于某逻辑处理等过程高频使用的点增加一个独立的进程，这样就可以缓解内存上的压力。<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年12月03日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#填坑" class='tag'>填坑</a>
-
-  <a href="/tags/#Application" class='tag'>Application</a>
-
-  <a href="/tags/#多进程" class='tag'>多进程</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2017/11/28/Android/201711/03_import_Android Studio_ErrorCould not initialize class org.jetbrains.kotlin.gradle.KotlinGradleModelBuilder/">
-          <h3 class='post-head'>
-            导入Android Studio项目Error:Could not initialize class org.jetbrains.kotlin.gradle.KotlinGradleModelBuilder报错解决
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>如果使用Android Studio 3.0版本，导入项目时报错Error:Could not initialize class org.jetbrains.kotlin.gradle.KotlinGradleModelBuilder<br>解决步骤如下：</p>
-<ol>
-<li>找到项目gradle文件夹，打开gradle-wrapper.properties文件，将<em>distributionUrl</em>修改如下：<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">distributionUrl=https\:<span class="comment">//services.gradle.org/distributions/gradle-3.3-all.zip</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年11月28日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#问题解决" class='tag'>问题解决</a>
-
-  <a href="/tags/#填坑" class='tag'>填坑</a>
-
-  <a href="/tags/#Android Studio" class='tag'>Android Studio</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2017/11/26/redaingNote/201711/《算法（第4版）》背包、队列和栈读书笔记/">
-          <h3 class='post-head'>
-            《算法（第4版）》背包、队列和栈读书笔记
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>第1章 1.3背包、队列和栈。<br>页数74~107</p>
-<p>背包（Bag）、队列（Queue）和栈（Stack）都是一组对象的集合，不同之处在于删除或者访问对象的顺序不同。</p>
-<p>背包是一种不支持删除元素的集合数据类型。<br>队列是一种基于先进先出（FIFO）策略的集合类型。<br>栈是一种基于后进先出（LIFO）策略的集合类型。<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年11月26日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#算法" class='tag'>算法</a>
-
-  <a href="/tags/#链表" class='tag'>链表</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2017/11/18/Android/201711/02_Android_recordanim/">
-          <h3 class='post-head'>
-            Android录音动画实现
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>这篇文章主要讲一个自定义的View和最终封装成一个可在实际使用中灵活使用的控件流程。</p>
-<p>涉及到Android的Canvas的知识。</p>
-<p>在Android中，一个View就是一个Canvans，我们可以使用Paint在上面绘制图形。<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年11月18日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#动画" class='tag'>动画</a>
-
-  <a href="/tags/#Paint" class='tag'>Paint</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2017/11/12/Android/201711/01_Android_nightmode/">
-          <h3 class='post-head'>
-            Android使用遮罩实现夜间模式及优化
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>公司项目要求加个夜间模式。<br>我以为是终于可以开搞夜间皮肤，毕竟在架构阶段就预架好了皮肤快速接入的框架。<br>蓝鹅看到需求时<br>我大吃一鲸<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201711_01_1.jpg" width = "30%" /><br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年11月12日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#遮罩" class='tag'>遮罩</a>
-
-  <a href="/tags/#夜间模式" class='tag'>夜间模式</a>
 
 
           

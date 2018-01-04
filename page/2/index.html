@@ -56,6 +56,282 @@
   <div class="posts-list">
     
       <section>
+        <a href="/2017/12/11/Android/201712/02_MusicPlayerDemo_IjkPlayerAndMediaPlayer/">
+          <h3 class='post-head'>
+            音乐播放器实践：MediaPlayer和IjkPlayer方案对比使用
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <p>这篇文章将演示怎么白手起家。<br>噢不，应该是怎么白手撸一个播放器。<br>好像还是不对，手不白。<br>那就。<br>撸一个播放器。<br>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年12月11日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#MediaPlayer" class='tag'>MediaPlayer</a>
+
+  <a href="/tags/#IjkPlayer" class='tag'>IjkPlayer</a>
+
+  <a href="/tags/#音乐播放器" class='tag'>音乐播放器</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2017/12/04/redaingNote/201712/单例模式：读书笔记和小结/">
+          <h3 class='post-head'>
+            单例模式：读书笔记与小结
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <p>单例模式是应用最广泛的设计模式。</p>
+<p>实际应用中很多地方都会用到单例模式，比如图片加载框架，网络文件下载框架，网络请求框架等等，这些封装的整体功能中包含线程池，缓存系统、网络请求等很消耗系统资源，所以此时确保管理类有一个实例，可以节省资源，还可以协调系统整体的行为。<br>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年12月04日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#设计模式" class='tag'>设计模式</a>
+
+  <a href="/tags/#读书笔记" class='tag'>读书笔记</a>
+
+  <a href="/tags/#单例模式" class='tag'>单例模式</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2017/12/03/Android/201712/01_Android_mutiprocess/">
+          <h3 class='post-head'>
+            Android多进程使用小结
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <p>在日常开发中经常会用到多线程，而多进程就会比较少用。<br>而当一个应用对内存要求比较高或者不希望整天被GC引起内存频繁回收卡顿时，应用经常OOM时，在优化内存效果不明显的情况下，可以考虑使用多进程。<br>因为系统给每一个进程分配的内存有限制，不同手机根据RAM大小等不同分配的最大内存都可能不一样，而利用每个进程有独立资源和内存空间这点，可以考虑给应用的一个专门用于某逻辑处理等过程高频使用的点增加一个独立的进程，这样就可以缓解内存上的压力。<br>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年12月03日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#填坑" class='tag'>填坑</a>
+
+  <a href="/tags/#Application" class='tag'>Application</a>
+
+  <a href="/tags/#多进程" class='tag'>多进程</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2017/11/28/Android/201711/03_import_Android Studio_ErrorCould not initialize class org.jetbrains.kotlin.gradle.KotlinGradleModelBuilder/">
+          <h3 class='post-head'>
+            导入Android Studio项目Error:Could not initialize class org.jetbrains.kotlin.gradle.KotlinGradleModelBuilder报错解决
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <p>如果使用Android Studio 3.0版本，导入项目时报错Error:Could not initialize class org.jetbrains.kotlin.gradle.KotlinGradleModelBuilder<br>解决步骤如下：</p>
+<ol>
+<li>找到项目gradle文件夹，打开gradle-wrapper.properties文件，将<em>distributionUrl</em>修改如下：<figure class="highlight java"><table><tr><td class="code"><pre><div class="line">distributionUrl=https\:<span class="comment">//services.gradle.org/distributions/gradle-3.3-all.zip</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年11月28日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#问题解决" class='tag'>问题解决</a>
+
+  <a href="/tags/#填坑" class='tag'>填坑</a>
+
+  <a href="/tags/#Android Studio" class='tag'>Android Studio</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2017/11/26/redaingNote/201711/《算法（第4版）》背包、队列和栈读书笔记/">
+          <h3 class='post-head'>
+            《算法（第4版）》背包、队列和栈读书笔记
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <p>第1章 1.3背包、队列和栈。<br>页数74~107</p>
+<p>背包（Bag）、队列（Queue）和栈（Stack）都是一组对象的集合，不同之处在于删除或者访问对象的顺序不同。</p>
+<p>背包是一种不支持删除元素的集合数据类型。<br>队列是一种基于先进先出（FIFO）策略的集合类型。<br>栈是一种基于后进先出（LIFO）策略的集合类型。<br>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年11月26日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#算法" class='tag'>算法</a>
+
+  <a href="/tags/#链表" class='tag'>链表</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2017/11/18/Android/201711/02_Android_recordanim/">
+          <h3 class='post-head'>
+            Android录音动画实现
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <p>这篇文章主要讲一个自定义的View和最终封装成一个可在实际使用中灵活使用的控件流程。</p>
+<p>涉及到Android的Canvas的知识。</p>
+<p>在Android中，一个View就是一个Canvans，我们可以使用Paint在上面绘制图形。<br>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年11月18日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#动画" class='tag'>动画</a>
+
+  <a href="/tags/#Paint" class='tag'>Paint</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2017/11/12/Android/201711/01_Android_nightmode/">
+          <h3 class='post-head'>
+            Android使用遮罩实现夜间模式及优化
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>公司项目要求加个夜间模式。<br>我以为是终于可以开搞夜间皮肤，毕竟在架构阶段就预架好了皮肤快速接入的框架。<br>蓝鹅看到需求时<br>我大吃一鲸<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201711_01_1.jpg" width = "30%" /><br>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2017年11月12日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#遮罩" class='tag'>遮罩</a>
+
+  <a href="/tags/#夜间模式" class='tag'>夜间模式</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
         <a href="/2017/08/15/essay/201708/重新认识游戏/">
           <h3 class='post-head'>
             重新认识游戏
@@ -164,324 +440,6 @@
   <a href="/tags/#Java" class='tag'>Java</a>
 
   <a href="/tags/#播放器" class='tag'>播放器</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2016/08/22/essay/201608/七月洪流/">
-          <h3 class='post-head'>
-            七月洪流
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>回来广州一个多月了，前段时间一直想写点什么记录下，但如面试时老大所说会给我负责一条产品线，然后入职后就是埋头敲代码，晚上回来都还活在coding状态，根本没有“文艺装逼”的心情，所以就一直搁着。前天项目上线了，下周进入fix bug状态，终于可以放空下脑袋，正好今天闲着去linux把博客迁移过来windows了，于是决定记录下在广州的这一个多月。<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2016年08月22日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/一本正经胡说八道/">一本正经胡说八道</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#总结" class='tag'>总结</a>
-
-  <a href="/tags/#随笔" class='tag'>随笔</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2016/07/19/Java/201607/GC-垃圾回收机制/">
-          <h3 class='post-head'>
-            GC-垃圾回收机制
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>这是一篇我之前在ImportNew公众号看到的文章，觉得写得很好，虽然我现在也不确定是否会每次都如作者所说会Stop-the-world（抱着疑问），但看完后还会时不时想起它了，如今又一次看到它，毅然收到自己博客，如果原作者看到不服请联系我，我马上把它删了谢谢。<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2016年07月19日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#Java" class='tag'>Java</a>
-
-  <a href="/tags/#JVM" class='tag'>JVM</a>
-
-  <a href="/tags/#GC" class='tag'>GC</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2016/07/15/Java/201607/基本排序：从忘记到捡起（二）——简单选择排序/">
-          <h3 class='post-head'>
-            基本排序：从忘记到捡起（二）——简单选择排序
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>选择排序有两种，分别是简单选择和堆排序。<br>因为今天出去跑了一天比较疲惫，所以先把简单选择捡回来，等我恢复元气再把堆堆堆。。排序捡回来。<br>数据定义还是这样：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">int</span> data[]=&#123;<span class="number">1</span>,<span class="number">9</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">10</span>,<span class="number">24</span>,<span class="number">66</span>&#125;;</div></pre></td></tr></table></figure></p>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2016年07月15日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#Java" class='tag'>Java</a>
-
-  <a href="/tags/#排序" class='tag'>排序</a>
-
-  <a href="/tags/#选择" class='tag'>选择</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2016/07/13/Java/201607/基本排序：从忘记到捡起（一）——冒泡与快排/">
-          <h3 class='post-head'>
-            基本排序：从忘记到捡起（一）——冒泡与快排
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>数据结构与算法不能说是一个程序员工作中的必杀技（虽然我还是个很稚嫩的猴子这么说好像不太妥），但是连最基本的排序算法都忘记了都不好意思说自己是只猴子，对于算法数据结构这块，当年虽说写起来呼呼就是一阵风，但算法的小船说翻就翻，有空还是要回头搞搞基础建筑才行哇！<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2016年07月13日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#Java" class='tag'>Java</a>
-
-  <a href="/tags/#冒泡" class='tag'>冒泡</a>
-
-  <a href="/tags/#快排" class='tag'>快排</a>
-
-  <a href="/tags/#排序" class='tag'>排序</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2016/07/08/Java/201607/英文文章词频统计/">
-          <h3 class='post-head'>
-            英文文章词频统计
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>这是一道某公司发给我的笔试题目，本来像刷题那样随便写个方法，AC掉就好了，然后脑洞大开把它当做开发中实际问题处理，认真设计了一下，觉得还是有一点学习交流的价值，所以写出来分享下。</p>
-<p>原题目如下：<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2016年07月08日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#Java" class='tag'>Java</a>
-
-  <a href="/tags/#String" class='tag'>String</a>
-
-  <a href="/tags/#HashMap" class='tag'>HashMap</a>
-
-  <a href="/tags/#设计模式" class='tag'>设计模式</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2016/06/24/coolCoding/DIY一个智能插座/">
-          <h3 class='post-head'>
-            DIY一个智能插座
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>像网上随便搜都能搜到的各种物联网啊云啊的概念就不扯了，扯再多还不如自己动手接个线焊个锡写几行代码来的实在，所以这次没有背景知识，直入正题。</p>
-<h2 id="材料准备"><a href="#材料准备" class="headerlink" title="材料准备"></a>材料准备</h2><table>
-<thead>
-<tr>
-<th>材料</th>
-<th>数量</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>插线板（有人叫插座）</td>
-<td>1</td>
-</tr>
-<tr>
-<td>ESP8266wifi芯片</td>
-<td>1 </td>
-</tr>
-<tr>
-<td>AC-DC电源转换模块（220V～5V）</td>
-<td>1</td>
-</tr>
-<tr>
-<td>继电器</td>
-<td>1</td>
-</tr>
-<tr>
-<td>杜邦线</td>
-<td>若干</td>
-</tr>
-<tr>
-<td>USB转TTL小板</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<p>算上上面的东西，就算买个好点的插座，线粗点，也不用超过60块钱，比网上卖的智能插座便宜多了。<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2016年06月24日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/酷玩/">酷玩</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#智能" class='tag'>智能</a>
-
-  <a href="/tags/#硬件" class='tag'>硬件</a>
-
-  <a href="/tags/#手工" class='tag'>手工</a>
-
-  <a href="/tags/#单片机" class='tag'>单片机</a>
-
-  <a href="/tags/#DIY" class='tag'>DIY</a>
-
-  <a href="/tags/#插座" class='tag'>插座</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2016/06/23/师大+ 技术说明书/师大+ 技术说明书 第五期：聊聊模拟登录/">
-          <h3 class='post-head'>
-            师大+ 技术说明书 第五期：聊聊模拟登录
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>有些网站需要获取信息时，需要用户登录账户，这时就要用到模拟登录。</p>
-<p>而目前的登录，大部分都是直接用post发送请求的，既然是这样，必然带有参数，原理也很简单，有参数，有url，那模拟在浏览器中的操作，就可以“骗”过网站实现登录的效果。<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2016年06月23日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/师大-技术说明书/">师大+ 技术说明书</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#Java" class='tag'>Java</a>
-
-  <a href="/tags/#Android" class='tag'>Android</a>
-
-  <a href="/tags/#模拟登录" class='tag'>模拟登录</a>
 
 
           
