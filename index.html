@@ -56,87 +56,6 @@
   <div class="posts-list">
     
       <section>
-        <a href="/2018/01/04/Android/201801/05_android_getbrightness/">
-          <h3 class='post-head'>
-            自动亮度调节开启时获取亮度值的坑
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>背景：当开启夜间模式遮罩时，在BaseActivity中注册观察者<code>ContentObserver</code>来检测屏幕亮度的变化，从而灵活调整夜间模式中遮罩层的透明度。</p>
-<p>基于以上背景，当打开手机中的自动调节亮度功能后，通过<code>Settings.System.SCREEN_BRIGHTNESS</code>监听获取亮度变化失效，此时无法获取真实亮度，从而导致夜间模式失效。</p>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
-
-  <a href="/tags/#自动亮度" class='tag'>自动亮度</a>
-
-  <a href="/tags/#ContentObserver" class='tag'>ContentObserver</a>
-
-  <a href="/tags/#screen_auto_brightness_adj" class='tag'>screen_auto_brightness_adj</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2018/01/04/Android/201801/09_SQLiteOpenHelper_concurrence/">
-          <h3 class='post-head'>
-            SQLiteOpenHelper并发问题处理
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>这个问题我决定从一个<code>IllegalStateException</code>谈起。<br>当APP跑着跑着，不小心在操作数据库的时候，抛出了以下异常：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">java.lang.IllegalStateException: Cannot perform <span class="keyword">this</span> operation because the connection pool has been closed.</div><div class="line">java.lang.IllegalStateException: attempt to re-open an already-closed object: SQLiteDatabase:</div></pre></td></tr></table></figure></p>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
-
-  <a href="/tags/#并发" class='tag'>并发</a>
-
-  <a href="/tags/#SQLiteOpenHelper" class='tag'>SQLiteOpenHelper</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
         <a href="/2018/01/04/Android/201801/08_Android_WebViewheight/">
           <h3 class='post-head'>
             Android中对于WebView的高度计算问题
@@ -215,6 +134,48 @@
       </section>
     
       <section>
+        <a href="/2018/01/04/Android/201801/05_android_getbrightness/">
+          <h3 class='post-head'>
+            自动亮度调节开启时获取亮度值的坑
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>背景：当开启夜间模式遮罩时，在BaseActivity中注册观察者<code>ContentObserver</code>来检测屏幕亮度的变化，从而灵活调整夜间模式中遮罩层的透明度。</p>
+<p>基于以上背景，当打开手机中的自动调节亮度功能后，通过<code>Settings.System.SCREEN_BRIGHTNESS</code>监听获取亮度变化失效，此时无法获取真实亮度，从而导致夜间模式失效。</p>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#自动亮度" class='tag'>自动亮度</a>
+
+  <a href="/tags/#ContentObserver" class='tag'>ContentObserver</a>
+
+  <a href="/tags/#screen_auto_brightness_adj" class='tag'>screen_auto_brightness_adj</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
         <a href="/2018/01/04/Android/201801/06_Android_WebViewclearcache/">
           <h3 class='post-head'>
             Android WebView之缓存清理
@@ -259,7 +220,7 @@
       </section>
     
       <section>
-        <a href="/2018/01/03/essay/201801/goodbye2017andfuck2018/">
+        <a href="/2018/01/04/essay/201801/goodbye2017andfuck2018/">
           <h3 class='post-head'>
             再见2017，干！2018
           </h3>
@@ -271,7 +232,7 @@
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
@@ -287,6 +248,123 @@
               
              
   <a href="/tags/#年终总结" class='tag'>年终总结</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2018/01/04/Android/201801/09_SQLiteOpenHelper_concurrence/">
+          <h3 class='post-head'>
+            SQLiteOpenHelper并发问题处理
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <p>这个问题我决定从一个<code>IllegalStateException</code>谈起。<br>当APP跑着跑着，不小心在操作数据库的时候，抛出了以下异常：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">java.lang.IllegalStateException: Cannot perform <span class="keyword">this</span> operation because the connection pool has been closed.</div><div class="line">java.lang.IllegalStateException: attempt to re-open an already-closed object: SQLiteDatabase:</div></pre></td></tr></table></figure></p>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#并发" class='tag'>并发</a>
+
+  <a href="/tags/#SQLiteOpenHelper" class='tag'>SQLiteOpenHelper</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2018/01/03/Android/201801/01_AndroidWebViewMemoryleak/">
+          <h3 class='post-head'>
+            Android WebView内存泄漏的坑
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在H5接入一个自动播放声音的页面后，承载H5页面的Activity在finish后声音依旧在后台播放，无法停止，只有结束App进程或者在另外的地方获取系统音频焦点使得webview播放的声音失去音频焦点声音才停止播放。<br>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#Webview" class='tag'>Webview</a>
+
+  <a href="/tags/#内存泄漏" class='tag'>内存泄漏</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2018/01/03/Android/201801/02_SharedPreference_Mutiprocess/">
+          <h3 class='post-head'>
+            SharedPreference中多进程并发的坑
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在SharedPreference中记录了一些应用的配置信息，如播放列表，偶尔在快速切换音频时会出现整个SharedPreference文件丢失，所有记录配置信息失效。</p>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#SharedPreference" class='tag'>SharedPreference</a>
+
+  <a href="/tags/#多进程" class='tag'>多进程</a>
 
 
           
@@ -363,84 +441,6 @@
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
   <a href="/tags/#TabLayout" class='tag'>TabLayout</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2018/01/03/Android/201801/02_SharedPreference_Mutiprocess/">
-          <h3 class='post-head'>
-            SharedPreference中多进程并发的坑
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在SharedPreference中记录了一些应用的配置信息，如播放列表，偶尔在快速切换音频时会出现整个SharedPreference文件丢失，所有记录配置信息失效。</p>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#多进程" class='tag'>多进程</a>
-
-  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
-
-  <a href="/tags/#SharedPreference" class='tag'>SharedPreference</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2018/01/03/Android/201801/01_AndroidWebViewMemoryleak/">
-          <h3 class='post-head'>
-            Android WebView内存泄漏的坑
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在H5接入一个自动播放声音的页面后，承载H5页面的Activity在finish后声音依旧在后台播放，无法停止，只有结束App进程或者在另外的地方获取系统音频焦点使得webview播放的声音失去音频焦点声音才停止播放。<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
-
-  <a href="/tags/#Webview" class='tag'>Webview</a>
-
-  <a href="/tags/#内存泄漏" class='tag'>内存泄漏</a>
 
 
           
