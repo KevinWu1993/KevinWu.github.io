@@ -91,16 +91,15 @@
       </section>
     
       <section>
-        <a href="/2018/01/04/Android/201801/05_android_getbrightness/">
+        <a href="/2018/01/04/Android/201801/07_Android_Studio_logcat/">
           <h3 class='post-head'>
-            自动亮度调节开启时获取亮度值的坑
+            Android Studio的logcat从窗口模式恢复
           </h3>
         </a>
         
         <div class="post-content">
           
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>背景：当开启夜间模式遮罩时，在BaseActivity中注册观察者<code>ContentObserver</code>来检测屏幕亮度的变化，从而灵活调整夜间模式中遮罩层的透明度。</p>
-<p>基于以上背景，当打开手机中的自动调节亮度功能后，通过<code>Settings.System.SCREEN_BRIGHTNESS</code>监听获取亮度变化失效，此时无法获取真实亮度，从而导致夜间模式失效。</p>
+            <p>这是个比较奇怪的问题，困扰了我好几天，因为一次开发过程中手贱。。。。，进行了如下操作：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201801_07_1.png" width = "50%" /><br>
           
         </div>
         <div class='post-meta'>
@@ -119,13 +118,11 @@
                 <i class="fa fa-tags" aria-hidden="true"></i>
               
              
+  <a href="/tags/#Android Studio" class='tag'>Android Studio</a>
+
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#自动亮度" class='tag'>自动亮度</a>
-
-  <a href="/tags/#ContentObserver" class='tag'>ContentObserver</a>
-
-  <a href="/tags/#screen_auto_brightness_adj" class='tag'>screen_auto_brightness_adj</a>
+  <a href="/tags/#Logcat" class='tag'>Logcat</a>
 
 
           
@@ -172,15 +169,16 @@
       </section>
     
       <section>
-        <a href="/2018/01/04/Android/201801/08_Android_WebViewheight/">
+        <a href="/2018/01/04/Android/201801/05_android_getbrightness/">
           <h3 class='post-head'>
-            Android中对于WebView的高度计算问题
+            自动亮度调节开启时获取亮度值的坑
           </h3>
         </a>
         
         <div class="post-content">
           
-            <p>前面文章中说到过NestedScrollView中嵌套ViewPager的高度问题，之后的解决方案是通过获取ViewPager中内容的高度，然后设置ViewPager的高度来解决的。<br>那么，如果ViewPager中有一个WebView，这个时候高度计算就有点头疼。<br>至于WebView的高度计算，这里我通过JS方式来实现。<br>
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>背景：当开启夜间模式遮罩时，在BaseActivity中注册观察者<code>ContentObserver</code>来检测屏幕亮度的变化，从而灵活调整夜间模式中遮罩层的透明度。</p>
+<p>基于以上背景，当打开手机中的自动调节亮度功能后，通过<code>Settings.System.SCREEN_BRIGHTNESS</code>监听获取亮度变化失效，此时无法获取真实亮度，从而导致夜间模式失效。</p>
           
         </div>
         <div class='post-meta'>
@@ -201,48 +199,11 @@
              
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#webview" class='tag'>webview</a>
+  <a href="/tags/#自动亮度" class='tag'>自动亮度</a>
 
-  <a href="/tags/#高度计算" class='tag'>高度计算</a>
+  <a href="/tags/#ContentObserver" class='tag'>ContentObserver</a>
 
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2018/01/04/Android/201801/07_Android_Studio_logcat/">
-          <h3 class='post-head'>
-            Android Studio的logcat从窗口模式恢复
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>这是个比较奇怪的问题，困扰了我好几天，因为一次开发过程中手贱。。。。，进行了如下操作：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201801_07_1.png" width = "50%" /><br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#Android Studio" class='tag'>Android Studio</a>
-
-  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
-
-  <a href="/tags/#Logcat" class='tag'>Logcat</a>
+  <a href="/tags/#screen_auto_brightness_adj" class='tag'>screen_auto_brightness_adj</a>
 
 
           
@@ -294,19 +255,19 @@
       </section>
     
       <section>
-        <a href="/2018/01/03/Android/201801/04_NestedScrollView_with_ViewPager_height/">
+        <a href="/2018/01/04/Android/201801/08_Android_WebViewheight/">
           <h3 class='post-head'>
-            NestedScrollView嵌套ViewPager高度计算的坑
+            Android中对于WebView的高度计算问题
           </h3>
         </a>
         
         <div class="post-content">
           
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>现象1：<br>ViewPager中的内容无法显示，空白一片。<br>现象2：<br>ViewPager中嵌套的ListView显示不全。</p>
+            <p>前面文章中说到过NestedScrollView中嵌套ViewPager的高度问题，之后的解决方案是通过获取ViewPager中内容的高度，然后设置ViewPager的高度来解决的。<br>那么，如果ViewPager中有一个WebView，这个时候高度计算就有点头疼。<br>至于WebView的高度计算，这里我通过JS方式来实现。<br>
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
@@ -323,46 +284,9 @@
              
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#NestedScrollView" class='tag'>NestedScrollView</a>
+  <a href="/tags/#webview" class='tag'>webview</a>
 
-  <a href="/tags/#ViewPager" class='tag'>ViewPager</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2018/01/03/Android/201801/03_TabLayout_fontsize/">
-          <h3 class='post-head'>
-            TabLayout的字体大小
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>Tablayout中需要固定大小，不能支持滑动，然后当Tablayout中内容过多时，或者出现<code>AA</code>、<code>BB</code>、<code>CCC</code>、<code>DD</code>这样的四个Tab时，如果字体固定了大小，那么CCC会因为显示空间不足而缩小字体大小，设置的固定字体大小无效，导致TabLayout显示不整齐。</p>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
-
-  <a href="/tags/#TabLayout" class='tag'>TabLayout</a>
+  <a href="/tags/#高度计算" class='tag'>高度计算</a>
 
 
           
@@ -441,6 +365,82 @@
   <a href="/tags/#Webview" class='tag'>Webview</a>
 
   <a href="/tags/#内存泄漏" class='tag'>内存泄漏</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2018/01/03/Android/201801/03_TabLayout_fontsize/">
+          <h3 class='post-head'>
+            TabLayout的字体大小
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>Tablayout中需要固定大小，不能支持滑动，然后当Tablayout中内容过多时，或者出现<code>AA</code>、<code>BB</code>、<code>CCC</code>、<code>DD</code>这样的四个Tab时，如果字体固定了大小，那么CCC会因为显示空间不足而缩小字体大小，设置的固定字体大小无效，导致TabLayout显示不整齐。</p>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#TabLayout" class='tag'>TabLayout</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2018/01/03/Android/201801/04_NestedScrollView_with_ViewPager_height/">
+          <h3 class='post-head'>
+            NestedScrollView嵌套ViewPager高度计算的坑
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>现象1：<br>ViewPager中的内容无法显示，空白一片。<br>现象2：<br>ViewPager中嵌套的ListView显示不全。</p>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#NestedScrollView" class='tag'>NestedScrollView</a>
+
+  <a href="/tags/#ViewPager" class='tag'>ViewPager</a>
 
 
           
