@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="KevinWu的个人博客">
+  <meta name="keyword" content="undefined">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>Linux环境服务器部署Maven仓库Nexus | KevinWu.CN</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>KevinWu.CN</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Linux环境服务器部署Maven仓库Nexus</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月25日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/server/">server</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#nexus" class='tag'>nexus</a>
+
+  <a href="/tags/#Maven" class='tag'>Maven</a>
+
+  <a href="/tags/#server" class='tag'>server</a>
+
+
+            
+          </div>
+          <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>下载最新版本Nexus安装包。<br>Nexus下载地址：<a href="https://www.sonatype.com/download-oss-sonatype" target="_blank" rel="external">https://www.sonatype.com/download-oss-sonatype</a></p>
+<p>目前有<code>Nexus Repository Manager OSS 3.x</code>和<code>Nexus Repository Manager OSS 2.x</code>安装包，这里选择后者。<br><a id="more"></a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>安装使用root账户。</p>
+<p>假若下载的安装包名称为：nexus-latest-bundle.tar.gz</p>
+<p>将安装包拷贝到<code>/usr/local</code>目录下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">cp nexus-latest-bundle.tar.gz /usr/local/</div></pre></td></tr></table></figure>
+<p>进入该目录：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">cd /usr/local</div></pre></td></tr></table></figure>
+<p>对nexus-latest-bundle.tar.gz进行解压：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">tar -zxvf nexus-latest-bundle.tar.gz</div></pre></td></tr></table></figure>
+<p>观察到解压后<code>/usr/local</code>目录下产生<code>sonatype-work</code>、<code>nexus-2.14.5-02</code>两个目录，给<code>nexus-2.14.5-02</code>创建一个符号链接为nexus2：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">ln -s nexus-2.14.5-02 nexus2</div></pre></td></tr></table></figure>
+<p>此时Nexus已经安装好了。</p>
+<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><p>安装过程是使用root账户进行的，但如果启动也使用root账户的话，Nexus会出现以下警告信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">****************************************</div><div class="line">WARNING - NOT RECOMMENDED TO RUN AS ROOT</div><div class="line">****************************************</div><div class="line">If you insist running as root, then set the environment variable RUN_AS_USER=root before running this script.</div></pre></td></tr></table></figure>
+<p>如果要用root账户启动服务，那么可以零食配置一下<code>RUN_AS_USER</code>变量：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">export RUN_AS_USER=root</div></pre></td></tr></table></figure>
+<p>或者在系统里永久配置：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">vi /etc/profile</div></pre></td></tr></table></figure></p>
+<p>之后添加：<code>export RUN_AS_USER=root</code></p>
+<p>但既然是Nexus不建议使用root账户启动，那么就尝试使用别的账户来启动，比如webserver，但nexus安装的目录属于root，webserver是不具备权限访问的，那么需要先将nexus的目录分配给webserver：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">chown -R webserver /usr/local/nexus2</div><div class="line">chown -R webserver /usr/local/nexus-2.14.5-02</div><div class="line">chown -R webserver /usr/local/sonatype-work/</div></pre></td></tr></table></figure>
+<p>接着使用webserver账户登录服务器，启动nexus服务：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">cd /usr/local/nexus2</div><div class="line">./bin/nexus start</div></pre></td></tr></table></figure>
+<p>如果看到以下输出，即代表已经成功启动了：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">Starting Nexus OSS...</div><div class="line">Started Nexus OSS.</div></pre></td></tr></table></figure>
+<h2 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h2><p>正常端口是8081，通过：<a href="http://服务器外网地址:8081/nexus，如果是服务器本地访问则是：http://localhost:8081/nexus。" target="_blank" rel="external">http://服务器外网地址:8081/nexus，如果是服务器本地访问则是：http://localhost:8081/nexus。</a><br>默认管理员账户是admin，密码为admin123。</p>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#启动服务"><span class="toc-number">3.</span> <span class="toc-text">启动服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问"><span class="toc-number">4.</span> <span class="toc-text">访问</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2018 | Powered by KevinWu&nbsp
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

@@ -56,6 +56,87 @@
   <div class="posts-list">
     
       <section>
+        <a href="/2018/01/25/Android/201801/10_AndroidStudio_upload_private_maven/">
+          <h3 class='post-head'>
+            Android Studio上传组件模块到私有Maven库
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <h2 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h2><p>进入Nexus管理可视化界面，登录。</p>
+<p>点击以下图中的<code>Repositories</code>：</p>
+<p><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201801_10_1.png" width = "30%" /></p>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月25日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#aar" class='tag'>aar</a>
+
+  <a href="/tags/#nexus" class='tag'>nexus</a>
+
+  <a href="/tags/#Maven" class='tag'>Maven</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/2018/01/25/server/201801/01_linux_install_maven_nexus/">
+          <h3 class='post-head'>
+            Linux环境服务器部署Maven仓库Nexus
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>下载最新版本Nexus安装包。<br>Nexus下载地址：<a href="https://www.sonatype.com/download-oss-sonatype">https://www.sonatype.com/download-oss-sonatype</a></p>
+<p>目前有<code>Nexus Repository Manager OSS 3.x</code>和<code>Nexus Repository Manager OSS 2.x</code>安装包，这里选择后者。<br>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月25日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/server/">server</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#nexus" class='tag'>nexus</a>
+
+  <a href="/tags/#Maven" class='tag'>Maven</a>
+
+  <a href="/tags/#server" class='tag'>server</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
         <a href="/2018/01/04/essay/201801/goodbye2017andfuck2018/">
           <h3 class='post-head'>
             再见2017，干！2018
@@ -91,15 +172,15 @@
       </section>
     
       <section>
-        <a href="/2018/01/04/Android/201801/07_Android_Studio_logcat/">
+        <a href="/2018/01/04/Android/201801/08_Android_WebViewheight/">
           <h3 class='post-head'>
-            Android Studio的logcat从窗口模式恢复
+            Android中对于WebView的高度计算问题
           </h3>
         </a>
         
         <div class="post-content">
           
-            <p>这是个比较奇怪的问题，困扰了我好几天，因为一次开发过程中手贱。。。。，进行了如下操作：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201801_07_1.png" width = "50%" /><br>
+            <p>前面文章中说到过NestedScrollView中嵌套ViewPager的高度问题，之后的解决方案是通过获取ViewPager中内容的高度，然后设置ViewPager的高度来解决的。<br>那么，如果ViewPager中有一个WebView，这个时候高度计算就有点头疼。<br>至于WebView的高度计算，这里我通过JS方式来实现。<br>
           
         </div>
         <div class='post-meta'>
@@ -118,11 +199,11 @@
                 <i class="fa fa-tags" aria-hidden="true"></i>
               
              
-  <a href="/tags/#Android Studio" class='tag'>Android Studio</a>
-
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#Logcat" class='tag'>Logcat</a>
+  <a href="/tags/#webview" class='tag'>webview</a>
+
+  <a href="/tags/#高度计算" class='tag'>高度计算</a>
 
 
           
@@ -162,48 +243,6 @@
   <a href="/tags/#并发" class='tag'>并发</a>
 
   <a href="/tags/#SQLiteOpenHelper" class='tag'>SQLiteOpenHelper</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2018/01/04/Android/201801/05_android_getbrightness/">
-          <h3 class='post-head'>
-            自动亮度调节开启时获取亮度值的坑
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>背景：当开启夜间模式遮罩时，在BaseActivity中注册观察者<code>ContentObserver</code>来检测屏幕亮度的变化，从而灵活调整夜间模式中遮罩层的透明度。</p>
-<p>基于以上背景，当打开手机中的自动调节亮度功能后，通过<code>Settings.System.SCREEN_BRIGHTNESS</code>监听获取亮度变化失效，此时无法获取真实亮度，从而导致夜间模式失效。</p>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
-
-  <a href="/tags/#自动亮度" class='tag'>自动亮度</a>
-
-  <a href="/tags/#ContentObserver" class='tag'>ContentObserver</a>
-
-  <a href="/tags/#screen_auto_brightness_adj" class='tag'>screen_auto_brightness_adj</a>
 
 
           
@@ -255,15 +294,16 @@
       </section>
     
       <section>
-        <a href="/2018/01/04/Android/201801/08_Android_WebViewheight/">
+        <a href="/2018/01/04/Android/201801/05_android_getbrightness/">
           <h3 class='post-head'>
-            Android中对于WebView的高度计算问题
+            自动亮度调节开启时获取亮度值的坑
           </h3>
         </a>
         
         <div class="post-content">
           
-            <p>前面文章中说到过NestedScrollView中嵌套ViewPager的高度问题，之后的解决方案是通过获取ViewPager中内容的高度，然后设置ViewPager的高度来解决的。<br>那么，如果ViewPager中有一个WebView，这个时候高度计算就有点头疼。<br>至于WebView的高度计算，这里我通过JS方式来实现。<br>
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>背景：当开启夜间模式遮罩时，在BaseActivity中注册观察者<code>ContentObserver</code>来检测屏幕亮度的变化，从而灵活调整夜间模式中遮罩层的透明度。</p>
+<p>基于以上背景，当打开手机中的自动调节亮度功能后，通过<code>Settings.System.SCREEN_BRIGHTNESS</code>监听获取亮度变化失效，此时无法获取真实亮度，从而导致夜间模式失效。</p>
           
         </div>
         <div class='post-meta'>
@@ -284,9 +324,11 @@
              
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#webview" class='tag'>webview</a>
+  <a href="/tags/#自动亮度" class='tag'>自动亮度</a>
 
-  <a href="/tags/#高度计算" class='tag'>高度计算</a>
+  <a href="/tags/#ContentObserver" class='tag'>ContentObserver</a>
+
+  <a href="/tags/#screen_auto_brightness_adj" class='tag'>screen_auto_brightness_adj</a>
 
 
           
@@ -294,19 +336,19 @@
       </section>
     
       <section>
-        <a href="/2018/01/03/Android/201801/02_SharedPreference_Mutiprocess/">
+        <a href="/2018/01/04/Android/201801/07_Android_Studio_logcat/">
           <h3 class='post-head'>
-            SharedPreference中多进程并发的坑
+            Android Studio的logcat从窗口模式恢复
           </h3>
         </a>
         
         <div class="post-content">
           
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在SharedPreference中记录了一些应用的配置信息，如播放列表，偶尔在快速切换音频时会出现整个SharedPreference文件丢失，所有记录配置信息失效。</p>
+            <p>这是个比较奇怪的问题，困扰了我好几天，因为一次开发过程中手贱。。。。，进行了如下操作：<br><img src="https://raw.githubusercontent.com/KevinWu1993/blogPic/master/image/android_201801_07_1.png" width = "50%" /><br>
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
@@ -321,50 +363,11 @@
                 <i class="fa fa-tags" aria-hidden="true"></i>
               
              
-  <a href="/tags/#多进程" class='tag'>多进程</a>
+  <a href="/tags/#Android Studio" class='tag'>Android Studio</a>
 
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#SharedPreference" class='tag'>SharedPreference</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2018/01/03/Android/201801/01_AndroidWebViewMemoryleak/">
-          <h3 class='post-head'>
-            Android WebView内存泄漏的坑
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在H5接入一个自动播放声音的页面后，承载H5页面的Activity在finish后声音依旧在后台播放，无法停止，只有结束App进程或者在另外的地方获取系统音频焦点使得webview播放的声音失去音频焦点声音才停止播放。<br>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月03日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
-
-  <a href="/tags/#Webview" class='tag'>Webview</a>
-
-  <a href="/tags/#内存泄漏" class='tag'>内存泄漏</a>
+  <a href="/tags/#Logcat" class='tag'>Logcat</a>
 
 
           
@@ -475,7 +478,7 @@
           文章分类
         </h1>
         <div class="content">
-          <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/一本正经胡说八道/">一本正经胡说八道</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/在线刷题/">在线刷题</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/师大-技术说明书/">师大+ 技术说明书</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/师大-辅助文档/">师大+ 辅助文档</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/">计算机基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/酷玩/">酷玩</a></li></ul>
+          <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/一本正经胡说八道/">一本正经胡说八道</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/在线刷题/">在线刷题</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/师大-技术说明书/">师大+ 技术说明书</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/师大-辅助文档/">师大+ 辅助文档</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机基础/">计算机基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/酷玩/">酷玩</a></li></ul>
         </div>
       </div>
     
