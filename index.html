@@ -172,15 +172,18 @@
       </section>
     
       <section>
-        <a href="/2018/01/04/Android/201801/09_SQLiteOpenHelper_concurrence/">
+        <a href="/2018/01/04/Android/201801/06_Android_WebViewclearcache/">
           <h3 class='post-head'>
-            SQLiteOpenHelper并发问题处理
+            Android WebView之缓存清理
           </h3>
         </a>
         
         <div class="post-content">
           
-            <p>这个问题我决定从一个<code>IllegalStateException</code>谈起。<br>当APP跑着跑着，不小心在操作数据库的时候，抛出了以下异常：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">java.lang.IllegalStateException: Cannot perform <span class="keyword">this</span> operation because the connection pool has been closed.</div><div class="line">java.lang.IllegalStateException: attempt to re-open an already-closed object: SQLiteDatabase:</div></pre></td></tr></table></figure></p>
+            
+              
+                <p>Android中使用混合模式开发的应用中，H5页面的缓存有时候需要手动强制清理，使用到强制清理的场景有两个：</p>
+              
           
         </div>
         <div class='post-meta'>
@@ -201,9 +204,11 @@
              
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#并发" class='tag'>并发</a>
+  <a href="/tags/#Android webview" class='tag'>Android webview</a>
 
-  <a href="/tags/#SQLiteOpenHelper" class='tag'>SQLiteOpenHelper</a>
+  <a href="/tags/#cookie" class='tag'>cookie</a>
+
+  <a href="/tags/#清理缓存" class='tag'>清理缓存</a>
 
 
           
@@ -250,6 +255,45 @@
       </section>
     
       <section>
+        <a href="/2018/01/04/Android/201801/09_SQLiteOpenHelper_concurrence/">
+          <h3 class='post-head'>
+            SQLiteOpenHelper并发问题处理
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            <p>这个问题我决定从一个<code>IllegalStateException</code>谈起。<br>当APP跑着跑着，不小心在操作数据库的时候，抛出了以下异常：<br><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">java.lang.IllegalStateException: Cannot perform <span class="keyword">this</span> operation because the connection pool has been closed.</div><div class="line">java.lang.IllegalStateException: attempt to re-open an already-closed object: SQLiteDatabase:</div></pre></td></tr></table></figure></p>
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+
+
+          
+          
+            | 
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
+
+  <a href="/tags/#并发" class='tag'>并发</a>
+
+  <a href="/tags/#SQLiteOpenHelper" class='tag'>SQLiteOpenHelper</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
         <a href="/2018/01/04/Android/201801/07_Android_Studio_logcat/">
           <h3 class='post-head'>
             Android Studio的logcat从窗口模式恢复
@@ -282,50 +326,6 @@
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
   <a href="/tags/#Logcat" class='tag'>Logcat</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/2018/01/04/Android/201801/06_Android_WebViewclearcache/">
-          <h3 class='post-head'>
-            Android WebView之缓存清理
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            
-              
-                <p>Android中使用混合模式开发的应用中，H5页面的缓存有时候需要手动强制清理，使用到强制清理的场景有两个：</p>
-              
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018年01月04日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-
-
-          
-          
-            | 
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
-
-  <a href="/tags/#Android webview" class='tag'>Android webview</a>
-
-  <a href="/tags/#cookie" class='tag'>cookie</a>
-
-  <a href="/tags/#清理缓存" class='tag'>清理缓存</a>
 
 
           
@@ -414,15 +414,15 @@
       </section>
     
       <section>
-        <a href="/2018/01/03/Android/201801/02_SharedPreference_Mutiprocess/">
+        <a href="/2018/01/03/Android/201801/03_TabLayout_fontsize/">
           <h3 class='post-head'>
-            SharedPreference中多进程并发的坑
+            TabLayout的字体大小
           </h3>
         </a>
         
         <div class="post-content">
           
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在SharedPreference中记录了一些应用的配置信息，如播放列表，偶尔在快速切换音频时会出现整个SharedPreference文件丢失，所有记录配置信息失效。</p>
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>Tablayout中需要固定大小，不能支持滑动，然后当Tablayout中内容过多时，或者出现<code>AA</code>、<code>BB</code>、<code>CCC</code>、<code>DD</code>这样的四个Tab时，如果字体固定了大小，那么CCC会因为显示空间不足而缩小字体大小，设置的固定字体大小无效，导致TabLayout显示不整齐。</p>
           
         </div>
         <div class='post-meta'>
@@ -441,11 +441,9 @@
                 <i class="fa fa-tags" aria-hidden="true"></i>
               
              
-  <a href="/tags/#多进程" class='tag'>多进程</a>
-
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#SharedPreference" class='tag'>SharedPreference</a>
+  <a href="/tags/#TabLayout" class='tag'>TabLayout</a>
 
 
           

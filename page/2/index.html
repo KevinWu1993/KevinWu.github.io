@@ -95,15 +95,15 @@
       </section>
     
       <section>
-        <a href="/2018/01/03/Android/201801/03_TabLayout_fontsize/">
+        <a href="/2018/01/03/Android/201801/02_SharedPreference_Mutiprocess/">
           <h3 class='post-head'>
-            TabLayout的字体大小
+            SharedPreference中多进程并发的坑
           </h3>
         </a>
         
         <div class="post-content">
           
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>Tablayout中需要固定大小，不能支持滑动，然后当Tablayout中内容过多时，或者出现<code>AA</code>、<code>BB</code>、<code>CCC</code>、<code>DD</code>这样的四个Tab时，如果字体固定了大小，那么CCC会因为显示空间不足而缩小字体大小，设置的固定字体大小无效，导致TabLayout显示不整齐。</p>
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在SharedPreference中记录了一些应用的配置信息，如播放列表，偶尔在快速切换音频时会出现整个SharedPreference文件丢失，所有记录配置信息失效。</p>
           
         </div>
         <div class='post-meta'>
@@ -122,9 +122,11 @@
                 <i class="fa fa-tags" aria-hidden="true"></i>
               
              
+  <a href="/tags/#多进程" class='tag'>多进程</a>
+
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#TabLayout" class='tag'>TabLayout</a>
+  <a href="/tags/#SharedPreference" class='tag'>SharedPreference</a>
 
 
           
