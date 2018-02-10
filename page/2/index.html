@@ -56,15 +56,15 @@
   <div class="posts-list">
     
       <section>
-        <a href="/2018/01/03/Android/201801/02_SharedPreference_Mutiprocess/">
+        <a href="/2018/01/03/Android/201801/04_NestedScrollView_with_ViewPager_height/">
           <h3 class='post-head'>
-            SharedPreference中多进程并发的坑
+            NestedScrollView嵌套ViewPager高度计算的坑
           </h3>
         </a>
         
         <div class="post-content">
           
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在SharedPreference中记录了一些应用的配置信息，如播放列表，偶尔在快速切换音频时会出现整个SharedPreference文件丢失，所有记录配置信息失效。</p>
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>现象1：<br>ViewPager中的内容无法显示，空白一片。<br>现象2：<br>ViewPager中嵌套的ListView显示不全。</p>
           
         </div>
         <div class='post-meta'>
@@ -83,11 +83,11 @@
                 <i class="fa fa-tags" aria-hidden="true"></i>
               
              
-  <a href="/tags/#多进程" class='tag'>多进程</a>
-
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#SharedPreference" class='tag'>SharedPreference</a>
+  <a href="/tags/#NestedScrollView" class='tag'>NestedScrollView</a>
+
+  <a href="/tags/#ViewPager" class='tag'>ViewPager</a>
 
 
           
@@ -95,15 +95,15 @@
       </section>
     
       <section>
-        <a href="/2018/01/03/Android/201801/01_AndroidWebViewMemoryleak/">
+        <a href="/2018/01/03/Android/201801/03_TabLayout_fontsize/">
           <h3 class='post-head'>
-            Android WebView内存泄漏的坑
+            TabLayout的字体大小
           </h3>
         </a>
         
         <div class="post-content">
           
-            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>在H5接入一个自动播放声音的页面后，承载H5页面的Activity在finish后声音依旧在后台播放，无法停止，只有结束App进程或者在另外的地方获取系统音频焦点使得webview播放的声音失去音频焦点声音才停止播放。<br>
+            <h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>Tablayout中需要固定大小，不能支持滑动，然后当Tablayout中内容过多时，或者出现<code>AA</code>、<code>BB</code>、<code>CCC</code>、<code>DD</code>这样的四个Tab时，如果字体固定了大小，那么CCC会因为显示空间不足而缩小字体大小，设置的固定字体大小无效，导致TabLayout显示不整齐。</p>
           
         </div>
         <div class='post-meta'>
@@ -124,9 +124,7 @@
              
   <a href="/tags/#踩坑总结" class='tag'>踩坑总结</a>
 
-  <a href="/tags/#Webview" class='tag'>Webview</a>
-
-  <a href="/tags/#内存泄漏" class='tag'>内存泄漏</a>
+  <a href="/tags/#TabLayout" class='tag'>TabLayout</a>
 
 
           
